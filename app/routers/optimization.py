@@ -65,13 +65,27 @@ async def optimize_diet(
                 "total_calories": 0.0,
                 "total_protein": 0.0,
                 "total_carbs": 0.0,
-                "total_fat": 0.0
+                "total_fat": 0.0,
+                "total_vitamin_a": 0.0,
+                "total_vitamin_c": 0.0,
+                "total_calcium": 0.0,
+                "total_iron": 0.0,
+                "total_potassium": 0.0,
+                "total_sodium": 0.0,
+                "total_cholesterol": 0.0
             },
             constraint_satisfaction={
                 "calories_within_bounds": False,
                 "protein_within_bounds": False,
                 "carbs_within_bounds": False,
-                "fat_within_bounds": False
+                "fat_within_bounds": False,
+                "vitamin_a_within_bounds": False,
+                "vitamin_c_within_bounds": False,
+                "calcium_within_bounds": False,
+                "iron_within_bounds": False,
+                "potassium_within_bounds": False,
+                "sodium_within_bounds": False,
+                "cholesterol_within_bounds": False
             }
         )
     
@@ -85,13 +99,27 @@ async def optimize_diet(
                 "total_calories": 0.0,
                 "total_protein": 0.0,
                 "total_carbs": 0.0,
-                "total_fat": 0.0
+                "total_fat": 0.0,
+                "total_vitamin_a": 0.0,
+                "total_vitamin_c": 0.0,
+                "total_calcium": 0.0,
+                "total_iron": 0.0,
+                "total_potassium": 0.0,
+                "total_sodium": 0.0,
+                "total_cholesterol": 0.0
             },
             constraint_satisfaction={
                 "calories_within_bounds": False,
                 "protein_within_bounds": False,
                 "carbs_within_bounds": False,
-                "fat_within_bounds": False
+                "fat_within_bounds": False,
+                "vitamin_a_within_bounds": False,
+                "vitamin_c_within_bounds": False,
+                "calcium_within_bounds": False,
+                "iron_within_bounds": False,
+                "potassium_within_bounds": False,
+                "sodium_within_bounds": False,
+                "cholesterol_within_bounds": False
             }
         )
     
