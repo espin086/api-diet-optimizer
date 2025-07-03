@@ -19,19 +19,19 @@ RUN pip install poetry==1.6.1
 # Set work directory
 WORKDIR /app
 
-# Copy Poetry files
-COPY pyproject.toml poetry.lock ./
+# Copy Poetry files and README (needed for Poetry package installation)
+COPY pyproject.toml poetry.lock README.md ./
+
+# Copy application code (needed for Poetry package installation)
+COPY ./app ./app
 
 # Configure Poetry and install dependencies
 RUN poetry config virtualenvs.create false \
-    && poetry install --only=main --no-dev \
+    && poetry install --only=main \
     && rm -rf $POETRY_CACHE_DIR
 
 # Create non-root user
 RUN adduser --disabled-password --gecos '' --uid 1000 apiuser
-
-# Copy application code
-COPY ./app ./app
 
 # Change ownership of app directory
 RUN chown -R apiuser:apiuser /app
