@@ -1,7 +1,7 @@
 """Response models for the Diet Optimizer API."""
 
 from typing import List, Literal
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class OptimalFood(BaseModel):
@@ -14,13 +14,23 @@ class OptimalFood(BaseModel):
 
 
 class NutritionalSummary(BaseModel):
-    """Model for total nutritional content achieved."""
+    """Model for total nutritional content achieved.
+    
+    Units follow standard nutritional conventions:
+    - Macronutrients: grams (g)
+    - Vitamin A: micrograms RAE (mcg)
+    - Other nutrients: milligrams (mg)
+    """
     
     total_calories: float = Field(..., ge=0, description="Total calories achieved")
-    total_protein: float = Field(..., ge=0, description="Total protein achieved (grams)")
-    total_carbs: float = Field(..., ge=0, description="Total carbohydrates achieved (grams)")
-    total_fat: float = Field(..., ge=0, description="Total fat achieved (grams)")
-    total_vitamin_a: float = Field(..., ge=0, description="Total vitamin A achieved (mcg RAE)")
+    total_protein: float = Field(..., ge=0, description="Total protein achieved (g)")
+    total_carbs: float = Field(..., ge=0, description="Total carbohydrates achieved (g)")
+    total_fat: float = Field(..., ge=0, description="Total fat achieved (g)")
+    total_vitamin_a: float = Field(
+        ..., 
+        ge=0, 
+        description="Total vitamin A achieved (mcg RAE - Retinol Activity Equivalents)"
+    )
     total_vitamin_c: float = Field(..., ge=0, description="Total vitamin C achieved (mg)")
     total_calcium: float = Field(..., ge=0, description="Total calcium achieved (mg)")
     total_iron: float = Field(..., ge=0, description="Total iron achieved (mg)")

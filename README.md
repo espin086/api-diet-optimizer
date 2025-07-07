@@ -4,16 +4,28 @@ A FastAPI implementation that solves the classic **Diet Problem** from linear pr
 
 ## Problem Description
 
-The Diet Problem is a fundamental optimization challenge where the goal is to determine the minimum-cost combination of foods that satisfies specific nutritional constraints. This API optimizes four key macronutrients:
+The Diet Problem is a fundamental optimization challenge where the goal is to determine the minimum-cost combination of foods that satisfies specific nutritional constraints. This enhanced API optimizes **11 key nutrients**:
 
+### Macronutrients (measured in grams)
 - **Calories** - Total energy content
-- **Protein** - Essential for muscle building and repair
+- **Protein** - Essential for muscle building and repair  
 - **Carbohydrates** - Primary energy source
 - **Fat** - Essential fatty acids and energy storage
 
+### Vitamins & Minerals
+- **Vitamin A** - Eye health, immune function (measured in **mcg RAE**)
+- **Vitamin C** - Antioxidant, immune support (measured in **mg**)
+- **Calcium** - Bone health, muscle function (measured in **mg**)
+- **Iron** - Oxygen transport, energy metabolism (measured in **mg**)
+- **Potassium** - Heart health, muscle function (measured in **mg**)
+- **Sodium** - Fluid balance, nerve function (measured in **mg**)
+- **Cholesterol** - Cardiovascular health monitoring (measured in **mg**)
+
+> **Important Unit Note**: Most nutrients are measured in milligrams (mg), except for **Vitamin A** which uses micrograms RAE (mcg RAE - Retinol Activity Equivalents). This follows standard USDA nutritional labeling conventions.
+
 ## How It Works
 
-The API accepts a list of available foods with their nutritional profiles and cost information, along with the desired nutritional constraints (minimum and maximum values for each macronutrient). It then formulates and solves a linear programming optimization problem to find the lowest-cost food combination that meets all specified requirements.
+The API accepts a list of available foods with their comprehensive nutritional profiles and cost information, along with the desired nutritional constraints (minimum and maximum values for each nutrient). It then formulates and solves a linear programming optimization problem to find the lowest-cost food combination that meets all specified requirements.
 
 ### Mathematical Formulation
 
@@ -28,6 +40,13 @@ min_calories ≤ Σ(calories_per_100g[i] × quantity[i]) ≤ max_calories
 min_protein ≤ Σ(protein_per_100g[i] × quantity[i]) ≤ max_protein
 min_carbs ≤ Σ(carbs_per_100g[i] × quantity[i]) ≤ max_carbs
 min_fat ≤ Σ(fat_per_100g[i] × quantity[i]) ≤ max_fat
+min_vitamin_a ≤ Σ(vitamin_a_per_100g[i] × quantity[i]) ≤ max_vitamin_a
+min_vitamin_c ≤ Σ(vitamin_c_per_100g[i] × quantity[i]) ≤ max_vitamin_c
+min_calcium ≤ Σ(calcium_per_100g[i] × quantity[i]) ≤ max_calcium
+min_iron ≤ Σ(iron_per_100g[i] × quantity[i]) ≤ max_iron
+min_potassium ≤ Σ(potassium_per_100g[i] × quantity[i]) ≤ max_potassium
+min_sodium ≤ Σ(sodium_per_100g[i] × quantity[i]) ≤ max_sodium
+min_cholesterol ≤ Σ(cholesterol_per_100g[i] × quantity[i]) ≤ max_cholesterol
 quantity[i] ≥ 0 for all foods i
 ```
 
@@ -38,60 +57,105 @@ quantity[i] ≥ 0 for all foods i
 The API accepts JSON input with the following structure:
 
 #### Foods List
-Each food item must contain:
+Each food item must contain comprehensive nutritional data:
 ```json
 {
-  "name": "string",              // Name of the food item
-  "cost_per_100g": "number",     // Cost per 100 grams (in currency units)
-  "calories_per_100g": "number", // Calories per 100 grams
-  "carbs_per_100g": "number",    // Carbohydrates per 100 grams (in grams)
-  "protein_per_100g": "number",  // Protein per 100 grams (in grams)
-  "fat_per_100g": "number"       // Fat per 100 grams (in grams)
+  "name": "string",                    // Name of the food item
+  "cost_per_100g": "number",          // Cost per 100 grams (currency units)
+  "calories_per_100g": "number",      // Calories per 100 grams
+  "carbs_per_100g": "number",         // Carbohydrates per 100 grams (g)
+  "protein_per_100g": "number",       // Protein per 100 grams (g)
+  "fat_per_100g": "number",           // Fat per 100 grams (g)
+  "vitamin_a_per_100g": "number",     // Vitamin A per 100 grams (mcg RAE)
+  "vitamin_c_per_100g": "number",     // Vitamin C per 100 grams (mg)
+  "calcium_per_100g": "number",       // Calcium per 100 grams (mg)
+  "iron_per_100g": "number",          // Iron per 100 grams (mg)
+  "potassium_per_100g": "number",     // Potassium per 100 grams (mg)
+  "sodium_per_100g": "number",        // Sodium per 100 grams (mg)
+  "cholesterol_per_100g": "number"    // Cholesterol per 100 grams (mg)
 }
 ```
 
 #### Nutritional Constraints
-The API accepts upper and lower bounds for each macronutrient:
+The API accepts upper and lower bounds for each nutrient:
 ```json
 {
-  "min_calories": "number",      // Minimum daily calories required
-  "max_calories": "number",      // Maximum daily calories allowed
-  "min_protein": "number",       // Minimum daily protein required (grams)
-  "max_protein": "number",       // Maximum daily protein allowed (grams)
-  "min_carbs": "number",         // Minimum daily carbohydrates required (grams)
-  "max_carbs": "number",         // Maximum daily carbohydrates allowed (grams)
-  "min_fat": "number",           // Minimum daily fat required (grams)
-  "max_fat": "number"            // Maximum daily fat allowed (grams)
+  "min_calories": "number",           // Minimum daily calories
+  "max_calories": "number",           // Maximum daily calories
+  "min_protein": "number",            // Minimum daily protein (g)
+  "max_protein": "number",            // Maximum daily protein (g)
+  "min_carbs": "number",              // Minimum daily carbs (g)
+  "max_carbs": "number",              // Maximum daily carbs (g)
+  "min_fat": "number",                // Minimum daily fat (g)
+  "max_fat": "number",                // Maximum daily fat (g)
+  "min_vitamin_a": "number",          // Minimum daily vitamin A (mcg RAE)
+  "max_vitamin_a": "number",          // Maximum daily vitamin A (mcg RAE)
+  "min_vitamin_c": "number",          // Minimum daily vitamin C (mg)
+  "max_vitamin_c": "number",          // Maximum daily vitamin C (mg)
+  "min_calcium": "number",            // Minimum daily calcium (mg)
+  "max_calcium": "number",            // Maximum daily calcium (mg)
+  "min_iron": "number",               // Minimum daily iron (mg)
+  "max_iron": "number",               // Maximum daily iron (mg)
+  "min_potassium": "number",          // Minimum daily potassium (mg)
+  "max_potassium": "number",          // Maximum daily potassium (mg)
+  "min_sodium": "number",             // Minimum daily sodium (mg)
+  "max_sodium": "number",             // Maximum daily sodium (mg)
+  "min_cholesterol": "number",        // Minimum daily cholesterol (mg)
+  "max_cholesterol": "number"         // Maximum daily cholesterol (mg)
 }
 ```
+
+### Recommended Daily Values (RDA) Reference
+
+Use these values as guidance for setting realistic constraints:
+
+| Nutrient | Adult RDA/AI | Upper Limit | Units |
+|----------|--------------|-------------|-------|
+| Calories | 1800-2400 | 3000+ | kcal |
+| Protein | 46-56g | 200g+ | g |
+| Carbohydrates | 130g | 300g+ | g |
+| Fat | 20-35% of calories | 100g+ | g |
+| **Vitamin A** | **700-900** | **3000** | **mcg RAE** |
+| **Vitamin C** | **65-90** | **2000** | **mg** |
+| **Calcium** | **1000-1200** | **2500** | **mg** |
+| **Iron** | **8-18** | **45** | **mg** |
+| **Potassium** | **3500-4700** | **10000** | **mg** |
+| **Sodium** | **1500** | **2300** | **mg** |
+| **Cholesterol** | **0 (no requirement)** | **300** | **mg** |
 
 ### Complete Request Example
 ```json
 {
   "foods": [
     {
-      "name": "Chicken Breast",
-      "cost_per_100g": 2.50,
+      "name": "Chicken Breast (Skinless)",
+      "cost_per_100g": 3.20,
       "calories_per_100g": 165,
       "carbs_per_100g": 0,
       "protein_per_100g": 31,
-      "fat_per_100g": 3.6
+      "fat_per_100g": 3.6,
+      "vitamin_a_per_100g": 9,        // mcg RAE
+      "vitamin_c_per_100g": 0,        // mg
+      "calcium_per_100g": 15,         // mg
+      "iron_per_100g": 0.9,           // mg
+      "potassium_per_100g": 256,      // mg
+      "sodium_per_100g": 74,          // mg
+      "cholesterol_per_100g": 85      // mg
     },
     {
-      "name": "Brown Rice",
-      "cost_per_100g": 0.80,
-      "calories_per_100g": 112,
-      "carbs_per_100g": 23,
-      "protein_per_100g": 2.6,
-      "fat_per_100g": 0.9
-    },
-    {
-      "name": "Broccoli",
-      "cost_per_100g": 1.20,
-      "calories_per_100g": 34,
-      "carbs_per_100g": 7,
-      "protein_per_100g": 2.8,
-      "fat_per_100g": 0.4
+      "name": "Spinach",
+      "cost_per_100g": 2.40,
+      "calories_per_100g": 23,
+      "carbs_per_100g": 3.6,
+      "protein_per_100g": 2.9,
+      "fat_per_100g": 0.4,
+      "vitamin_a_per_100g": 469,      // mcg RAE - Very high!
+      "vitamin_c_per_100g": 28.1,     // mg
+      "calcium_per_100g": 99,         // mg
+      "iron_per_100g": 2.7,           // mg
+      "potassium_per_100g": 558,      // mg
+      "sodium_per_100g": 79,          // mg
+      "cholesterol_per_100g": 0       // mg
     }
   ],
   "constraints": {
@@ -102,19 +166,33 @@ The API accepts upper and lower bounds for each macronutrient:
     "min_carbs": 150,
     "max_carbs": 250,
     "min_fat": 50,
-    "max_fat": 80
+    "max_fat": 80,
+    "min_vitamin_a": 700,             // mcg RAE
+    "max_vitamin_a": 3000,            // mcg RAE
+    "min_vitamin_c": 75,              // mg
+    "max_vitamin_c": 2000,            // mg
+    "min_calcium": 1000,              // mg
+    "max_calcium": 2500,              // mg
+    "min_iron": 8,                    // mg
+    "max_iron": 45,                   // mg
+    "min_potassium": 3500,            // mg
+    "max_potassium": 10000,           // mg
+    "min_sodium": 1500,               // mg
+    "max_sodium": 2300,               // mg
+    "min_cholesterol": 0,             // mg
+    "max_cholesterol": 300            // mg
   }
 }
 ```
 
 ### Output Format
 
-The API returns the optimal solution containing:
+The API returns the optimal solution containing comprehensive nutritional analysis:
 ```json
 {
   "status": "string",                    // "optimal", "infeasible", or "unbounded"
   "total_cost": "number",                // Minimum total cost achieved
-  "optimal_quantities": [                // Quantities of each food (in 100g units)
+  "optimal_quantities": [                // Quantities of each food
     {
       "food_name": "string",
       "quantity_100g": "number",         // Amount in 100-gram units
@@ -124,18 +202,53 @@ The API returns the optimal solution containing:
   ],
   "nutritional_summary": {               // Total nutritional content achieved
     "total_calories": "number",
-    "total_protein": "number",
-    "total_carbs": "number",
-    "total_fat": "number"
+    "total_protein": "number",           // g
+    "total_carbs": "number",             // g
+    "total_fat": "number",               // g
+    "total_vitamin_a": "number",         // mcg RAE
+    "total_vitamin_c": "number",         // mg
+    "total_calcium": "number",           // mg
+    "total_iron": "number",              // mg
+    "total_potassium": "number",         // mg
+    "total_sodium": "number",            // mg
+    "total_cholesterol": "number"        // mg
   },
   "constraint_satisfaction": {           // Whether each constraint is met
     "calories_within_bounds": "boolean",
     "protein_within_bounds": "boolean",
     "carbs_within_bounds": "boolean",
-    "fat_within_bounds": "boolean"
+    "fat_within_bounds": "boolean",
+    "vitamin_a_within_bounds": "boolean",
+    "vitamin_c_within_bounds": "boolean",
+    "calcium_within_bounds": "boolean",
+    "iron_within_bounds": "boolean",
+    "potassium_within_bounds": "boolean",
+    "sodium_within_bounds": "boolean",
+    "cholesterol_within_bounds": "boolean"
   }
 }
 ```
+
+## Key Features
+
+### Comprehensive Nutritional Analysis
+- **11 Essential Nutrients**: Complete coverage of major vitamins, minerals, and macronutrients
+- **Standard Units**: Follows USDA and international nutritional labeling standards
+- **Constraint Validation**: Ensures all nutritional requirements are met within safe limits
+
+### Specialized Diet Profiles
+The API supports optimization for various dietary needs:
+- **Standard Adult Diet**: General healthy eating guidelines
+- **Pregnancy Nutrition**: Higher requirements for iron, calcium, and vitamins
+- **Heart-Healthy Diet**: Low sodium, low cholesterol, high potassium
+- **Athletic Performance**: High protein, balanced macronutrients
+- **Weight Management**: Calorie-controlled with nutrient density
+
+### Linear Programming Optimization
+- **Guaranteed Optimal Solution**: Mathematical proof of minimum cost
+- **Constraint Satisfaction**: All nutritional bounds are respected
+- **Scalable**: Handles large food databases efficiently
+- **Robust Error Handling**: Clear feedback for infeasible problems
 
 ## Technical Requirements
 
