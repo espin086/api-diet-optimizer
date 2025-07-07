@@ -5,21 +5,61 @@ from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 
 class Food(BaseModel):
-    """Model for a food item with nutritional information and cost."""
+    """Model for a food item with nutritional information and cost.
+    
+    All nutritional values are per 100g serving size.
+    Units follow standard nutritional labeling conventions:
+    - Macronutrients (protein, carbs, fat): grams (g)
+    - Vitamin A: micrograms RAE (mcg)
+    - Other vitamins and minerals: milligrams (mg)
+    """
     
     name: str = Field(..., description="Name of the food item")
     cost_per_100g: float = Field(..., gt=0, description="Cost per 100 grams (in currency units)")
     calories_per_100g: float = Field(..., ge=0, description="Calories per 100 grams")
-    carbs_per_100g: float = Field(..., ge=0, description="Carbohydrates per 100 grams (in grams)")
-    protein_per_100g: float = Field(..., ge=0, description="Protein per 100 grams (in grams)")
-    fat_per_100g: float = Field(..., ge=0, description="Fat per 100 grams (in grams)")
-    vitamin_a_per_100g: float = Field(..., ge=0, description="Vitamin A per 100 grams (in mcg RAE)")
-    vitamin_c_per_100g: float = Field(..., ge=0, description="Vitamin C per 100 grams (in mg)")
-    calcium_per_100g: float = Field(..., ge=0, description="Calcium per 100 grams (in mg)")
-    iron_per_100g: float = Field(..., ge=0, description="Iron per 100 grams (in mg)")
-    potassium_per_100g: float = Field(..., ge=0, description="Potassium per 100 grams (in mg)")
-    sodium_per_100g: float = Field(..., ge=0, description="Sodium per 100 grams (in mg)")
-    cholesterol_per_100g: float = Field(..., ge=0, description="Cholesterol per 100 grams (in mg)")
+    carbs_per_100g: float = Field(..., ge=0, description="Carbohydrates per 100 grams (g)")
+    protein_per_100g: float = Field(..., ge=0, description="Protein per 100 grams (g)")
+    fat_per_100g: float = Field(..., ge=0, description="Fat per 100 grams (g)")
+    
+    # Vitamins - Note different units
+    vitamin_a_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Vitamin A per 100 grams (mcg RAE - Retinol Activity Equivalents). "
+                   "Note: This is in MICROGRAMS, not milligrams."
+    )
+    vitamin_c_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Vitamin C per 100 grams (mg - milligrams)"
+    )
+    
+    # Minerals - All in milligrams
+    calcium_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Calcium per 100 grams (mg - milligrams)"
+    )
+    iron_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Iron per 100 grams (mg - milligrams)"
+    )
+    potassium_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Potassium per 100 grams (mg - milligrams)"
+    )
+    sodium_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Sodium per 100 grams (mg - milligrams)"
+    )
+    cholesterol_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Cholesterol per 100 grams (mg - milligrams)"
+    )
 
     @field_validator('name')
     @classmethod
@@ -29,32 +69,134 @@ class Food(BaseModel):
             raise ValueError('Food name cannot be empty')
         return v.strip()
 
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "name": "Chicken Breast (Skinless)",
+                "cost_per_100g": 3.20,
+                "calories_per_100g": 165,
+                "carbs_per_100g": 0,
+                "protein_per_100g": 31,
+                "fat_per_100g": 3.6,
+                "vitamin_a_per_100g": 9,      # mcg RAE
+                "vitamin_c_per_100g": 0,      # mg
+                "calcium_per_100g": 15,       # mg
+                "iron_per_100g": 0.9,         # mg
+                "potassium_per_100g": 256,    # mg
+                "sodium_per_100g": 74,        # mg
+                "cholesterol_per_100g": 85    # mg
+            }
+        }
+    )
+
 
 class NutritionalConstraints(BaseModel):
-    """Model for nutritional constraints (min/max bounds for each nutrient)."""
+    """Model for nutritional constraints (min/max bounds for each nutrient).
     
+    Daily recommended values and upper limits.
+    Units match the Food model:
+    - Macronutrients: grams (g)
+    - Vitamin A: micrograms RAE (mcg)
+    - Other nutrients: milligrams (mg)
+    """
+    
+    # Macronutrients
     min_calories: float = Field(..., ge=0, description="Minimum daily calories required")
     max_calories: float = Field(..., gt=0, description="Maximum daily calories allowed")
-    min_protein: float = Field(..., ge=0, description="Minimum daily protein required (grams)")
-    max_protein: float = Field(..., gt=0, description="Maximum daily protein allowed (grams)")
-    min_carbs: float = Field(..., ge=0, description="Minimum daily carbohydrates required (grams)")
-    max_carbs: float = Field(..., gt=0, description="Maximum daily carbohydrates allowed (grams)")
-    min_fat: float = Field(..., ge=0, description="Minimum daily fat required (grams)")
-    max_fat: float = Field(..., gt=0, description="Maximum daily fat allowed (grams)")
-    min_vitamin_a: float = Field(..., ge=0, description="Minimum daily vitamin A required (mcg RAE)")
-    max_vitamin_a: float = Field(..., gt=0, description="Maximum daily vitamin A allowed (mcg RAE)")
-    min_vitamin_c: float = Field(..., ge=0, description="Minimum daily vitamin C required (mg)")
-    max_vitamin_c: float = Field(..., gt=0, description="Maximum daily vitamin C allowed (mg)")
-    min_calcium: float = Field(..., ge=0, description="Minimum daily calcium required (mg)")
-    max_calcium: float = Field(..., gt=0, description="Maximum daily calcium allowed (mg)")
-    min_iron: float = Field(..., ge=0, description="Minimum daily iron required (mg)")
-    max_iron: float = Field(..., gt=0, description="Maximum daily iron allowed (mg)")
-    min_potassium: float = Field(..., ge=0, description="Minimum daily potassium required (mg)")
-    max_potassium: float = Field(..., gt=0, description="Maximum daily potassium allowed (mg)")
-    min_sodium: float = Field(..., ge=0, description="Minimum daily sodium required (mg)")
-    max_sodium: float = Field(..., gt=0, description="Maximum daily sodium allowed (mg)")
-    min_cholesterol: float = Field(..., ge=0, description="Minimum daily cholesterol required (mg)")
-    max_cholesterol: float = Field(..., gt=0, description="Maximum daily cholesterol allowed (mg)")
+    min_protein: float = Field(..., ge=0, description="Minimum daily protein required (g)")
+    max_protein: float = Field(..., gt=0, description="Maximum daily protein allowed (g)")
+    min_carbs: float = Field(..., ge=0, description="Minimum daily carbohydrates required (g)")
+    max_carbs: float = Field(..., gt=0, description="Maximum daily carbohydrates allowed (g)")
+    min_fat: float = Field(..., ge=0, description="Minimum daily fat required (g)")
+    max_fat: float = Field(..., gt=0, description="Maximum daily fat allowed (g)")
+    
+    # Vitamins
+    min_vitamin_a: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily vitamin A required (mcg RAE). "
+                   "RDA: 700-900 mcg for adults"
+    )
+    max_vitamin_a: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily vitamin A allowed (mcg RAE). "
+                   "Upper limit: 3000 mcg for adults"
+    )
+    min_vitamin_c: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily vitamin C required (mg). "
+                   "RDA: 65-90 mg for adults"
+    )
+    max_vitamin_c: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily vitamin C allowed (mg). "
+                   "Upper limit: 2000 mg for adults"
+    )
+    
+    # Minerals
+    min_calcium: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily calcium required (mg). "
+                   "RDA: 1000-1200 mg for adults"
+    )
+    max_calcium: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily calcium allowed (mg). "
+                   "Upper limit: 2500 mg for adults"
+    )
+    min_iron: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily iron required (mg). "
+                   "RDA: 8 mg (men), 18 mg (women) for adults"
+    )
+    max_iron: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily iron allowed (mg). "
+                   "Upper limit: 45 mg for adults"
+    )
+    min_potassium: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily potassium required (mg). "
+                   "Adequate Intake: 3500-4700 mg for adults"
+    )
+    max_potassium: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily potassium allowed (mg). "
+                   "Generally well-tolerated up to 10000 mg"
+    )
+    min_sodium: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily sodium required (mg). "
+                   "Adequate Intake: 1500 mg minimum needs"
+    )
+    max_sodium: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily sodium allowed (mg). "
+                   "Recommended limit: 2300 mg for adults"
+    )
+    min_cholesterol: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily cholesterol required (mg). "
+                   "No dietary requirement - can be 0"
+    )
+    max_cholesterol: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily cholesterol allowed (mg). "
+                   "Heart-healthy limit: <300 mg"
+    )
 
     @field_validator('max_calories')
     @classmethod
@@ -143,6 +285,35 @@ class NutritionalConstraints(BaseModel):
         if info.data.get('min_cholesterol') is not None and v <= info.data['min_cholesterol']:
             raise ValueError('max_cholesterol must be greater than min_cholesterol')
         return v
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "min_calories": 1800,
+                "max_calories": 2200,
+                "min_protein": 120,
+                "max_protein": 180,
+                "min_carbs": 150,
+                "max_carbs": 250,
+                "min_fat": 50,
+                "max_fat": 80,
+                "min_vitamin_a": 700,      # mcg RAE
+                "max_vitamin_a": 3000,     # mcg RAE
+                "min_vitamin_c": 75,       # mg
+                "max_vitamin_c": 2000,     # mg
+                "min_calcium": 1000,       # mg
+                "max_calcium": 2500,       # mg
+                "min_iron": 8,             # mg
+                "max_iron": 45,            # mg
+                "min_potassium": 3500,     # mg
+                "max_potassium": 10000,    # mg
+                "min_sodium": 1500,        # mg
+                "max_sodium": 2300,        # mg
+                "min_cholesterol": 0,      # mg
+                "max_cholesterol": 300     # mg
+            }
+        }
+    )
 
 
 class OptimizationRequest(BaseModel):
