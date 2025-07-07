@@ -33,7 +33,14 @@ class TestDietOptimizer:
                 calories_per_100g=100,
                 carbs_per_100g=0,
                 protein_per_100g=25,
-                fat_per_100g=2
+                fat_per_100g=5,  # Increased fat content
+                vitamin_a_per_100g=10,
+                vitamin_c_per_100g=0,
+                calcium_per_100g=20,
+                iron_per_100g=1.0,
+                potassium_per_100g=200,
+                sodium_per_100g=50,
+                cholesterol_per_100g=0
             ),
             Food(
                 name="Cheap Carbs",
@@ -41,7 +48,14 @@ class TestDietOptimizer:
                 calories_per_100g=150,
                 carbs_per_100g=35,
                 protein_per_100g=3,
-                fat_per_100g=1
+                fat_per_100g=3,  # Increased fat content
+                vitamin_a_per_100g=0,
+                vitamin_c_per_100g=0,
+                calcium_per_100g=5,
+                iron_per_100g=0.5,
+                potassium_per_100g=50,
+                sodium_per_100g=10,
+                cholesterol_per_100g=0
             ),
             Food(
                 name="Expensive Fat",
@@ -49,7 +63,14 @@ class TestDietOptimizer:
                 calories_per_100g=200,
                 carbs_per_100g=0,
                 protein_per_100g=0,
-                fat_per_100g=20
+                fat_per_100g=20,
+                vitamin_a_per_100g=5,
+                vitamin_c_per_100g=0,
+                calcium_per_100g=10,
+                iron_per_100g=0.2,
+                potassium_per_100g=30,
+                sodium_per_100g=20,
+                cholesterol_per_100g=50
             )
         ]
     
@@ -64,7 +85,21 @@ class TestDietOptimizer:
             min_carbs=30,
             max_carbs=40,
             min_fat=10,
-            max_fat=15
+            max_fat=15,
+            min_vitamin_a=10,
+            max_vitamin_a=100,
+            min_vitamin_c=0,
+            max_vitamin_c=50,
+            min_calcium=20,
+            max_calcium=100,
+            min_iron=1,
+            max_iron=10,
+            min_potassium=200,
+            max_potassium=1000,
+            min_sodium=50,
+            max_sodium=500,
+            min_cholesterol=0,
+            max_cholesterol=100
         )
     
     def test_optimization_basic_functionality(self, optimizer, simple_foods, simple_constraints):
@@ -130,7 +165,14 @@ class TestDietOptimizer:
                 calories_per_100g=100,
                 carbs_per_100g=20,
                 protein_per_100g=10,
-                fat_per_100g=5
+                fat_per_100g=5,
+                vitamin_a_per_100g=50,
+                vitamin_c_per_100g=10,
+                calcium_per_100g=50,
+                iron_per_100g=2,
+                potassium_per_100g=300,
+                sodium_per_100g=100,
+                cholesterol_per_100g=20
             ),
             Food(
                 name="Cheap Food",
@@ -138,7 +180,14 @@ class TestDietOptimizer:
                 calories_per_100g=100,
                 carbs_per_100g=20,
                 protein_per_100g=10,
-                fat_per_100g=5
+                fat_per_100g=5,
+                vitamin_a_per_100g=50,
+                vitamin_c_per_100g=10,
+                calcium_per_100g=50,
+                iron_per_100g=2,
+                potassium_per_100g=300,
+                sodium_per_100g=100,
+                cholesterol_per_100g=20
             )
         ]
         
@@ -150,7 +199,21 @@ class TestDietOptimizer:
             min_carbs=20,
             max_carbs=40,
             min_fat=5,
-            max_fat=10
+            max_fat=10,
+            min_vitamin_a=50,
+            max_vitamin_a=100,
+            min_vitamin_c=10,
+            max_vitamin_c=20,
+            min_calcium=50,
+            max_calcium=100,
+            min_iron=2,
+            max_iron=5,
+            min_potassium=300,
+            max_potassium=600,
+            min_sodium=100,
+            max_sodium=200,
+            min_cholesterol=0,
+            max_cholesterol=50
         )
         
         result = optimizer.optimize(foods, constraints)
@@ -178,7 +241,14 @@ class TestDietOptimizer:
                 calories_per_100g=10,
                 carbs_per_100g=1,
                 protein_per_100g=1,
-                fat_per_100g=0.1
+                fat_per_100g=0.1,
+                vitamin_a_per_100g=1,
+                vitamin_c_per_100g=0.1,
+                calcium_per_100g=1,
+                iron_per_100g=0.1,
+                potassium_per_100g=10,
+                sodium_per_100g=1,
+                cholesterol_per_100g=0
             )
         ]
         
@@ -190,7 +260,21 @@ class TestDietOptimizer:
             min_carbs=50,
             max_carbs=100,
             min_fat=20,
-            max_fat=30
+            max_fat=30,
+            min_vitamin_a=500,
+            max_vitamin_a=1000,
+            min_vitamin_c=50,
+            max_vitamin_c=100,
+            min_calcium=500,
+            max_calcium=1000,
+            min_iron=10,
+            max_iron=20,
+            min_potassium=2000,
+            max_potassium=4000,
+            min_sodium=500,
+            max_sodium=1000,
+            min_cholesterol=0,
+            max_cholesterol=100
         )
         
         with pytest.raises(InfeasibleProblemError):
@@ -205,7 +289,14 @@ class TestDietOptimizer:
                 calories_per_100g=100,
                 carbs_per_100g=20,
                 protein_per_100g=10,
-                fat_per_100g=5
+                fat_per_100g=5,
+                vitamin_a_per_100g=25,
+                vitamin_c_per_100g=5,
+                calcium_per_100g=30,
+                iron_per_100g=1.5,
+                potassium_per_100g=200,
+                sodium_per_100g=80,
+                cholesterol_per_100g=15
             )
         ]
         
@@ -217,7 +308,21 @@ class TestDietOptimizer:
             min_carbs=10,
             max_carbs=30,
             min_fat=2,
-            max_fat=8
+            max_fat=8,
+            min_vitamin_a=20,
+            max_vitamin_a=50,
+            min_vitamin_c=3,
+            max_vitamin_c=10,
+            min_calcium=25,
+            max_calcium=60,
+            min_iron=1,
+            max_iron=3,
+            min_potassium=150,
+            max_potassium=400,
+            min_sodium=50,
+            max_sodium=150,
+            min_cholesterol=0,
+            max_cholesterol=30
         )
         
         # Test with too many foods (mock the setting)
@@ -236,7 +341,14 @@ class TestDietOptimizer:
                 calories_per_100g=0,  # Zero calories
                 carbs_per_100g=0,
                 protein_per_100g=0,
-                fat_per_100g=0
+                fat_per_100g=0,
+                vitamin_a_per_100g=0,
+                vitamin_c_per_100g=0,
+                calcium_per_100g=0,
+                iron_per_100g=0,
+                potassium_per_100g=0,
+                sodium_per_100g=0,
+                cholesterol_per_100g=0
             )
         ]
         
@@ -248,7 +360,21 @@ class TestDietOptimizer:
             min_carbs=0,
             max_carbs=20,
             min_fat=0,
-            max_fat=5
+            max_fat=5,
+            min_vitamin_a=0,
+            max_vitamin_a=50,
+            min_vitamin_c=0,
+            max_vitamin_c=25,
+            min_calcium=0,
+            max_calcium=100,
+            min_iron=0,
+            max_iron=5,
+            min_potassium=0,
+            max_potassium=1000,
+            min_sodium=0,
+            max_sodium=500,
+            min_cholesterol=0,
+            max_cholesterol=50
         )
         
         with pytest.raises(InfeasibleProblemError):
@@ -297,9 +423,9 @@ class TestDietOptimizer:
         assert all(bound[1] is None for bound in bounds)
         
         # Check constraint matrix structure
-        # Should have 8 constraints (4 nutrients × 2 bounds each)
-        assert A_ub.shape[0] == 8
-        assert len(b_ub) == 8
+        # Should have 22 constraints (11 nutrients × 2 bounds each)
+        assert A_ub.shape[0] == 22
+        assert len(b_ub) == 22
     
     def test_result_processing_accuracy(self, optimizer, simple_foods, simple_constraints):
         """Test that result processing maintains numerical accuracy."""
@@ -332,7 +458,14 @@ class TestDietOptimizer:
                 calories_per_100g=200,
                 carbs_per_100g=25,
                 protein_per_100g=25,
-                fat_per_100g=10
+                fat_per_100g=10,
+                vitamin_a_per_100g=100,
+                vitamin_c_per_100g=20,
+                calcium_per_100g=50,
+                iron_per_100g=5,
+                potassium_per_100g=500,
+                sodium_per_100g=100,
+                cholesterol_per_100g=25
             )
         ]
         
@@ -345,7 +478,21 @@ class TestDietOptimizer:
             min_carbs=25,
             max_carbs=25.1,      # Very close to boundary
             min_fat=10,
-            max_fat=10.1         # Very close to boundary
+            max_fat=10.1,        # Very close to boundary
+            min_vitamin_a=100,
+            max_vitamin_a=100.1,
+            min_vitamin_c=20,
+            max_vitamin_c=20.1,
+            min_calcium=50,
+            max_calcium=50.1,
+            min_iron=5,
+            max_iron=5.1,
+            min_potassium=500,
+            max_potassium=500.1,
+            min_sodium=100,
+            max_sodium=100.1,
+            min_cholesterol=25,
+            max_cholesterol=25.1
         )
         
         result = optimizer.optimize(foods, constraints)

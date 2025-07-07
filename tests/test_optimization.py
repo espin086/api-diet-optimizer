@@ -15,7 +15,7 @@ client = TestClient(app)
 
 @pytest.fixture
 def sample_foods():
-    """Sample foods for testing."""
+    """Sample foods for testing with complete nutritional data."""
     return [
         {
             "name": "Chicken Breast",
@@ -23,7 +23,14 @@ def sample_foods():
             "calories_per_100g": 165,
             "carbs_per_100g": 0,
             "protein_per_100g": 31,
-            "fat_per_100g": 3.6
+            "fat_per_100g": 3.6,
+            "vitamin_a_per_100g": 9,
+            "vitamin_c_per_100g": 0,
+            "calcium_per_100g": 15,
+            "iron_per_100g": 0.9,
+            "potassium_per_100g": 256,
+            "sodium_per_100g": 74,
+            "cholesterol_per_100g": 85
         },
         {
             "name": "Brown Rice",
@@ -31,7 +38,14 @@ def sample_foods():
             "calories_per_100g": 112,
             "carbs_per_100g": 23,
             "protein_per_100g": 2.6,
-            "fat_per_100g": 0.9
+            "fat_per_100g": 0.9,
+            "vitamin_a_per_100g": 0,
+            "vitamin_c_per_100g": 0,
+            "calcium_per_100g": 10,
+            "iron_per_100g": 0.4,
+            "potassium_per_100g": 43,
+            "sodium_per_100g": 5,
+            "cholesterol_per_100g": 0
         },
         {
             "name": "Broccoli",
@@ -39,7 +53,29 @@ def sample_foods():
             "calories_per_100g": 34,
             "carbs_per_100g": 7,
             "protein_per_100g": 2.8,
-            "fat_per_100g": 0.4
+            "fat_per_100g": 0.4,
+            "vitamin_a_per_100g": 623,
+            "vitamin_c_per_100g": 89.2,
+            "calcium_per_100g": 47,
+            "iron_per_100g": 0.7,
+            "potassium_per_100g": 316,
+            "sodium_per_100g": 33,
+            "cholesterol_per_100g": 0
+        },
+        {
+            "name": "Sweet Potato",
+            "cost_per_100g": 0.60,
+            "calories_per_100g": 86,
+            "carbs_per_100g": 20,
+            "protein_per_100g": 1.6,
+            "fat_per_100g": 0.1,
+            "vitamin_a_per_100g": 961,
+            "vitamin_c_per_100g": 2.4,
+            "calcium_per_100g": 30,
+            "iron_per_100g": 0.6,
+            "potassium_per_100g": 337,
+            "sodium_per_100g": 54,
+            "cholesterol_per_100g": 0
         }
     ]
 
@@ -55,7 +91,21 @@ def sample_constraints():
         "min_carbs": 150,
         "max_carbs": 250,
         "min_fat": 50,
-        "max_fat": 80
+        "max_fat": 80,
+        "min_vitamin_a": 700,
+        "max_vitamin_a": 3000,
+        "min_vitamin_c": 75,
+        "max_vitamin_c": 2000,
+        "min_calcium": 1000,
+        "max_calcium": 2500,
+        "min_iron": 8,
+        "max_iron": 45,
+        "min_potassium": 3500,
+        "max_potassium": 10000,
+        "min_sodium": 1500,
+        "max_sodium": 2300,
+        "min_cholesterol": 0,
+        "max_cholesterol": 300
     }
 
 
@@ -94,17 +144,27 @@ class TestOptimizationEndpoint:
             
             # Check nutritional summary structure
             summary = result["nutritional_summary"]
-            assert "total_calories" in summary
-            assert "total_protein" in summary
-            assert "total_carbs" in summary
-            assert "total_fat" in summary
+            expected_nutrients = [
+                "total_calories", "total_protein", "total_carbs", "total_fat",
+                "total_vitamin_a", "total_vitamin_c", "total_calcium", "total_iron",
+                "total_potassium", "total_sodium", "total_cholesterol"
+            ]
+            for nutrient in expected_nutrients:
+                assert nutrient in summary
+                assert isinstance(summary[nutrient], (int, float))
+                assert summary[nutrient] >= 0
             
             # Check constraint satisfaction structure
             satisfaction = result["constraint_satisfaction"]
-            assert "calories_within_bounds" in satisfaction
-            assert "protein_within_bounds" in satisfaction
-            assert "carbs_within_bounds" in satisfaction
-            assert "fat_within_bounds" in satisfaction
+            expected_constraints = [
+                "calories_within_bounds", "protein_within_bounds", "carbs_within_bounds", 
+                "fat_within_bounds", "vitamin_a_within_bounds", "vitamin_c_within_bounds",
+                "calcium_within_bounds", "iron_within_bounds", "potassium_within_bounds",
+                "sodium_within_bounds", "cholesterol_within_bounds"
+            ]
+            for constraint in expected_constraints:
+                assert constraint in satisfaction
+                assert isinstance(satisfaction[constraint], bool)
     
     def test_empty_foods_list(self, sample_constraints):
         """Test with empty foods list."""
@@ -126,7 +186,14 @@ class TestOptimizationEndpoint:
                     "calories_per_100g": 165,
                     "carbs_per_100g": 0,
                     "protein_per_100g": 31,
-                    "fat_per_100g": 3.6
+                    "fat_per_100g": 3.6,
+                    "vitamin_a_per_100g": 9,
+                    "vitamin_c_per_100g": 0,
+                    "calcium_per_100g": 15,
+                    "iron_per_100g": 0.9,
+                    "potassium_per_100g": 256,
+                    "sodium_per_100g": 74,
+                    "cholesterol_per_100g": 85
                 }
             ],
             "constraints": sample_constraints
@@ -147,8 +214,42 @@ class TestOptimizationEndpoint:
                 "min_carbs": 150,
                 "max_carbs": 250,
                 "min_fat": 50,
-                "max_fat": 80
+                "max_fat": 80,
+                "min_vitamin_a": 700,
+                "max_vitamin_a": 3000,
+                "min_vitamin_c": 75,
+                "max_vitamin_c": 2000,
+                "min_calcium": 1000,
+                "max_calcium": 2500,
+                "min_iron": 8,
+                "max_iron": 45,
+                "min_potassium": 3500,
+                "max_potassium": 10000,
+                "min_sodium": 1500,
+                "max_sodium": 2300,
+                "min_cholesterol": 0,
+                "max_cholesterol": 300
             }
+        }
+        
+        response = client.post("/optimize", json=request)
+        assert response.status_code == 422
+    
+    def test_missing_nutritional_fields(self, sample_constraints):
+        """Test with missing required nutritional fields."""
+        request = {
+            "foods": [
+                {
+                    "name": "Incomplete Food",
+                    "cost_per_100g": 2.50,
+                    "calories_per_100g": 165,
+                    "carbs_per_100g": 0,
+                    "protein_per_100g": 31,
+                    "fat_per_100g": 3.6
+                    # Missing vitamin and mineral fields
+                }
+            ],
+            "constraints": sample_constraints
         }
         
         response = client.post("/optimize", json=request)
@@ -164,7 +265,14 @@ class TestOptimizationEndpoint:
                     "calories_per_100g": 165,
                     "carbs_per_100g": 0,
                     "protein_per_100g": 31,
-                    "fat_per_100g": 3.6
+                    "fat_per_100g": 3.6,
+                    "vitamin_a_per_100g": 9,
+                    "vitamin_c_per_100g": 0,
+                    "calcium_per_100g": 15,
+                    "iron_per_100g": 0.9,
+                    "potassium_per_100g": 256,
+                    "sodium_per_100g": 74,
+                    "cholesterol_per_100g": 85
                 },
                 {
                     "name": "Chicken Breast",  # Duplicate name
@@ -172,7 +280,14 @@ class TestOptimizationEndpoint:
                     "calories_per_100g": 160,
                     "carbs_per_100g": 0,
                     "protein_per_100g": 30,
-                    "fat_per_100g": 4.0
+                    "fat_per_100g": 4.0,
+                    "vitamin_a_per_100g": 10,
+                    "vitamin_c_per_100g": 0,
+                    "calcium_per_100g": 20,
+                    "iron_per_100g": 1.0,
+                    "potassium_per_100g": 300,
+                    "sodium_per_100g": 80,
+                    "cholesterol_per_100g": 90
                 }
             ],
             "constraints": sample_constraints
@@ -187,23 +302,44 @@ class TestOptimizationEndpoint:
         request = {
             "foods": [
                 {
-                    "name": "Low Calorie Food",
+                    "name": "Low Nutrient Food",
                     "cost_per_100g": 1.0,
-                    "calories_per_100g": 10,  # Very low calories
+                    "calories_per_100g": 10,  # Very low nutrients
                     "carbs_per_100g": 1,
                     "protein_per_100g": 1,
-                    "fat_per_100g": 0.1
+                    "fat_per_100g": 0.1,
+                    "vitamin_a_per_100g": 1,
+                    "vitamin_c_per_100g": 0.1,
+                    "calcium_per_100g": 1,
+                    "iron_per_100g": 0.1,
+                    "potassium_per_100g": 10,
+                    "sodium_per_100g": 1,
+                    "cholesterol_per_100g": 0
                 }
             ],
             "constraints": {
-                "min_calories": 5000,  # Impossible to reach with given food
+                "min_calories": 5000,  # Impossible to reach
                 "max_calories": 6000,
                 "min_protein": 200,
                 "max_protein": 300,
                 "min_carbs": 100,
                 "max_carbs": 200,
                 "min_fat": 50,
-                "max_fat": 100
+                "max_fat": 100,
+                "min_vitamin_a": 700,
+                "max_vitamin_a": 3000,
+                "min_vitamin_c": 75,
+                "max_vitamin_c": 2000,
+                "min_calcium": 1000,
+                "max_calcium": 2500,
+                "min_iron": 8,
+                "max_iron": 45,
+                "min_potassium": 3500,
+                "max_potassium": 10000,
+                "min_sodium": 1500,
+                "max_sodium": 2300,
+                "min_cholesterol": 0,
+                "max_cholesterol": 300
             }
         }
         
@@ -233,7 +369,14 @@ class TestOptimizationEndpoint:
                     "calories_per_100g": 100,
                     "carbs_per_100g": 10,
                     "protein_per_100g": 5,
-                    "fat_per_100g": 2
+                    "fat_per_100g": 2,
+                    "vitamin_a_per_100g": 50,
+                    "vitamin_c_per_100g": 5,
+                    "calcium_per_100g": 20,
+                    "iron_per_100g": 1,
+                    "potassium_per_100g": 100,
+                    "sodium_per_100g": 10,
+                    "cholesterol_per_100g": 0
                 }
             ]
             # Missing constraints field

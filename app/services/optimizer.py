@@ -84,11 +84,25 @@ class DietOptimizer:
         max_protein = max(food.protein_per_100g for food in foods)
         max_carbs = max(food.carbs_per_100g for food in foods)
         max_fat = max(food.fat_per_100g for food in foods)
+        max_vitamin_a = max(food.vitamin_a_per_100g for food in foods)
+        max_vitamin_c = max(food.vitamin_c_per_100g for food in foods)
+        max_calcium = max(food.calcium_per_100g for food in foods)
+        max_iron = max(food.iron_per_100g for food in foods)
+        max_potassium = max(food.potassium_per_100g for food in foods)
+        max_sodium = max(food.sodium_per_100g for food in foods)
+        max_cholesterol = max(food.cholesterol_per_100g for food in foods)
         
         if (max_calories == 0 and constraints.min_calories > 0) or \
            (max_protein == 0 and constraints.min_protein > 0) or \
            (max_carbs == 0 and constraints.min_carbs > 0) or \
-           (max_fat == 0 and constraints.min_fat > 0):
+           (max_fat == 0 and constraints.min_fat > 0) or \
+           (max_vitamin_a == 0 and constraints.min_vitamin_a > 0) or \
+           (max_vitamin_c == 0 and constraints.min_vitamin_c > 0) or \
+           (max_calcium == 0 and constraints.min_calcium > 0) or \
+           (max_iron == 0 and constraints.min_iron > 0) or \
+           (max_potassium == 0 and constraints.min_potassium > 0) or \
+           (max_sodium == 0 and constraints.min_sodium > 0) or \
+           (max_cholesterol == 0 and constraints.min_cholesterol > 0):
             raise InfeasibleProblemError(
                 "No food provides the required nutrients to meet minimum constraints"
             )
@@ -109,6 +123,13 @@ class DietOptimizer:
         - min_protein <= sum(protein_per_100g[i] * x[i]) <= max_protein
         - min_carbs <= sum(carbs_per_100g[i] * x[i]) <= max_carbs
         - min_fat <= sum(fat_per_100g[i] * x[i]) <= max_fat
+        - min_vitamin_a <= sum(vitamin_a_per_100g[i] * x[i]) <= max_vitamin_a
+        - min_vitamin_c <= sum(vitamin_c_per_100g[i] * x[i]) <= max_vitamin_c
+        - min_calcium <= sum(calcium_per_100g[i] * x[i]) <= max_calcium
+        - min_iron <= sum(iron_per_100g[i] * x[i]) <= max_iron
+        - min_potassium <= sum(potassium_per_100g[i] * x[i]) <= max_potassium
+        - min_sodium <= sum(sodium_per_100g[i] * x[i]) <= max_sodium
+        - min_cholesterol <= sum(cholesterol_per_100g[i] * x[i]) <= max_cholesterol
         - x[i] >= 0 for all i
         """
         n_foods = len(foods)
@@ -116,12 +137,19 @@ class DietOptimizer:
         # Objective function coefficients (minimize cost)
         c = np.array([food.cost_per_100g for food in foods])
         
-        # Nutritional content matrix
+        # Nutritional content matrix (11 nutrients)
         nutrition_matrix = np.array([
             [food.calories_per_100g for food in foods],
             [food.protein_per_100g for food in foods],
             [food.carbs_per_100g for food in foods],
-            [food.fat_per_100g for food in foods]
+            [food.fat_per_100g for food in foods],
+            [food.vitamin_a_per_100g for food in foods],
+            [food.vitamin_c_per_100g for food in foods],
+            [food.calcium_per_100g for food in foods],
+            [food.iron_per_100g for food in foods],
+            [food.potassium_per_100g for food in foods],
+            [food.sodium_per_100g for food in foods],
+            [food.cholesterol_per_100g for food in foods]
         ])
         
         # Inequality constraints (A_ub * x <= b_ub)
@@ -138,10 +166,24 @@ class DietOptimizer:
             -constraints.min_protein, 
             -constraints.min_carbs,
             -constraints.min_fat,
+            -constraints.min_vitamin_a,
+            -constraints.min_vitamin_c,
+            -constraints.min_calcium,
+            -constraints.min_iron,
+            -constraints.min_potassium,
+            -constraints.min_sodium,
+            -constraints.min_cholesterol,
             constraints.max_calories,
             constraints.max_protein,
             constraints.max_carbs,
-            constraints.max_fat
+            constraints.max_fat,
+            constraints.max_vitamin_a,
+            constraints.max_vitamin_c,
+            constraints.max_calcium,
+            constraints.max_iron,
+            constraints.max_potassium,
+            constraints.max_sodium,
+            constraints.max_cholesterol
         ])
         
         # No equality constraints for this problem
@@ -182,6 +224,13 @@ class DietOptimizer:
         total_protein = sum(q * food.protein_per_100g for q, food in zip(quantities, foods))
         total_carbs = sum(q * food.carbs_per_100g for q, food in zip(quantities, foods))
         total_fat = sum(q * food.fat_per_100g for q, food in zip(quantities, foods))
+        total_vitamin_a = sum(q * food.vitamin_a_per_100g for q, food in zip(quantities, foods))
+        total_vitamin_c = sum(q * food.vitamin_c_per_100g for q, food in zip(quantities, foods))
+        total_calcium = sum(q * food.calcium_per_100g for q, food in zip(quantities, foods))
+        total_iron = sum(q * food.iron_per_100g for q, food in zip(quantities, foods))
+        total_potassium = sum(q * food.potassium_per_100g for q, food in zip(quantities, foods))
+        total_sodium = sum(q * food.sodium_per_100g for q, food in zip(quantities, foods))
+        total_cholesterol = sum(q * food.cholesterol_per_100g for q, food in zip(quantities, foods))
         
         # Create optimal food list (only include foods with non-zero quantities)
         optimal_foods = []
@@ -199,7 +248,14 @@ class DietOptimizer:
             total_calories=round(total_calories, 2),
             total_protein=round(total_protein, 2),
             total_carbs=round(total_carbs, 2),
-            total_fat=round(total_fat, 2)
+            total_fat=round(total_fat, 2),
+            total_vitamin_a=round(total_vitamin_a, 2),
+            total_vitamin_c=round(total_vitamin_c, 2),
+            total_calcium=round(total_calcium, 2),
+            total_iron=round(total_iron, 2),
+            total_potassium=round(total_potassium, 2),
+            total_sodium=round(total_sodium, 2),
+            total_cholesterol=round(total_cholesterol, 2)
         )
         
         # Check constraint satisfaction
@@ -207,7 +263,14 @@ class DietOptimizer:
             calories_within_bounds=constraints.min_calories <= total_calories <= constraints.max_calories,
             protein_within_bounds=constraints.min_protein <= total_protein <= constraints.max_protein,
             carbs_within_bounds=constraints.min_carbs <= total_carbs <= constraints.max_carbs,
-            fat_within_bounds=constraints.min_fat <= total_fat <= constraints.max_fat
+            fat_within_bounds=constraints.min_fat <= total_fat <= constraints.max_fat,
+            vitamin_a_within_bounds=constraints.min_vitamin_a <= total_vitamin_a <= constraints.max_vitamin_a,
+            vitamin_c_within_bounds=constraints.min_vitamin_c <= total_vitamin_c <= constraints.max_vitamin_c,
+            calcium_within_bounds=constraints.min_calcium <= total_calcium <= constraints.max_calcium,
+            iron_within_bounds=constraints.min_iron <= total_iron <= constraints.max_iron,
+            potassium_within_bounds=constraints.min_potassium <= total_potassium <= constraints.max_potassium,
+            sodium_within_bounds=constraints.min_sodium <= total_sodium <= constraints.max_sodium,
+            cholesterol_within_bounds=constraints.min_cholesterol <= total_cholesterol <= constraints.max_cholesterol
         )
         
         return OptimizationResult(
