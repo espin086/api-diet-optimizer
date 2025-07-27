@@ -38,6 +38,7 @@ class TestDietOptimizer:
                 vitamin_c_per_100g=0,
                 calcium_per_100g=20,
                 iron_per_100g=1.0,
+                magnesium_per_100g=20,
                 potassium_per_100g=200,
                 sodium_per_100g=50,
                 cholesterol_per_100g=0
@@ -53,6 +54,7 @@ class TestDietOptimizer:
                 vitamin_c_per_100g=0,
                 calcium_per_100g=5,
                 iron_per_100g=0.5,
+                magnesium_per_100g=44,
                 potassium_per_100g=50,
                 sodium_per_100g=10,
                 cholesterol_per_100g=0
@@ -68,6 +70,7 @@ class TestDietOptimizer:
                 vitamin_c_per_100g=0,
                 calcium_per_100g=10,
                 iron_per_100g=0.2,
+                magnesium_per_100g=5,
                 potassium_per_100g=30,
                 sodium_per_100g=20,
                 cholesterol_per_100g=50
@@ -94,6 +97,8 @@ class TestDietOptimizer:
             max_calcium=100,
             min_iron=1,
             max_iron=10,
+            min_magnesium=50,
+            max_magnesium=200,
             min_potassium=200,
             max_potassium=1000,
             min_sodium=50,
@@ -170,6 +175,7 @@ class TestDietOptimizer:
                 vitamin_c_per_100g=10,
                 calcium_per_100g=50,
                 iron_per_100g=2,
+                magnesium_per_100g=20,
                 potassium_per_100g=300,
                 sodium_per_100g=100,
                 cholesterol_per_100g=20
@@ -185,6 +191,7 @@ class TestDietOptimizer:
                 vitamin_c_per_100g=10,
                 calcium_per_100g=50,
                 iron_per_100g=2,
+                magnesium_per_100g=20,
                 potassium_per_100g=300,
                 sodium_per_100g=100,
                 cholesterol_per_100g=20
@@ -208,6 +215,8 @@ class TestDietOptimizer:
             max_calcium=100,
             min_iron=2,
             max_iron=5,
+            min_magnesium=30,
+            max_magnesium=60,
             min_potassium=300,
             max_potassium=600,
             min_sodium=100,
@@ -246,6 +255,7 @@ class TestDietOptimizer:
                 vitamin_c_per_100g=0.1,
                 calcium_per_100g=1,
                 iron_per_100g=0.1,
+                magnesium_per_100g=2,
                 potassium_per_100g=10,
                 sodium_per_100g=1,
                 cholesterol_per_100g=0
@@ -269,6 +279,8 @@ class TestDietOptimizer:
             max_calcium=1000,
             min_iron=10,
             max_iron=20,
+            min_magnesium=100,
+            max_magnesium=200,
             min_potassium=2000,
             max_potassium=4000,
             min_sodium=500,
@@ -294,6 +306,7 @@ class TestDietOptimizer:
                 vitamin_c_per_100g=5,
                 calcium_per_100g=30,
                 iron_per_100g=1.5,
+                magnesium_per_100g=25,
                 potassium_per_100g=200,
                 sodium_per_100g=80,
                 cholesterol_per_100g=15
@@ -317,6 +330,8 @@ class TestDietOptimizer:
             max_calcium=60,
             min_iron=1,
             max_iron=3,
+            min_magnesium=20,
+            max_magnesium=40,
             min_potassium=150,
             max_potassium=400,
             min_sodium=50,
@@ -346,6 +361,7 @@ class TestDietOptimizer:
                 vitamin_c_per_100g=0,
                 calcium_per_100g=0,
                 iron_per_100g=0,
+                magnesium_per_100g=0,
                 potassium_per_100g=0,
                 sodium_per_100g=0,
                 cholesterol_per_100g=0
@@ -369,6 +385,8 @@ class TestDietOptimizer:
             max_calcium=100,
             min_iron=0,
             max_iron=5,
+            min_magnesium=0,
+            max_magnesium=10,
             min_potassium=0,
             max_potassium=1000,
             min_sodium=0,
@@ -423,9 +441,9 @@ class TestDietOptimizer:
         assert all(bound[1] is None for bound in bounds)
         
         # Check constraint matrix structure
-        # Should have 22 constraints (11 nutrients × 2 bounds each)
-        assert A_ub.shape[0] == 22
-        assert len(b_ub) == 22
+        # Should have 24 constraints (12 nutrients × 2 bounds each)
+        assert A_ub.shape[0] == 24
+        assert len(b_ub) == 24
     
     def test_result_processing_accuracy(self, optimizer, simple_foods, simple_constraints):
         """Test that result processing maintains numerical accuracy."""
@@ -463,6 +481,7 @@ class TestDietOptimizer:
                 vitamin_c_per_100g=20,
                 calcium_per_100g=50,
                 iron_per_100g=5,
+                magnesium_per_100g=50,
                 potassium_per_100g=500,
                 sodium_per_100g=100,
                 cholesterol_per_100g=25
@@ -487,6 +506,8 @@ class TestDietOptimizer:
             max_calcium=50.1,
             min_iron=5,
             max_iron=5.1,
+            min_magnesium=50,
+            max_magnesium=50.1,
             min_potassium=500,
             max_potassium=500.1,
             min_sodium=100,

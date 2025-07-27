@@ -28,6 +28,7 @@ def sample_foods():
             "vitamin_c_per_100g": 0,
             "calcium_per_100g": 15,
             "iron_per_100g": 0.9,
+            "magnesium_per_100g": 20,
             "potassium_per_100g": 256,
             "sodium_per_100g": 74,
             "cholesterol_per_100g": 85
@@ -43,6 +44,7 @@ def sample_foods():
             "vitamin_c_per_100g": 0,
             "calcium_per_100g": 10,
             "iron_per_100g": 0.4,
+            "magnesium_per_100g": 20,
             "potassium_per_100g": 43,
             "sodium_per_100g": 5,
             "cholesterol_per_100g": 0
@@ -58,6 +60,7 @@ def sample_foods():
             "vitamin_c_per_100g": 89.2,
             "calcium_per_100g": 47,
             "iron_per_100g": 0.7,
+            "magnesium_per_100g": 20,
             "potassium_per_100g": 316,
             "sodium_per_100g": 33,
             "cholesterol_per_100g": 0
@@ -73,6 +76,7 @@ def sample_foods():
             "vitamin_c_per_100g": 2.4,
             "calcium_per_100g": 30,
             "iron_per_100g": 0.6,
+            "magnesium_per_100g": 20,
             "potassium_per_100g": 337,
             "sodium_per_100g": 54,
             "cholesterol_per_100g": 0
@@ -100,6 +104,8 @@ def sample_constraints():
         "max_calcium": 2500,
         "min_iron": 8,
         "max_iron": 45,
+        "min_magnesium": 310,
+        "max_magnesium": 800,
         "min_potassium": 3500,
         "max_potassium": 10000,
         "min_sodium": 1500,
@@ -191,6 +197,7 @@ class TestOptimizationEndpoint:
                     "vitamin_c_per_100g": 0,
                     "calcium_per_100g": 15,
                     "iron_per_100g": 0.9,
+            "magnesium_per_100g": 20,
                     "potassium_per_100g": 256,
                     "sodium_per_100g": 74,
                     "cholesterol_per_100g": 85
@@ -223,6 +230,8 @@ class TestOptimizationEndpoint:
                 "max_calcium": 2500,
                 "min_iron": 8,
                 "max_iron": 45,
+        "min_magnesium": 310,
+        "max_magnesium": 800,
                 "min_potassium": 3500,
                 "max_potassium": 10000,
                 "min_sodium": 1500,
@@ -270,6 +279,7 @@ class TestOptimizationEndpoint:
                     "vitamin_c_per_100g": 0,
                     "calcium_per_100g": 15,
                     "iron_per_100g": 0.9,
+            "magnesium_per_100g": 20,
                     "potassium_per_100g": 256,
                     "sodium_per_100g": 74,
                     "cholesterol_per_100g": 85
@@ -285,6 +295,7 @@ class TestOptimizationEndpoint:
                     "vitamin_c_per_100g": 0,
                     "calcium_per_100g": 20,
                     "iron_per_100g": 1.0,
+            "magnesium_per_100g": 20,
                     "potassium_per_100g": 300,
                     "sodium_per_100g": 80,
                     "cholesterol_per_100g": 90
@@ -312,6 +323,7 @@ class TestOptimizationEndpoint:
                     "vitamin_c_per_100g": 0.1,
                     "calcium_per_100g": 1,
                     "iron_per_100g": 0.1,
+            "magnesium_per_100g": 20,
                     "potassium_per_100g": 10,
                     "sodium_per_100g": 1,
                     "cholesterol_per_100g": 0
@@ -334,6 +346,8 @@ class TestOptimizationEndpoint:
                 "max_calcium": 2500,
                 "min_iron": 8,
                 "max_iron": 45,
+        "min_magnesium": 310,
+        "max_magnesium": 800,
                 "min_potassium": 3500,
                 "max_potassium": 10000,
                 "min_sodium": 1500,
@@ -374,6 +388,7 @@ class TestOptimizationEndpoint:
                     "vitamin_c_per_100g": 5,
                     "calcium_per_100g": 20,
                     "iron_per_100g": 1,
+            "magnesium_per_100g": 20,
                     "potassium_per_100g": 100,
                     "sodium_per_100g": 10,
                     "cholesterol_per_100g": 0

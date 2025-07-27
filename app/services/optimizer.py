@@ -134,10 +134,10 @@ class DietOptimizer:
         """
         n_foods = len(foods)
         
-        # Objective function coefficients (minimize cost)
+        # Objective function: minimize cost
         c = np.array([food.cost_per_100g for food in foods])
         
-        # Nutritional content matrix (11 nutrients)
+        # Nutritional content matrix (12 nutrients)
         nutrition_matrix = np.array([
             [food.calories_per_100g for food in foods],
             [food.protein_per_100g for food in foods],
@@ -147,6 +147,7 @@ class DietOptimizer:
             [food.vitamin_c_per_100g for food in foods],
             [food.calcium_per_100g for food in foods],
             [food.iron_per_100g for food in foods],
+            [food.magnesium_per_100g for food in foods],
             [food.potassium_per_100g for food in foods],
             [food.sodium_per_100g for food in foods],
             [food.cholesterol_per_100g for food in foods]
@@ -170,6 +171,7 @@ class DietOptimizer:
             -constraints.min_vitamin_c,
             -constraints.min_calcium,
             -constraints.min_iron,
+            -constraints.min_magnesium,
             -constraints.min_potassium,
             -constraints.min_sodium,
             -constraints.min_cholesterol,
@@ -181,6 +183,7 @@ class DietOptimizer:
             constraints.max_vitamin_c,
             constraints.max_calcium,
             constraints.max_iron,
+            constraints.max_magnesium,
             constraints.max_potassium,
             constraints.max_sodium,
             constraints.max_cholesterol
@@ -228,6 +231,7 @@ class DietOptimizer:
         total_vitamin_c = sum(q * food.vitamin_c_per_100g for q, food in zip(quantities, foods))
         total_calcium = sum(q * food.calcium_per_100g for q, food in zip(quantities, foods))
         total_iron = sum(q * food.iron_per_100g for q, food in zip(quantities, foods))
+        total_magnesium = sum(q * food.magnesium_per_100g for q, food in zip(quantities, foods))
         total_potassium = sum(q * food.potassium_per_100g for q, food in zip(quantities, foods))
         total_sodium = sum(q * food.sodium_per_100g for q, food in zip(quantities, foods))
         total_cholesterol = sum(q * food.cholesterol_per_100g for q, food in zip(quantities, foods))
@@ -253,6 +257,7 @@ class DietOptimizer:
             total_vitamin_c=round(total_vitamin_c, 2),
             total_calcium=round(total_calcium, 2),
             total_iron=round(total_iron, 2),
+            total_magnesium=round(total_magnesium, 2),
             total_potassium=round(total_potassium, 2),
             total_sodium=round(total_sodium, 2),
             total_cholesterol=round(total_cholesterol, 2)
@@ -268,6 +273,7 @@ class DietOptimizer:
             vitamin_c_within_bounds=constraints.min_vitamin_c <= total_vitamin_c <= constraints.max_vitamin_c,
             calcium_within_bounds=constraints.min_calcium <= total_calcium <= constraints.max_calcium,
             iron_within_bounds=constraints.min_iron <= total_iron <= constraints.max_iron,
+            magnesium_within_bounds=constraints.min_magnesium <= total_magnesium <= constraints.max_magnesium,
             potassium_within_bounds=constraints.min_potassium <= total_potassium <= constraints.max_potassium,
             sodium_within_bounds=constraints.min_sodium <= total_sodium <= constraints.max_sodium,
             cholesterol_within_bounds=constraints.min_cholesterol <= total_cholesterol <= constraints.max_cholesterol

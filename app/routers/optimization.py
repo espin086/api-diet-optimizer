@@ -34,14 +34,14 @@ def get_optimizer() -> DietOptimizer:
     Solves the classic **Diet Problem** using linear programming to find the minimum-cost 
     combination of foods that meets all specified nutritional requirements.
     
-    ### 📊 Supported Nutrients (11 total)
+    ### 📊 Supported Nutrients (12 total)
     
     **Macronutrients (grams):**
     - Calories, Protein, Carbohydrates, Fat
     
     **Vitamins & Minerals:**
     - **Vitamin A** (⚠️ **mcg RAE** - micrograms!)
-    - **Vitamin C, Calcium, Iron, Potassium, Sodium, Cholesterol** (all in **mg**)
+    - **Vitamin C, Calcium, Iron, Magnesium, Potassium, Sodium, Cholesterol** (all in **mg**)
     
     ### ⚠️ Critical Unit Requirements
     
@@ -69,6 +69,7 @@ def get_optimizer() -> DietOptimizer:
           "vitamin_c_per_100g": 28.1,     // mg
           "calcium_per_100g": 99,         // mg
           "iron_per_100g": 2.7,           // mg
+          "magnesium_per_100g": 83,       // mg
           "potassium_per_100g": 558,      // mg
           "sodium_per_100g": 79,          // mg
           "cholesterol_per_100g": 0       // mg
@@ -87,6 +88,8 @@ def get_optimizer() -> DietOptimizer:
         "max_calcium": 2500,       // mg
         "min_iron": 8,             // mg
         "max_iron": 45,            // mg
+        "min_magnesium": 310,      // mg
+        "max_magnesium": 800,      // mg
         "min_potassium": 3500,     // mg
         "max_potassium": 10000,    // mg
         "min_sodium": 1500,        // mg
@@ -147,6 +150,7 @@ def get_optimizer() -> DietOptimizer:
                             "total_vitamin_c": 90.0,
                             "total_calcium": 1200.0,
                             "total_iron": 15.0,
+                            "total_magnesium": 350.0,
                             "total_potassium": 4000.0,
                             "total_sodium": 2000.0,
                             "total_cholesterol": 250.0
@@ -160,6 +164,7 @@ def get_optimizer() -> DietOptimizer:
                             "vitamin_c_within_bounds": True,
                             "calcium_within_bounds": True,
                             "iron_within_bounds": True,
+                            "magnesium_within_bounds": True,
                             "potassium_within_bounds": True,
                             "sodium_within_bounds": True,
                             "cholesterol_within_bounds": True
@@ -229,6 +234,7 @@ async def optimize_diet(
                 "total_vitamin_c": 0.0,
                 "total_calcium": 0.0,
                 "total_iron": 0.0,
+                "total_magnesium": 0.0,
                 "total_potassium": 0.0,
                 "total_sodium": 0.0,
                 "total_cholesterol": 0.0
@@ -242,6 +248,7 @@ async def optimize_diet(
                 "vitamin_c_within_bounds": False,
                 "calcium_within_bounds": False,
                 "iron_within_bounds": False,
+                "magnesium_within_bounds": False,
                 "potassium_within_bounds": False,
                 "sodium_within_bounds": False,
                 "cholesterol_within_bounds": False
@@ -263,6 +270,7 @@ async def optimize_diet(
                 "total_vitamin_c": 0.0,
                 "total_calcium": 0.0,
                 "total_iron": 0.0,
+                "total_magnesium": 0.0,
                 "total_potassium": 0.0,
                 "total_sodium": 0.0,
                 "total_cholesterol": 0.0
@@ -276,6 +284,7 @@ async def optimize_diet(
                 "vitamin_c_within_bounds": False,
                 "calcium_within_bounds": False,
                 "iron_within_bounds": False,
+                "magnesium_within_bounds": False,
                 "potassium_within_bounds": False,
                 "sodium_within_bounds": False,
                 "cholesterol_within_bounds": False
@@ -379,7 +388,7 @@ async def root():
         "name": settings.app_name,
         "version": settings.app_version,
         "status": "running",
-        "description": "Enhanced Diet Optimizer API with 11 essential nutrients",
+        "description": "Enhanced Diet Optimizer API with 12 essential nutrients",
         "endpoints": {
             "optimize": "/optimize",
             "health": "/health",
@@ -388,7 +397,7 @@ async def root():
         },
         "features": [
             "Linear programming optimization",
-            "11 comprehensive nutrients",
+            "12 comprehensive nutrients",
             "USDA-compatible units",
             "Multiple diet profiles",
             "Constraint validation"

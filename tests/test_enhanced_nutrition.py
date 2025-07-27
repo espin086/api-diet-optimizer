@@ -25,6 +25,7 @@ def comprehensive_foods():
             "vitamin_c_per_100g": 0,
             "calcium_per_100g": 12,
             "iron_per_100g": 0.8,
+            "magnesium_per_100g": 20,
             "potassium_per_100g": 490,
             "sodium_per_100g": 59,
             "cholesterol_per_100g": 70
@@ -40,6 +41,7 @@ def comprehensive_foods():
             "vitamin_c_per_100g": 28.1,
             "calcium_per_100g": 99,
             "iron_per_100g": 2.7,
+            "magnesium_per_100g": 20,
             "potassium_per_100g": 558,
             "sodium_per_100g": 79,
             "cholesterol_per_100g": 0
@@ -55,6 +57,7 @@ def comprehensive_foods():
             "vitamin_c_per_100g": 0,
             "calcium_per_100g": 47,
             "iron_per_100g": 4.6,
+            "magnesium_per_100g": 20,
             "potassium_per_100g": 563,
             "sodium_per_100g": 5,
             "cholesterol_per_100g": 0
@@ -70,6 +73,7 @@ def comprehensive_foods():
             "vitamin_c_per_100g": 0,
             "calcium_per_100g": 110,
             "iron_per_100g": 0.1,
+            "magnesium_per_100g": 20,
             "potassium_per_100g": 141,
             "sodium_per_100g": 36,
             "cholesterol_per_100g": 10
@@ -85,6 +89,7 @@ def comprehensive_foods():
             "vitamin_c_per_100g": 0,
             "calcium_per_100g": 269,
             "iron_per_100g": 3.7,
+            "magnesium_per_100g": 20,
             "potassium_per_100g": 733,
             "sodium_per_100g": 1,
             "cholesterol_per_100g": 0
@@ -100,6 +105,7 @@ def comprehensive_foods():
             "vitamin_c_per_100g": 53.2,
             "calcium_per_100g": 40,
             "iron_per_100g": 0.1,
+            "magnesium_per_100g": 20,
             "potassium_per_100g": 181,
             "sodium_per_100g": 0,
             "cholesterol_per_100g": 0
@@ -127,6 +133,8 @@ def vitamin_focused_constraints():
         "max_calcium": 2500,
         "min_iron": 18,        # High iron requirement (women's needs)
         "max_iron": 45,
+        "min_magnesium": 310,
+        "max_magnesium": 800,
         "min_potassium": 4700,
         "max_potassium": 10000,
         "min_sodium": 1500,
@@ -156,6 +164,8 @@ def mineral_focused_constraints():
         "max_calcium": 2500,
         "min_iron": 15,        # High iron
         "max_iron": 45,
+        "min_magnesium": 310,
+        "max_magnesium": 800,
         "min_potassium": 5000, # Very high potassium
         "max_potassium": 10000,
         "min_sodium": 1000,    # Lower sodium for health
@@ -187,6 +197,8 @@ class TestVitaminOptimization:
             "max_calcium": 2500,
             "min_iron": 8,
             "max_iron": 45,
+        "min_magnesium": 310,
+        "max_magnesium": 800,
             "min_potassium": 3000,
             "max_potassium": 10000,
             "min_sodium": 1200,
@@ -227,6 +239,8 @@ class TestVitaminOptimization:
             "max_calcium": 2500,
             "min_iron": 6,
             "max_iron": 45,
+        "min_magnesium": 310,
+        "max_magnesium": 800,
             "min_potassium": 2500,
             "max_potassium": 10000,
             "min_sodium": 1000,
@@ -271,6 +285,8 @@ class TestMineralOptimization:
             "max_calcium": 2500,
             "min_iron": 10,
             "max_iron": 45,
+        "min_magnesium": 310,
+        "max_magnesium": 800,
             "min_potassium": 3200,
             "max_potassium": 10000,
             "min_sodium": 1100,
@@ -311,6 +327,8 @@ class TestMineralOptimization:
             "max_calcium": 2500,
             "min_iron": 20,        # Very high iron (pregnancy needs)
             "max_iron": 45,
+        "min_magnesium": 310,
+        "max_magnesium": 800,
             "min_potassium": 2800,
             "max_potassium": 10000,
             "min_sodium": 1000,
@@ -351,6 +369,8 @@ class TestMineralOptimization:
             "max_calcium": 2500,
             "min_iron": 12,
             "max_iron": 45,
+        "min_magnesium": 310,
+        "max_magnesium": 800,
             "min_potassium": 5500,  # Very high potassium
             "max_potassium": 10000,
             "min_sodium": 800,      # Very low sodium
@@ -397,6 +417,8 @@ class TestSpecialDietaryNeeds:
             "max_calcium": 2500,
             "min_iron": 27,        # High iron for pregnancy
             "max_iron": 45,
+        "min_magnesium": 310,
+        "max_magnesium": 800,
             "min_potassium": 4700,
             "max_potassium": 10000,
             "min_sodium": 1500,
@@ -441,6 +463,8 @@ class TestSpecialDietaryNeeds:
             "max_calcium": 2500,
             "min_iron": 8,
             "max_iron": 45,
+        "min_magnesium": 310,
+        "max_magnesium": 800,
             "min_potassium": 4700,
             "max_potassium": 10000,
             "min_sodium": 1000,    # Lower sodium for heart health
@@ -482,6 +506,7 @@ class TestNutritionalEdgeCases:
                 "vitamin_c_per_100g": 0,
                 "calcium_per_100g": 0,
                 "iron_per_100g": 0,
+            "magnesium_per_100g": 20,
                 "potassium_per_100g": 0,
                 "sodium_per_100g": 0,
                 "cholesterol_per_100g": 0
@@ -497,6 +522,7 @@ class TestNutritionalEdgeCases:
                 "vitamin_c_per_100g": 1000,
                 "calcium_per_100g": 500,
                 "iron_per_100g": 20,
+            "magnesium_per_100g": 20,
                 "potassium_per_100g": 100,
                 "sodium_per_100g": 10,
                 "cholesterol_per_100g": 0
@@ -520,6 +546,8 @@ class TestNutritionalEdgeCases:
             "max_calcium": 2500,
             "min_iron": 6,
             "max_iron": 45,
+        "min_magnesium": 310,
+        "max_magnesium": 800,
             "min_potassium": 2000,
             "max_potassium": 10000,
             "min_sodium": 800,
@@ -558,7 +586,9 @@ class TestNutritionalEdgeCases:
             "min_calcium": 1190,
             "max_calcium": 1210,   # Very narrow range
             "min_iron": 14,
-            "max_iron": 16,        # Very narrow range
+            "max_iron": 16,
+        "min_magnesium": 310,
+        "max_magnesium": 800,        # Very narrow range
             "min_potassium": 4690,
             "max_potassium": 4710, # Very narrow range
             "min_sodium": 1490,

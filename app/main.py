@@ -55,7 +55,7 @@ app = FastAPI(
     
     ## 🍎 Enhanced Nutritional Coverage
     
-    This API now supports **11 essential nutrients** for comprehensive diet optimization:
+    This API now supports **12 essential nutrients** for comprehensive diet optimization:
     
     ### Macronutrients (grams)
     - **Calories** - Total energy content
@@ -68,6 +68,7 @@ app = FastAPI(
     - **Vitamin C** - Antioxidant, immune support (**mg**)
     - **Calcium** - Bone health, muscle function (**mg**)
     - **Iron** - Oxygen transport, energy metabolism (**mg**)
+    - **Magnesium** - Muscle and nerve function, energy production (**mg**)
     - **Potassium** - Heart health, muscle function (**mg**)
     - **Sodium** - Fluid balance, nerve function (**mg**)
     - **Cholesterol** - Cardiovascular health monitoring (**mg**)
