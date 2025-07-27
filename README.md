@@ -31,7 +31,7 @@ A modern FastAPI implementation that solves the classic **Diet Problem** using l
 ## 🎯 Features
 
 - **🧮 Linear Programming Optimization** - Uses SciPy's HiGHS solver for robust mathematical optimization
-- **🥗 Comprehensive Nutrition** - Optimizes across 11 key nutrients (macronutrients + vitamins/minerals)
+- **🥗 Comprehensive Nutrition** - Optimizes across 12 key nutrients (macronutrients + vitamins/minerals)
 - **💰 Cost Minimization** - Finds the cheapest food combination meeting all nutritional constraints
 - **🏥 Health-Focused** - Supports specialized dietary profiles (pregnancy, heart-healthy, athletic)
 - **⚡ Fast & Scalable** - Built with FastAPI for high-performance async processing
@@ -71,7 +71,7 @@ for all nutrients j and foods i
 quantity[i] ≥ 0 for all foods i
 ```
 
-This API extends the classical 4-nutrient formulation to **11 comprehensive nutrients**, making it suitable for real-world dietary planning.
+This API extends the classical 4-nutrient formulation to **12 comprehensive nutrients**, making it suitable for real-world dietary planning.
 
 ## 🥗 Supported Nutrients
 
@@ -80,6 +80,7 @@ This API extends the classical 4-nutrient formulation to **11 comprehensive nutr
 - **Protein** - Essential for muscle building and repair
 - **Carbohydrates** - Primary energy source  
 - **Fat** - Essential fatty acids and energy storage
+- **Fiber** - Digestive health and satiety
 
 ### Vitamins & Minerals
 - **Vitamin A** (mcg RAE) - Eye health, immune function
@@ -90,7 +91,7 @@ This API extends the classical 4-nutrient formulation to **11 comprehensive nutr
 - **Sodium** (mg) - Fluid balance, nerve function
 - **Cholesterol** (mg) - Cardiovascular health monitoring
 
-> ⚠️ **Important**: Vitamin A is measured in **micrograms (mcg RAE)**, all other nutrients in **milligrams (mg)**
+> ⚠️ **Important**: Vitamin A is measured in **micrograms (mcg RAE)**, all other nutrients in **milligrams (mg)**. Fiber is measured in **grams (g)**.
 
 ## 🚀 Quick Start
 
@@ -297,6 +298,7 @@ constraints = {
 | **Potassium** | **3500-4700** | **10000** | **mg** |
 | **Sodium** | **1500** | **2300** | **mg** |
 | **Cholesterol** | **0** | **300** | **mg** |
+| **Fiber** | **25-38** | **70** | **g** |
 
 
 

@@ -30,7 +30,8 @@ def create_sample_request() -> Dict[str, Any]:
             "iron_per_100g": 0.9,         # mg
             "potassium_per_100g": 256,    # mg
             "sodium_per_100g": 74,        # mg
-            "cholesterol_per_100g": 85    # mg
+            "cholesterol_per_100g": 85,   # mg
+            "fiber_per_100g": 0           # g
         },
         {
             "name": "Salmon Fillet",
@@ -45,7 +46,8 @@ def create_sample_request() -> Dict[str, Any]:
             "iron_per_100g": 0.8,
             "potassium_per_100g": 490,
             "sodium_per_100g": 59,
-            "cholesterol_per_100g": 70
+            "cholesterol_per_100g": 70,
+            "fiber_per_100g": 0           # g
         },
         {
             "name": "Brown Rice",
@@ -60,7 +62,8 @@ def create_sample_request() -> Dict[str, Any]:
             "iron_per_100g": 0.4,
             "potassium_per_100g": 43,
             "sodium_per_100g": 5,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 1.8         # g (brown rice has moderate fiber)
         },
         {
             "name": "Quinoa",
@@ -75,7 +78,8 @@ def create_sample_request() -> Dict[str, Any]:
             "iron_per_100g": 4.6,
             "potassium_per_100g": 563,
             "sodium_per_100g": 5,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 7           # g (quinoa is high in fiber)
         },
         {
             "name": "Spinach",
@@ -90,7 +94,8 @@ def create_sample_request() -> Dict[str, Any]:
             "iron_per_100g": 2.7,
             "potassium_per_100g": 558,
             "sodium_per_100g": 79,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 2.2         # g
         },
         {
             "name": "Broccoli",
@@ -105,7 +110,8 @@ def create_sample_request() -> Dict[str, Any]:
             "iron_per_100g": 0.7,
             "potassium_per_100g": 316,
             "sodium_per_100g": 33,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 2.6         # g
         },
         {
             "name": "Sweet Potato",
@@ -120,7 +126,8 @@ def create_sample_request() -> Dict[str, Any]:
             "iron_per_100g": 0.6,
             "potassium_per_100g": 337,
             "sodium_per_100g": 54,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 3           # g
         },
         {
             "name": "Greek Yogurt (Plain)",
@@ -135,7 +142,8 @@ def create_sample_request() -> Dict[str, Any]:
             "iron_per_100g": 0.1,
             "potassium_per_100g": 141,
             "sodium_per_100g": 36,
-            "cholesterol_per_100g": 10
+            "cholesterol_per_100g": 10,
+            "fiber_per_100g": 0           # g (yogurt has no fiber)
         },
         {
             "name": "Almonds",
@@ -150,7 +158,8 @@ def create_sample_request() -> Dict[str, Any]:
             "iron_per_100g": 3.7,
             "potassium_per_100g": 733,
             "sodium_per_100g": 1,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 12.5        # g (almonds are very high in fiber)
         },
         {
             "name": "Orange",
@@ -165,7 +174,8 @@ def create_sample_request() -> Dict[str, Any]:
             "iron_per_100g": 0.1,
             "potassium_per_100g": 181,
             "sodium_per_100g": 0,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 2.4         # g
         }
     ]
     
@@ -192,7 +202,9 @@ def create_sample_request() -> Dict[str, Any]:
         "min_sodium": 1500,        # Minimum needs
         "max_sodium": 2300,        # Daily recommendation limit
         "min_cholesterol": 0,      # No minimum requirement
-        "max_cholesterol": 300     # Heart-healthy limit
+        "max_cholesterol": 300,    # Heart-healthy limit
+        "min_fiber": 25,          # Daily recommendation
+        "max_fiber": 70           # Safe upper limit
     }
     
     return {
@@ -230,7 +242,9 @@ def create_pregnancy_request() -> Dict[str, Any]:
         "min_sodium": 1500,
         "max_sodium": 2300,
         "min_cholesterol": 0,
-        "max_cholesterol": 300
+        "max_cholesterol": 300,
+        "min_fiber": 28,          # Higher fiber needs during pregnancy
+        "max_fiber": 70
     }
     
     return {
@@ -268,7 +282,9 @@ def create_heart_healthy_request() -> Dict[str, Any]:
         "min_sodium": 800,         # Low sodium for heart health
         "max_sodium": 1500,
         "min_cholesterol": 0,      # Minimize cholesterol
-        "max_cholesterol": 150     # Very low cholesterol limit
+        "max_cholesterol": 150,    # Very low cholesterol limit
+        "min_fiber": 35,          # High fiber for heart health
+        "max_fiber": 70
     }
     
     return {
