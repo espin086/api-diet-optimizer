@@ -86,6 +86,7 @@ class DietOptimizer:
         max_fat = max(food.fat_per_100g for food in foods)
         max_vitamin_a = max(food.vitamin_a_per_100g for food in foods)
         max_vitamin_c = max(food.vitamin_c_per_100g for food in foods)
+        max_vitamin_d = max(food.vitamin_d_per_100g for food in foods)
         max_calcium = max(food.calcium_per_100g for food in foods)
         max_iron = max(food.iron_per_100g for food in foods)
         max_potassium = max(food.potassium_per_100g for food in foods)
@@ -98,6 +99,7 @@ class DietOptimizer:
            (max_fat == 0 and constraints.min_fat > 0) or \
            (max_vitamin_a == 0 and constraints.min_vitamin_a > 0) or \
            (max_vitamin_c == 0 and constraints.min_vitamin_c > 0) or \
+           (max_vitamin_d == 0 and constraints.min_vitamin_d > 0) or \
            (max_calcium == 0 and constraints.min_calcium > 0) or \
            (max_iron == 0 and constraints.min_iron > 0) or \
            (max_potassium == 0 and constraints.min_potassium > 0) or \
@@ -125,6 +127,7 @@ class DietOptimizer:
         - min_fat <= sum(fat_per_100g[i] * x[i]) <= max_fat
         - min_vitamin_a <= sum(vitamin_a_per_100g[i] * x[i]) <= max_vitamin_a
         - min_vitamin_c <= sum(vitamin_c_per_100g[i] * x[i]) <= max_vitamin_c
+        - min_vitamin_d <= sum(vitamin_d_per_100g[i] * x[i]) <= max_vitamin_d
         - min_calcium <= sum(calcium_per_100g[i] * x[i]) <= max_calcium
         - min_iron <= sum(iron_per_100g[i] * x[i]) <= max_iron
         - min_potassium <= sum(potassium_per_100g[i] * x[i]) <= max_potassium
@@ -137,7 +140,7 @@ class DietOptimizer:
         # Objective function coefficients (minimize cost)
         c = np.array([food.cost_per_100g for food in foods])
         
-        # Nutritional content matrix (11 nutrients)
+        # Nutritional content matrix (12 nutrients)
         nutrition_matrix = np.array([
             [food.calories_per_100g for food in foods],
             [food.protein_per_100g for food in foods],
@@ -145,6 +148,7 @@ class DietOptimizer:
             [food.fat_per_100g for food in foods],
             [food.vitamin_a_per_100g for food in foods],
             [food.vitamin_c_per_100g for food in foods],
+            [food.vitamin_d_per_100g for food in foods],
             [food.calcium_per_100g for food in foods],
             [food.iron_per_100g for food in foods],
             [food.potassium_per_100g for food in foods],
@@ -168,6 +172,7 @@ class DietOptimizer:
             -constraints.min_fat,
             -constraints.min_vitamin_a,
             -constraints.min_vitamin_c,
+            -constraints.min_vitamin_d,
             -constraints.min_calcium,
             -constraints.min_iron,
             -constraints.min_potassium,
@@ -179,6 +184,7 @@ class DietOptimizer:
             constraints.max_fat,
             constraints.max_vitamin_a,
             constraints.max_vitamin_c,
+            constraints.max_vitamin_d,
             constraints.max_calcium,
             constraints.max_iron,
             constraints.max_potassium,
@@ -226,6 +232,7 @@ class DietOptimizer:
         total_fat = sum(q * food.fat_per_100g for q, food in zip(quantities, foods))
         total_vitamin_a = sum(q * food.vitamin_a_per_100g for q, food in zip(quantities, foods))
         total_vitamin_c = sum(q * food.vitamin_c_per_100g for q, food in zip(quantities, foods))
+        total_vitamin_d = sum(q * food.vitamin_d_per_100g for q, food in zip(quantities, foods))
         total_calcium = sum(q * food.calcium_per_100g for q, food in zip(quantities, foods))
         total_iron = sum(q * food.iron_per_100g for q, food in zip(quantities, foods))
         total_potassium = sum(q * food.potassium_per_100g for q, food in zip(quantities, foods))
@@ -251,6 +258,7 @@ class DietOptimizer:
             total_fat=round(total_fat, 2),
             total_vitamin_a=round(total_vitamin_a, 2),
             total_vitamin_c=round(total_vitamin_c, 2),
+            total_vitamin_d=round(total_vitamin_d, 2),
             total_calcium=round(total_calcium, 2),
             total_iron=round(total_iron, 2),
             total_potassium=round(total_potassium, 2),
@@ -266,6 +274,7 @@ class DietOptimizer:
             fat_within_bounds=constraints.min_fat <= total_fat <= constraints.max_fat,
             vitamin_a_within_bounds=constraints.min_vitamin_a <= total_vitamin_a <= constraints.max_vitamin_a,
             vitamin_c_within_bounds=constraints.min_vitamin_c <= total_vitamin_c <= constraints.max_vitamin_c,
+            vitamin_d_within_bounds=constraints.min_vitamin_d <= total_vitamin_d <= constraints.max_vitamin_d,
             calcium_within_bounds=constraints.min_calcium <= total_calcium <= constraints.max_calcium,
             iron_within_bounds=constraints.min_iron <= total_iron <= constraints.max_iron,
             potassium_within_bounds=constraints.min_potassium <= total_potassium <= constraints.max_potassium,

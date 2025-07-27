@@ -33,6 +33,12 @@ class Food(BaseModel):
         ge=0, 
         description="Vitamin C per 100 grams (mg - milligrams)"
     )
+    vitamin_d_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Vitamin D per 100 grams (mcg - micrograms). "
+                   "Note: 1 mcg = 40 IU"
+    )
     
     # Minerals - All in milligrams
     calcium_per_100g: float = Field(
@@ -80,6 +86,7 @@ class Food(BaseModel):
                 "fat_per_100g": 3.6,
                 "vitamin_a_per_100g": 9,      # mcg RAE
                 "vitamin_c_per_100g": 0,      # mg
+                "vitamin_d_per_100g": 0,      # mcg
                 "calcium_per_100g": 15,       # mg
                 "iron_per_100g": 0.9,         # mg
                 "potassium_per_100g": 256,    # mg
@@ -134,6 +141,18 @@ class NutritionalConstraints(BaseModel):
         gt=0, 
         description="Maximum daily vitamin C allowed (mg). "
                    "Upper limit: 2000 mg for adults"
+    )
+    min_vitamin_d: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily vitamin D required (mcg). "
+                   "RDA: 15-20 mcg (600-800 IU) for adults"
+    )
+    max_vitamin_d: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily vitamin D allowed (mcg). "
+                   "Upper limit: 100 mcg (4000 IU) for adults"
     )
     
     # Minerals
@@ -246,6 +265,14 @@ class NutritionalConstraints(BaseModel):
             raise ValueError('max_vitamin_c must be greater than min_vitamin_c')
         return v
 
+    @field_validator('max_vitamin_d')
+    @classmethod
+    def validate_vitamin_d_bounds(cls, v: float, info) -> float:
+        """Validate that max_vitamin_d > min_vitamin_d."""
+        if info.data.get('min_vitamin_d') is not None and v <= info.data['min_vitamin_d']:
+            raise ValueError('max_vitamin_d must be greater than min_vitamin_d')
+        return v
+
     @field_validator('max_calcium')
     @classmethod
     def validate_calcium_bounds(cls, v: float, info) -> float:
@@ -301,6 +328,8 @@ class NutritionalConstraints(BaseModel):
                 "max_vitamin_a": 3000,     # mcg RAE
                 "min_vitamin_c": 75,       # mg
                 "max_vitamin_c": 2000,     # mg
+                "min_vitamin_d": 15,       # mcg
+                "max_vitamin_d": 100,      # mcg
                 "min_calcium": 1000,       # mg
                 "max_calcium": 2500,       # mg
                 "min_iron": 8,             # mg
