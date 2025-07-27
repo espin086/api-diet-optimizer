@@ -34,14 +34,14 @@ def get_optimizer() -> DietOptimizer:
     Solves the classic **Diet Problem** using linear programming to find the minimum-cost 
     combination of foods that meets all specified nutritional requirements.
     
-    ### 📊 Supported Nutrients (11 total)
+    ### 📊 Supported Nutrients (12 total)
     
     **Macronutrients (grams):**
     - Calories, Protein, Carbohydrates, Fat
     
     **Vitamins & Minerals:**
     - **Vitamin A** (⚠️ **mcg RAE** - micrograms!)
-    - **Vitamin C, Calcium, Iron, Potassium, Sodium, Cholesterol** (all in **mg**)
+    - **Vitamin C, Calcium, Iron, Potassium, Zinc, Sodium, Cholesterol** (all in **mg**)
     
     ### ⚠️ Critical Unit Requirements
     
@@ -70,6 +70,7 @@ def get_optimizer() -> DietOptimizer:
           "calcium_per_100g": 99,         // mg
           "iron_per_100g": 2.7,           // mg
           "potassium_per_100g": 558,      // mg
+          "zinc_per_100g": 0.5,           // mg
           "sodium_per_100g": 79,          // mg
           "cholesterol_per_100g": 0       // mg
         }
@@ -89,6 +90,8 @@ def get_optimizer() -> DietOptimizer:
         "max_iron": 45,            // mg
         "min_potassium": 3500,     // mg
         "max_potassium": 10000,    // mg
+        "min_zinc": 8,             // mg
+        "max_zinc": 40,            // mg
         "min_sodium": 1500,        // mg
         "max_sodium": 2300,        // mg
         "min_cholesterol": 0,      // mg
@@ -148,6 +151,7 @@ def get_optimizer() -> DietOptimizer:
                             "total_calcium": 1200.0,
                             "total_iron": 15.0,
                             "total_potassium": 4000.0,
+                            "total_zinc": 11.5,
                             "total_sodium": 2000.0,
                             "total_cholesterol": 250.0
                         },
@@ -161,6 +165,7 @@ def get_optimizer() -> DietOptimizer:
                             "calcium_within_bounds": True,
                             "iron_within_bounds": True,
                             "potassium_within_bounds": True,
+                            "zinc_within_bounds": True,
                             "sodium_within_bounds": True,
                             "cholesterol_within_bounds": True
                         }
@@ -230,6 +235,7 @@ async def optimize_diet(
                 "total_calcium": 0.0,
                 "total_iron": 0.0,
                 "total_potassium": 0.0,
+                "total_zinc": 0.0,
                 "total_sodium": 0.0,
                 "total_cholesterol": 0.0
             },
@@ -243,6 +249,7 @@ async def optimize_diet(
                 "calcium_within_bounds": False,
                 "iron_within_bounds": False,
                 "potassium_within_bounds": False,
+                "zinc_within_bounds": False,
                 "sodium_within_bounds": False,
                 "cholesterol_within_bounds": False
             }
@@ -264,6 +271,7 @@ async def optimize_diet(
                 "total_calcium": 0.0,
                 "total_iron": 0.0,
                 "total_potassium": 0.0,
+                "total_zinc": 0.0,
                 "total_sodium": 0.0,
                 "total_cholesterol": 0.0
             },
@@ -277,6 +285,7 @@ async def optimize_diet(
                 "calcium_within_bounds": False,
                 "iron_within_bounds": False,
                 "potassium_within_bounds": False,
+                "zinc_within_bounds": False,
                 "sodium_within_bounds": False,
                 "cholesterol_within_bounds": False
             }

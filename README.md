@@ -71,7 +71,7 @@ for all nutrients j and foods i
 quantity[i] ≥ 0 for all foods i
 ```
 
-This API extends the classical 4-nutrient formulation to **11 comprehensive nutrients**, making it suitable for real-world dietary planning.
+This API extends the classical 4-nutrient formulation to **12 comprehensive nutrients**, making it suitable for real-world dietary planning.
 
 ## 🥗 Supported Nutrients
 
@@ -87,6 +87,7 @@ This API extends the classical 4-nutrient formulation to **11 comprehensive nutr
 - **Calcium** (mg) - Bone health, muscle function
 - **Iron** (mg) - Oxygen transport, energy metabolism
 - **Potassium** (mg) - Heart health, muscle function
+- **Zinc** (mg) - Immune function, wound healing, protein synthesis
 - **Sodium** (mg) - Fluid balance, nerve function
 - **Cholesterol** (mg) - Cardiovascular health monitoring
 

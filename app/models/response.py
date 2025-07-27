@@ -35,6 +35,7 @@ class NutritionalSummary(BaseModel):
     total_calcium: float = Field(..., ge=0, description="Total calcium achieved (mg)")
     total_iron: float = Field(..., ge=0, description="Total iron achieved (mg)")
     total_potassium: float = Field(..., ge=0, description="Total potassium achieved (mg)")
+    total_zinc: float = Field(..., ge=0, description="Total zinc achieved (mg)")
     total_sodium: float = Field(..., ge=0, description="Total sodium achieved (mg)")
     total_cholesterol: float = Field(..., ge=0, description="Total cholesterol achieved (mg)")
 
@@ -51,6 +52,7 @@ class ConstraintSatisfaction(BaseModel):
     calcium_within_bounds: bool = Field(..., description="Whether calcium is within bounds")
     iron_within_bounds: bool = Field(..., description="Whether iron is within bounds")
     potassium_within_bounds: bool = Field(..., description="Whether potassium is within bounds")
+    zinc_within_bounds: bool = Field(..., description="Whether zinc is within bounds")
     sodium_within_bounds: bool = Field(..., description="Whether sodium is within bounds")
     cholesterol_within_bounds: bool = Field(..., description="Whether cholesterol is within bounds")
 
