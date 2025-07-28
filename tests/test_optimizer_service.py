@@ -36,11 +36,13 @@ class TestDietOptimizer:
                 fat_per_100g=5,  # Increased fat content
                 vitamin_a_per_100g=10,
                 vitamin_c_per_100g=0,
+                vitamin_d_per_100g=0,
                 calcium_per_100g=20,
                 iron_per_100g=1.0,
                 potassium_per_100g=200,
                 sodium_per_100g=50,
-                cholesterol_per_100g=0
+                cholesterol_per_100g=0,
+                fiber_per_100g=0
             ),
             Food(
                 name="Cheap Carbs",
@@ -51,11 +53,13 @@ class TestDietOptimizer:
                 fat_per_100g=3,  # Increased fat content
                 vitamin_a_per_100g=0,
                 vitamin_c_per_100g=0,
+                vitamin_d_per_100g=0,
                 calcium_per_100g=5,
                 iron_per_100g=0.5,
                 potassium_per_100g=50,
                 sodium_per_100g=10,
-                cholesterol_per_100g=0
+                cholesterol_per_100g=0,
+                fiber_per_100g=1.5
             ),
             Food(
                 name="Expensive Fat",
@@ -66,11 +70,13 @@ class TestDietOptimizer:
                 fat_per_100g=20,
                 vitamin_a_per_100g=5,
                 vitamin_c_per_100g=0,
+                vitamin_d_per_100g=0,
                 calcium_per_100g=10,
                 iron_per_100g=0.2,
                 potassium_per_100g=30,
                 sodium_per_100g=20,
-                cholesterol_per_100g=50
+                cholesterol_per_100g=50,
+                fiber_per_100g=0
             )
         ]
     
@@ -99,7 +105,9 @@ class TestDietOptimizer:
             min_sodium=50,
             max_sodium=500,
             min_cholesterol=0,
-            max_cholesterol=100
+            max_cholesterol=100,
+            min_fiber=5,
+            max_fiber=20
         )
     
     def test_optimization_basic_functionality(self, optimizer, simple_foods, simple_constraints):
@@ -168,6 +176,7 @@ class TestDietOptimizer:
                 fat_per_100g=5,
                 vitamin_a_per_100g=50,
                 vitamin_c_per_100g=10,
+                vitamin_d_per_100g=0,
                 calcium_per_100g=50,
                 iron_per_100g=2,
                 potassium_per_100g=300,
@@ -183,6 +192,7 @@ class TestDietOptimizer:
                 fat_per_100g=5,
                 vitamin_a_per_100g=50,
                 vitamin_c_per_100g=10,
+                vitamin_d_per_100g=0,
                 calcium_per_100g=50,
                 iron_per_100g=2,
                 potassium_per_100g=300,
@@ -244,6 +254,7 @@ class TestDietOptimizer:
                 fat_per_100g=0.1,
                 vitamin_a_per_100g=1,
                 vitamin_c_per_100g=0.1,
+                vitamin_d_per_100g=0,
                 calcium_per_100g=1,
                 iron_per_100g=0.1,
                 potassium_per_100g=10,
@@ -292,6 +303,7 @@ class TestDietOptimizer:
                 fat_per_100g=5,
                 vitamin_a_per_100g=25,
                 vitamin_c_per_100g=5,
+                vitamin_d_per_100g=0,
                 calcium_per_100g=30,
                 iron_per_100g=1.5,
                 potassium_per_100g=200,
@@ -344,6 +356,7 @@ class TestDietOptimizer:
                 fat_per_100g=0,
                 vitamin_a_per_100g=0,
                 vitamin_c_per_100g=0,
+                vitamin_d_per_100g=0,
                 calcium_per_100g=0,
                 iron_per_100g=0,
                 potassium_per_100g=0,
@@ -461,6 +474,7 @@ class TestDietOptimizer:
                 fat_per_100g=10,
                 vitamin_a_per_100g=100,
                 vitamin_c_per_100g=20,
+                vitamin_d_per_100g=0,
                 calcium_per_100g=50,
                 iron_per_100g=5,
                 potassium_per_100g=500,

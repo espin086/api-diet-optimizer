@@ -55,17 +55,19 @@ app = FastAPI(
     
     ## 🍎 Enhanced Nutritional Coverage
     
-    This API now supports **11 essential nutrients** for comprehensive diet optimization:
+    This API now supports **12 essential nutrients** for comprehensive diet optimization:
     
     ### Macronutrients (grams)
     - **Calories** - Total energy content
     - **Protein** - Muscle building and repair
     - **Carbohydrates** - Primary energy source  
     - **Fat** - Essential fatty acids and energy storage
+    - **Fiber** - Digestive health and satiety
     
     ### Vitamins & Minerals
     - **Vitamin A** - Eye health, immune function (⚠️ **mcg RAE**)
     - **Vitamin C** - Antioxidant, immune support (**mg**)
+    - **Vitamin D** - Bone health, immune function (**mcg**)
     - **Calcium** - Bone health, muscle function (**mg**)
     - **Iron** - Oxygen transport, energy metabolism (**mg**)
     - **Potassium** - Heart health, muscle function (**mg**)
@@ -79,15 +81,16 @@ app = FastAPI(
     | Nutrient | Unit | Example Value |
     |----------|------|---------------|
     | **Vitamin A** | **mcg RAE** | `469` (spinach) |
+    | **Vitamin D** | **mcg** | `14.2` (salmon) |
     | **All Others** | **mg** | `28.1` (vitamin C in spinach) |
     
-    > **Vitamin A is the ONLY nutrient measured in micrograms (mcg)**. All other nutrients use milligrams (mg).
+    > **Vitamin A is measured in micrograms RAE, Vitamin D in micrograms**. All other nutrients use milligrams (mg).
     
     ## 🚀 Key Features
     
     - **🎯 Linear Programming Optimization**: Uses SciPy's HiGHS algorithm for guaranteed optimal solutions
     - **📊 Comprehensive Validation**: Pydantic models ensure data integrity and proper units
-    - **🔧 Flexible Constraints**: Support for min/max bounds on all 11 nutrients
+    - **🔧 Flexible Constraints**: Support for min/max bounds on all 12 nutrients
     - **📈 Detailed Results**: Complete nutritional breakdown, cost analysis, and constraint satisfaction
     - **🛡️ Robust Error Handling**: Proper handling of infeasible and unbounded problems
     - **🏥 Health-focused**: Supports various dietary profiles (pregnancy, heart-healthy, athletic)
@@ -113,11 +116,13 @@ app = FastAPI(
       "fat_per_100g": 12.4,
       "vitamin_a_per_100g": 58,     // mcg RAE ⚠️
       "vitamin_c_per_100g": 0,      // mg
-      "calcium_per_100g": 12,       // mg  
+      "vitamin_d_per_100g": 14.2,   // mcg ⚠️
+      "calcium_per_100g": 12,       // mg
       "iron_per_100g": 0.8,         // mg
       "potassium_per_100g": 490,    // mg
       "sodium_per_100g": 59,        // mg
-      "cholesterol_per_100g": 70    // mg
+      "cholesterol_per_100g": 70,   // mg
+      "fiber_per_100g": 0           // g
     }
     ```
     
@@ -129,10 +134,12 @@ app = FastAPI(
     | Protein | 46-56 | 200+ | g |
     | Vitamin A | **700-900** | **3000** | **mcg RAE** |
     | Vitamin C | **65-90** | **2000** | **mg** |
+    | Vitamin D | **15-20** | **100** | **mcg** |
     | Calcium | **1000-1200** | **2500** | **mg** |
     | Iron | **8-18** | **45** | **mg** |
     | Potassium | **3500-4700** | **10000** | **mg** |
     | Sodium | **1500** | **2300** | **mg** |
+    | Fiber | **25-38** | **70** | **g** |
     
     ## 🧮 Optimization Algorithm
     
@@ -146,7 +153,7 @@ app = FastAPI(
     **Subject to Constraints:**
     ```
     min_nutrient ≤ Σ(nutrient_per_100g[i] × quantity[i]) ≤ max_nutrient
-    for all 11 nutrients and all foods i
+    for all 12 nutrients and all foods i
     quantity[i] ≥ 0 for all foods i
     ```
     

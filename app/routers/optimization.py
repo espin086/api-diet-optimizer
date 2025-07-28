@@ -37,19 +37,18 @@ def get_optimizer() -> DietOptimizer:
     ### 📊 Supported Nutrients (12 total)
     
     **Macronutrients (grams):**
-    - Calories, Protein, Carbohydrates, Fat
+    - Calories, Protein, Carbohydrates, Fat, Fiber
     
     **Vitamins & Minerals:**
     - **Vitamin A** (⚠️ **mcg RAE** - micrograms!)
-    - **Vitamin C, Calcium, Iron, Potassium, Zinc, Sodium, Cholesterol** (all in **mg**)
     
-    ### ⚠️ Critical Unit Requirements
+    > ⚠️ **IMPORTANT UNITS**: 
+    **ATTENTION**: Vitamin A is measured in **micrograms (mcg RAE)**, Vitamin D in **micrograms (mcg)**, all other nutrients in **milligrams (mg)**.
     
-    **ATTENTION**: Vitamin A is measured in **micrograms (mcg RAE)**, all other nutrients in **milligrams (mg)**.
-    
-    | Nutrient | Correct Unit | Example Value | Common Mistake |
-    |----------|--------------|---------------|----------------|
+    | Nutrient | Proper Unit | Example Value | Common Mistake |
+    | -------- | ----------- | ------------- | -------------- |
     | Vitamin A | **mcg RAE** | `469` (spinach) | Using mg: `0.469` ❌ |
+    | Vitamin D | **mcg** | `14.2` (salmon) | Using mg: `0.0142` ❌ |
     | Vitamin C | **mg** | `28.1` (spinach) | Using mcg: `28100` ❌ |
     | Calcium | **mg** | `99` (spinach) | Using g: `0.099` ❌ |
     
@@ -72,7 +71,8 @@ def get_optimizer() -> DietOptimizer:
           "potassium_per_100g": 558,      // mg
           "zinc_per_100g": 0.5,           // mg
           "sodium_per_100g": 79,          // mg
-          "cholesterol_per_100g": 0       // mg
+          "cholesterol_per_100g": 0,      // mg
+          "fiber_per_100g": 2.2           // g
         }
       ],
       "constraints": {
@@ -95,7 +95,9 @@ def get_optimizer() -> DietOptimizer:
         "min_sodium": 1500,        // mg
         "max_sodium": 2300,        // mg
         "min_cholesterol": 0,      // mg
-        "max_cholesterol": 300     // mg
+        "max_cholesterol": 300,    // mg
+        "min_fiber": 25,          // g
+        "max_fiber": 70           // g
       }
     }
     ```
@@ -148,12 +150,14 @@ def get_optimizer() -> DietOptimizer:
                             "total_fat": 65.0,
                             "total_vitamin_a": 800.0,
                             "total_vitamin_c": 90.0,
+                            "total_vitamin_d": 20.0,
                             "total_calcium": 1200.0,
                             "total_iron": 15.0,
                             "total_potassium": 4000.0,
                             "total_zinc": 11.5,
                             "total_sodium": 2000.0,
-                            "total_cholesterol": 250.0
+                            "total_cholesterol": 250.0,
+                            "total_fiber": 30.0
                         },
                         "constraint_satisfaction": {
                             "calories_within_bounds": True,
@@ -162,12 +166,14 @@ def get_optimizer() -> DietOptimizer:
                             "fat_within_bounds": True,
                             "vitamin_a_within_bounds": True,
                             "vitamin_c_within_bounds": True,
+                            "vitamin_d_within_bounds": True,
                             "calcium_within_bounds": True,
                             "iron_within_bounds": True,
                             "potassium_within_bounds": True,
                             "zinc_within_bounds": True,
                             "sodium_within_bounds": True,
-                            "cholesterol_within_bounds": True
+                            "cholesterol_within_bounds": True,
+                            "fiber_within_bounds": True
                         }
                     }
                 }
@@ -232,12 +238,14 @@ async def optimize_diet(
                 "total_fat": 0.0,
                 "total_vitamin_a": 0.0,
                 "total_vitamin_c": 0.0,
+                "total_vitamin_d": 0.0,
                 "total_calcium": 0.0,
                 "total_iron": 0.0,
                 "total_potassium": 0.0,
                 "total_zinc": 0.0,
                 "total_sodium": 0.0,
-                "total_cholesterol": 0.0
+                "total_cholesterol": 0.0,
+                "total_fiber": 0.0
             },
             constraint_satisfaction={
                 "calories_within_bounds": False,
@@ -246,12 +254,14 @@ async def optimize_diet(
                 "fat_within_bounds": False,
                 "vitamin_a_within_bounds": False,
                 "vitamin_c_within_bounds": False,
+                "vitamin_d_within_bounds": False,
                 "calcium_within_bounds": False,
                 "iron_within_bounds": False,
                 "potassium_within_bounds": False,
                 "zinc_within_bounds": False,
                 "sodium_within_bounds": False,
-                "cholesterol_within_bounds": False
+                "cholesterol_within_bounds": False,
+                "fiber_within_bounds": False
             }
         )
     
@@ -268,12 +278,14 @@ async def optimize_diet(
                 "total_fat": 0.0,
                 "total_vitamin_a": 0.0,
                 "total_vitamin_c": 0.0,
+                "total_vitamin_d": 0.0,
                 "total_calcium": 0.0,
                 "total_iron": 0.0,
                 "total_potassium": 0.0,
                 "total_zinc": 0.0,
                 "total_sodium": 0.0,
-                "total_cholesterol": 0.0
+                "total_cholesterol": 0.0,
+                "total_fiber": 0.0
             },
             constraint_satisfaction={
                 "calories_within_bounds": False,
@@ -282,12 +294,14 @@ async def optimize_diet(
                 "fat_within_bounds": False,
                 "vitamin_a_within_bounds": False,
                 "vitamin_c_within_bounds": False,
+                "vitamin_d_within_bounds": False,
                 "calcium_within_bounds": False,
                 "iron_within_bounds": False,
                 "potassium_within_bounds": False,
                 "zinc_within_bounds": False,
                 "sodium_within_bounds": False,
-                "cholesterol_within_bounds": False
+                "cholesterol_within_bounds": False,
+                "fiber_within_bounds": False
             }
         )
     
