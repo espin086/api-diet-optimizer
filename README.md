@@ -31,8 +31,9 @@ A modern FastAPI implementation that solves the classic **Diet Problem** using l
 ## 🎯 Features
 
 - **🧮 Linear Programming Optimization** - Uses SciPy's HiGHS solver for robust mathematical optimization
-- **🥗 Comprehensive Nutrition** - Optimizes across 12 key nutrients (macronutrients + vitamins/minerals)
+- **🥗 Comprehensive Nutrition** - Optimizes across **15 essential nutrients** (macronutrients + vitamins/minerals)
 - **💰 Cost Minimization** - Finds the cheapest food combination meeting all nutritional constraints
+- **🎯 Nutrient Density Optimization** - Set equal costs to minimize food weight and maximize nutrient density
 - **🏥 Health-Focused** - Supports specialized dietary profiles (pregnancy, heart-healthy, athletic)
 - **⚡ Fast & Scalable** - Built with FastAPI for high-performance async processing
 - **📊 Interactive Documentation** - Auto-generated Swagger UI with comprehensive examples
@@ -49,7 +50,7 @@ The **Diet Problem** is one of the earliest and most famous applications of line
 
 Linear programming is a mathematical method for finding the best outcome (such as minimum cost) in a mathematical model whose requirements are represented by linear relationships. The Diet Problem exemplifies this perfectly:
 
-- **Objective**: Minimize total food cost
+- **Objective**: Minimize total food cost (or total food weight for nutrient density)
 - **Variables**: Quantities of each food item
 - **Constraints**: Nutritional requirements (minimum/maximum bounds for each nutrient)
 - **Method**: Simplex algorithm or modern interior-point methods
@@ -71,7 +72,7 @@ for all nutrients j and foods i
 quantity[i] ≥ 0 for all foods i
 ```
 
-This API extends the classical 4-nutrient formulation to **12 comprehensive nutrients**, making it suitable for real-world dietary planning.
+This API extends the classical 4-nutrient formulation to **15 comprehensive nutrients**, making it suitable for real-world dietary planning.
 
 ## 🥗 Supported Nutrients
 
@@ -85,6 +86,7 @@ This API extends the classical 4-nutrient formulation to **12 comprehensive nutr
 ### Vitamins & Minerals
 - **Vitamin A** (mcg RAE) - Eye health, immune function
 - **Vitamin C** (mg) - Antioxidant, immune support
+- **Vitamin D** (mcg) - Bone health, immune function
 - **Calcium** (mg) - Bone health, muscle function
 - **Iron** (mg) - Oxygen transport, energy metabolism
 - **Magnesium** (mg) - Muscle and nerve function, energy production
@@ -93,7 +95,7 @@ This API extends the classical 4-nutrient formulation to **12 comprehensive nutr
 - **Sodium** (mg) - Fluid balance, nerve function
 - **Cholesterol** (mg) - Cardiovascular health monitoring
 
-> ⚠️ **Important**: Vitamin A is measured in **micrograms (mcg RAE)**, all other nutrients in **milligrams (mg)**. Fiber is measured in **grams (g)**.
+> ⚠️ **Important**: Vitamin A is measured in **micrograms (mcg RAE)**, Vitamin D in **micrograms (mcg)**, all other nutrients in **milligrams (mg)**. Fiber is measured in **grams (g)**.
 
 ## 🚀 Quick Start
 
@@ -171,13 +173,17 @@ The main endpoint that solves the diet optimization problem.
       "carbs_per_100g": 0,
       "protein_per_100g": 31,
       "fat_per_100g": 3.6,
-      "vitamin_a_per_100g": 9,      // mcg RAE
-      "vitamin_c_per_100g": 0,      // mg
-      "calcium_per_100g": 15,       // mg
-      "iron_per_100g": 0.9,         // mg
-      "potassium_per_100g": 256,    // mg
-      "sodium_per_100g": 74,        // mg
-      "cholesterol_per_100g": 85    // mg
+      "vitamin_a_per_100g": 9,         // mcg RAE
+      "vitamin_c_per_100g": 0,         // mg
+      "vitamin_d_per_100g": 0.1,       // mcg
+      "calcium_per_100g": 15,          // mg
+      "iron_per_100g": 0.9,            // mg
+      "magnesium_per_100g": 22,        // mg
+      "potassium_per_100g": 256,       // mg
+      "zinc_per_100g": 1.0,            // mg
+      "sodium_per_100g": 74,           // mg
+      "cholesterol_per_100g": 85,      // mg
+      "fiber_per_100g": 0              // g
     }
   ],
   "constraints": {
@@ -185,13 +191,17 @@ The main endpoint that solves the diet optimization problem.
     "min_protein": 120, "max_protein": 180,
     "min_carbs": 150, "max_carbs": 250,
     "min_fat": 50, "max_fat": 80,
-    "min_vitamin_a": 700, "max_vitamin_a": 3000,    // mcg RAE
-    "min_vitamin_c": 75, "max_vitamin_c": 2000,     // mg
-    "min_calcium": 1000, "max_calcium": 2500,       // mg
-    "min_iron": 8, "max_iron": 45,                  // mg
-    "min_potassium": 3500, "max_potassium": 10000,  // mg
-    "min_sodium": 1500, "max_sodium": 2300,         // mg
-    "min_cholesterol": 0, "max_cholesterol": 300    // mg
+    "min_vitamin_a": 700, "max_vitamin_a": 3000,      // mcg RAE
+    "min_vitamin_c": 75, "max_vitamin_c": 2000,       // mg
+    "min_vitamin_d": 15, "max_vitamin_d": 100,        // mcg
+    "min_calcium": 1000, "max_calcium": 2500,         // mg
+    "min_iron": 8, "max_iron": 45,                    // mg
+    "min_magnesium": 310, "max_magnesium": 800,       // mg
+    "min_potassium": 3500, "max_potassium": 4700,     // mg
+    "min_zinc": 8, "max_zinc": 40,                    // mg
+    "min_sodium": 1500, "max_sodium": 2300,           // mg
+    "min_cholesterol": 0, "max_cholesterol": 300,     // mg
+    "min_fiber": 25, "max_fiber": 70                  // g
   }
 }
 ```
@@ -216,16 +226,32 @@ The main endpoint that solves the diet optimization problem.
     "total_fat": 65.0,
     "total_vitamin_a": 800.0,
     "total_vitamin_c": 90.0,
+    "total_vitamin_d": 18.0,
     "total_calcium": 1200.0,
     "total_iron": 15.0,
+    "total_magnesium": 350.0,
     "total_potassium": 4000.0,
+    "total_zinc": 12.0,
     "total_sodium": 2000.0,
-    "total_cholesterol": 250.0
+    "total_cholesterol": 250.0,
+    "total_fiber": 30.0
   },
   "constraint_satisfaction": {
     "calories_within_bounds": true,
     "protein_within_bounds": true,
-    // ... other nutrients
+    "carbs_within_bounds": true,
+    "fat_within_bounds": true,
+    "vitamin_a_within_bounds": true,
+    "vitamin_c_within_bounds": true,
+    "vitamin_d_within_bounds": true,
+    "calcium_within_bounds": true,
+    "iron_within_bounds": true,
+    "magnesium_within_bounds": true,
+    "potassium_within_bounds": true,
+    "zinc_within_bounds": true,
+    "sodium_within_bounds": true,
+    "cholesterol_within_bounds": true,
+    "fiber_within_bounds": true
   }
 }
 ```
@@ -258,7 +284,7 @@ Swagger UI with interactive API testing capabilities.
 
 ## 🏥 Common Use Cases
 
-### Personal Diet Planning
+### 1. **Cost-Optimized Diet Planning**
 ```python
 # Example: Budget-conscious healthy eating
 constraints = {
@@ -266,9 +292,32 @@ constraints = {
     "min_protein": 100, "max_protein": 150,
     # ... other constraints
 }
+foods = [
+    {"name": "Chicken", "cost_per_100g": 3.20, ...},
+    {"name": "Rice", "cost_per_100g": 1.10, ...}
+]
 ```
 
-### Specialized Dietary Profiles
+### 2. **Nutrient Density Optimization** 🆕
+Set all food costs to 1 to minimize total food weight and maximize nutrient density:
+
+```python
+# Example: Maximum nutrient density (space-constrained scenarios)
+foods = [
+    {"name": "Chicken", "cost_per_100g": 1, ...},  # Equal costs
+    {"name": "Spinach", "cost_per_100g": 1, ...},  # Equal costs
+    {"name": "Quinoa", "cost_per_100g": 1, ...}    # Equal costs
+]
+# Result: Optimizer selects most nutrient-dense foods with minimal weight
+```
+
+**Perfect for:**
+- 🚀 **Space missions** - Minimize weight/volume while meeting nutrition
+- 🏕️ **Backpacking/camping** - Lightweight, nutritionally complete meals
+- 🏥 **Medical nutrition** - Maximum nutrients in smallest portions
+- 📊 **Nutrition analysis** - Identify most nutrient-dense food combinations
+
+### 3. **Specialized Dietary Profiles**
 
 **Pregnancy Nutrition:**
 - High iron (27mg daily)
@@ -293,16 +342,17 @@ constraints = {
 | Protein | 46-56g | 200g+ | g |
 | Carbohydrates | 130g | 300g+ | g |
 | Fat | 20-35% calories | 100g+ | g |
+| **Fiber** | **25-38** | **70** | **g** |
 | **Vitamin A** | **700-900** | **3000** | **mcg RAE** |
 | **Vitamin C** | **65-90** | **2000** | **mg** |
+| **Vitamin D** | **15-20** | **100** | **mcg** |
 | **Calcium** | **1000-1200** | **2500** | **mg** |
 | **Iron** | **8-18** | **45** | **mg** |
+| **Magnesium** | **310-420** | **800** | **mg** |
 | **Potassium** | **3500-4700** | **10000** | **mg** |
+| **Zinc** | **8-11** | **40** | **mg** |
 | **Sodium** | **1500** | **2300** | **mg** |
 | **Cholesterol** | **0** | **300** | **mg** |
-| **Fiber** | **25-38** | **70** | **g** |
-
-
 
 ## 🧪 Example Usage
 
@@ -332,7 +382,7 @@ poetry run python example_usage.py
 The API includes comprehensive tests covering:
 
 - Mathematical accuracy verification
-- All 11 nutritional constraints
+- All 15 nutritional constraints
 - Edge cases and error handling
 - Specialized dietary scenarios
 - API endpoint functionality
