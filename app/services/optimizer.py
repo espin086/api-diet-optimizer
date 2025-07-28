@@ -143,7 +143,7 @@ class DietOptimizer:
         """
         n_foods = len(foods)
         
-        # Objective function coefficients (minimize cost)
+        # Objective function: minimize cost
         c = np.array([food.cost_per_100g for food in foods])
         
         # Nutritional content matrix (12 nutrients)
@@ -157,6 +157,7 @@ class DietOptimizer:
             [food.vitamin_d_per_100g for food in foods],
             [food.calcium_per_100g for food in foods],
             [food.iron_per_100g for food in foods],
+            [food.magnesium_per_100g for food in foods],
             [food.potassium_per_100g for food in foods],
             [food.zinc_per_100g for food in foods],
             [food.sodium_per_100g for food in foods],
@@ -183,6 +184,7 @@ class DietOptimizer:
             -constraints.min_vitamin_d,
             -constraints.min_calcium,
             -constraints.min_iron,
+            -constraints.min_magnesium,
             -constraints.min_potassium,
             -constraints.min_zinc,
             -constraints.min_sodium,
@@ -197,6 +199,7 @@ class DietOptimizer:
             constraints.max_vitamin_d,
             constraints.max_calcium,
             constraints.max_iron,
+            constraints.max_magnesium,
             constraints.max_potassium,
             constraints.max_zinc,
             constraints.max_sodium,
@@ -247,6 +250,7 @@ class DietOptimizer:
         total_vitamin_d = sum(q * food.vitamin_d_per_100g for q, food in zip(quantities, foods))
         total_calcium = sum(q * food.calcium_per_100g for q, food in zip(quantities, foods))
         total_iron = sum(q * food.iron_per_100g for q, food in zip(quantities, foods))
+        total_magnesium = sum(q * food.magnesium_per_100g for q, food in zip(quantities, foods))
         total_potassium = sum(q * food.potassium_per_100g for q, food in zip(quantities, foods))
         total_zinc = sum(q * food.zinc_per_100g for q, food in zip(quantities, foods))
         total_sodium = sum(q * food.sodium_per_100g for q, food in zip(quantities, foods))
@@ -275,6 +279,7 @@ class DietOptimizer:
             total_vitamin_d=round(total_vitamin_d, 2),
             total_calcium=round(total_calcium, 2),
             total_iron=round(total_iron, 2),
+            total_magnesium=round(total_magnesium, 2),
             total_potassium=round(total_potassium, 2),
             total_zinc=round(total_zinc, 2),
             total_sodium=round(total_sodium, 2),
@@ -293,6 +298,7 @@ class DietOptimizer:
             vitamin_d_within_bounds=constraints.min_vitamin_d <= total_vitamin_d <= constraints.max_vitamin_d,
             calcium_within_bounds=constraints.min_calcium <= total_calcium <= constraints.max_calcium,
             iron_within_bounds=constraints.min_iron <= total_iron <= constraints.max_iron,
+            magnesium_within_bounds=constraints.min_magnesium <= total_magnesium <= constraints.max_magnesium,
             potassium_within_bounds=constraints.min_potassium <= total_potassium <= constraints.max_potassium,
             zinc_within_bounds=constraints.min_zinc <= total_zinc <= constraints.max_zinc,
             sodium_within_bounds=constraints.min_sodium <= total_sodium <= constraints.max_sodium,

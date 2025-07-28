@@ -70,6 +70,7 @@ app = FastAPI(
     - **Vitamin D** - Bone health, immune function (**mcg**)
     - **Calcium** - Bone health, muscle function (**mg**)
     - **Iron** - Oxygen transport, energy metabolism (**mg**)
+    - **Magnesium** - Muscle and nerve function, energy production (**mg**)
     - **Potassium** - Heart health, muscle function (**mg**)
     - **Sodium** - Fluid balance, nerve function (**mg**)
     - **Cholesterol** - Cardiovascular health monitoring (**mg**)

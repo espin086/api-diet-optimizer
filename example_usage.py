@@ -30,6 +30,7 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_d_per_100g": 0.1,    # mcg
             "calcium_per_100g": 15,       # mg
             "iron_per_100g": 0.9,         # mg
+            "magnesium_per_100g": 22,     # mg
             "potassium_per_100g": 256,    # mg
             "sodium_per_100g": 74,        # mg
             "cholesterol_per_100g": 85,   # mg
@@ -47,6 +48,7 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_d_per_100g": 14.2,   # mcg (salmon is rich in vitamin D)
             "calcium_per_100g": 12,
             "iron_per_100g": 0.8,
+            "magnesium_per_100g": 26,
             "potassium_per_100g": 490,
             "sodium_per_100g": 59,
             "cholesterol_per_100g": 70,
@@ -64,6 +66,7 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 10,
             "iron_per_100g": 0.4,
+            "magnesium_per_100g": 44,
             "potassium_per_100g": 43,
             "sodium_per_100g": 5,
             "cholesterol_per_100g": 0,
@@ -81,6 +84,7 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 47,
             "iron_per_100g": 4.6,
+            "magnesium_per_100g": 197,
             "potassium_per_100g": 563,
             "sodium_per_100g": 5,
             "cholesterol_per_100g": 0,
@@ -98,6 +102,7 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 99,
             "iron_per_100g": 2.7,
+            "magnesium_per_100g": 79,
             "potassium_per_100g": 558,
             "sodium_per_100g": 79,
             "cholesterol_per_100g": 0,
@@ -115,6 +120,7 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 47,
             "iron_per_100g": 0.7,
+            "magnesium_per_100g": 21,
             "potassium_per_100g": 316,
             "sodium_per_100g": 33,
             "cholesterol_per_100g": 0,
@@ -132,6 +138,7 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 30,
             "iron_per_100g": 0.6,
+            "magnesium_per_100g": 25,
             "potassium_per_100g": 337,
             "sodium_per_100g": 54,
             "cholesterol_per_100g": 0,
@@ -149,6 +156,7 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_d_per_100g": 0.9,    # mcg (small amount in yogurt)
             "calcium_per_100g": 110,
             "iron_per_100g": 0.1,
+            "magnesium_per_100g": 11,
             "potassium_per_100g": 141,
             "sodium_per_100g": 36,
             "cholesterol_per_100g": 10,
@@ -166,6 +174,7 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 269,
             "iron_per_100g": 3.7,
+            "magnesium_per_100g": 270,
             "potassium_per_100g": 733,
             "sodium_per_100g": 1,
             "cholesterol_per_100g": 0,
@@ -183,6 +192,7 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 40,
             "iron_per_100g": 0.1,
+            "magnesium_per_100g": 10,
             "potassium_per_100g": 181,
             "sodium_per_100g": 0,
             "cholesterol_per_100g": 0,
@@ -210,6 +220,8 @@ def create_sample_request() -> Dict[str, Any]:
         "max_calcium": 2500,       # Upper limit
         "min_iron": 8,             # Daily recommendation (men)
         "max_iron": 45,            # Upper limit
+        "min_magnesium": 400,      # Daily recommendation for men
+        "max_magnesium": 800,      # Safe upper limit
         "min_potassium": 3500,     # Daily recommendation
         "max_potassium": 10000,    # Safe upper limit
         "min_sodium": 1500,        # Minimum needs
@@ -252,6 +264,8 @@ def create_pregnancy_request() -> Dict[str, Any]:
         "max_calcium": 2500,
         "min_iron": 27,            # Much higher iron needs
         "max_iron": 45,
+        "min_magnesium": 350,      # Pregnancy recommendation
+        "max_magnesium": 800,      # Safe upper limit
         "min_potassium": 4700,     # Higher potassium needs
         "max_potassium": 10000,
         "min_sodium": 1500,
@@ -294,6 +308,8 @@ def create_heart_healthy_request() -> Dict[str, Any]:
         "max_calcium": 2500,
         "min_iron": 8,
         "max_iron": 45,
+        "min_magnesium": 420,      # Good for heart health
+        "max_magnesium": 800,      # Safe upper limit
         "min_potassium": 5000,     # High potassium for heart health
         "max_potassium": 10000,
         "min_sodium": 800,         # Low sodium for heart health
@@ -359,6 +375,7 @@ def display_results(result: Dict[str, Any]) -> None:
         print(f"  Vitamin D:    {summary['total_vitamin_d']:>7.1f} mcg")
         print(f"  Calcium:      {summary['total_calcium']:>7.1f} mg")
         print(f"  Iron:         {summary['total_iron']:>7.1f} mg")
+        print(f"  Magnesium:    {summary['total_magnesium']:>7.1f} mg")
         print(f"  Potassium:    {summary['total_potassium']:>7.1f} mg")
         print(f"  Sodium:       {summary['total_sodium']:>7.1f} mg")
         print(f"  Cholesterol:  {summary['total_cholesterol']:>7.1f} mg")
@@ -376,6 +393,7 @@ def display_results(result: Dict[str, Any]) -> None:
             ("Vitamin D", satisfaction['vitamin_d_within_bounds']),
             ("Calcium", satisfaction['calcium_within_bounds']),
             ("Iron", satisfaction['iron_within_bounds']),
+            ("Magnesium", satisfaction['magnesium_within_bounds']),
             ("Potassium", satisfaction['potassium_within_bounds']),
             ("Sodium", satisfaction['sodium_within_bounds']),
             ("Cholesterol", satisfaction['cholesterol_within_bounds'])

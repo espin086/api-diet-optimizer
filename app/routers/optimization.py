@@ -41,6 +41,8 @@ def get_optimizer() -> DietOptimizer:
     
     **Vitamins & Minerals:**
     - **Vitamin A** (⚠️ **mcg RAE** - micrograms!)
+    - **Vitamin C, Calcium, Iron, Magnesium, Potassium, Sodium, Cholesterol** (all in **mg**)
+
     
     > ⚠️ **IMPORTANT UNITS**: 
     **ATTENTION**: Vitamin A is measured in **micrograms (mcg RAE)**, Vitamin D in **micrograms (mcg)**, all other nutrients in **milligrams (mg)**.
@@ -68,6 +70,7 @@ def get_optimizer() -> DietOptimizer:
           "vitamin_c_per_100g": 28.1,     // mg
           "calcium_per_100g": 99,         // mg
           "iron_per_100g": 2.7,           // mg
+          "magnesium_per_100g": 83,       // mg
           "potassium_per_100g": 558,      // mg
           "zinc_per_100g": 0.5,           // mg
           "sodium_per_100g": 79,          // mg
@@ -88,6 +91,8 @@ def get_optimizer() -> DietOptimizer:
         "max_calcium": 2500,       // mg
         "min_iron": 8,             // mg
         "max_iron": 45,            // mg
+        "min_magnesium": 310,      // mg
+        "max_magnesium": 800,      // mg
         "min_potassium": 3500,     // mg
         "max_potassium": 10000,    // mg
         "min_zinc": 8,             // mg
@@ -153,6 +158,7 @@ def get_optimizer() -> DietOptimizer:
                             "total_vitamin_d": 20.0,
                             "total_calcium": 1200.0,
                             "total_iron": 15.0,
+                            "total_magnesium": 350.0,
                             "total_potassium": 4000.0,
                             "total_zinc": 11.5,
                             "total_sodium": 2000.0,
@@ -169,6 +175,7 @@ def get_optimizer() -> DietOptimizer:
                             "vitamin_d_within_bounds": True,
                             "calcium_within_bounds": True,
                             "iron_within_bounds": True,
+                            "magnesium_within_bounds": True,
                             "potassium_within_bounds": True,
                             "zinc_within_bounds": True,
                             "sodium_within_bounds": True,
@@ -241,6 +248,7 @@ async def optimize_diet(
                 "total_vitamin_d": 0.0,
                 "total_calcium": 0.0,
                 "total_iron": 0.0,
+                "total_magnesium": 0.0,
                 "total_potassium": 0.0,
                 "total_zinc": 0.0,
                 "total_sodium": 0.0,
@@ -257,6 +265,7 @@ async def optimize_diet(
                 "vitamin_d_within_bounds": False,
                 "calcium_within_bounds": False,
                 "iron_within_bounds": False,
+                "magnesium_within_bounds": False,
                 "potassium_within_bounds": False,
                 "zinc_within_bounds": False,
                 "sodium_within_bounds": False,
@@ -281,6 +290,7 @@ async def optimize_diet(
                 "total_vitamin_d": 0.0,
                 "total_calcium": 0.0,
                 "total_iron": 0.0,
+                "total_magnesium": 0.0,
                 "total_potassium": 0.0,
                 "total_zinc": 0.0,
                 "total_sodium": 0.0,
@@ -297,6 +307,7 @@ async def optimize_diet(
                 "vitamin_d_within_bounds": False,
                 "calcium_within_bounds": False,
                 "iron_within_bounds": False,
+                "magnesium_within_bounds": False,
                 "potassium_within_bounds": False,
                 "zinc_within_bounds": False,
                 "sodium_within_bounds": False,
@@ -402,7 +413,7 @@ async def root():
         "name": settings.app_name,
         "version": settings.app_version,
         "status": "running",
-        "description": "Enhanced Diet Optimizer API with 11 essential nutrients",
+        "description": "Enhanced Diet Optimizer API with 12 essential nutrients",
         "endpoints": {
             "optimize": "/optimize",
             "health": "/health",
@@ -411,7 +422,7 @@ async def root():
         },
         "features": [
             "Linear programming optimization",
-            "11 comprehensive nutrients",
+            "12 comprehensive nutrients",
             "USDA-compatible units",
             "Multiple diet profiles",
             "Constraint validation"

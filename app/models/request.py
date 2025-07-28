@@ -52,6 +52,11 @@ class Food(BaseModel):
         ge=0, 
         description="Iron per 100 grams (mg - milligrams)"
     )
+    magnesium_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Magnesium per 100 grams (mg - milligrams)"
+    )
     potassium_per_100g: float = Field(
         ..., 
         ge=0, 
@@ -102,6 +107,7 @@ class Food(BaseModel):
                 "vitamin_d_per_100g": 0,      # mcg
                 "calcium_per_100g": 15,       # mg
                 "iron_per_100g": 0.9,         # mg
+                "magnesium_per_100g": 20,     # mg
                 "potassium_per_100g": 256,    # mg
                 "zinc_per_100g": 1.0,         # mg
                 "sodium_per_100g": 74,        # mg
@@ -195,6 +201,18 @@ class NutritionalConstraints(BaseModel):
         gt=0, 
         description="Maximum daily iron allowed (mg). "
                    "Upper limit: 45 mg for adults"
+    )
+    min_magnesium: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily magnesium required (mg). "
+                   "RDA: 310-420 mg for adults"
+    )
+    max_magnesium: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily magnesium allowed (mg). "
+                   "Upper limit: 350 mg from supplements (no limit for food sources)"
     )
     min_potassium: float = Field(
         ..., 
@@ -331,6 +349,14 @@ class NutritionalConstraints(BaseModel):
             raise ValueError('max_iron must be greater than min_iron')
         return v
 
+    @field_validator('max_magnesium')
+    @classmethod
+    def validate_magnesium_bounds(cls, v: float, info) -> float:
+        """Validate that max_magnesium > min_magnesium."""
+        if info.data.get('min_magnesium') is not None and v <= info.data['min_magnesium']:
+            raise ValueError('max_magnesium must be greater than min_magnesium')
+        return v
+
     @field_validator('max_potassium')
     @classmethod
     def validate_potassium_bounds(cls, v: float, info) -> float:
@@ -392,6 +418,8 @@ class NutritionalConstraints(BaseModel):
                 "max_calcium": 2500,       # mg
                 "min_iron": 8,             # mg
                 "max_iron": 45,            # mg
+                "min_magnesium": 310,      # mg
+                "max_magnesium": 350,      # mg
                 "min_potassium": 3500,     # mg
                 "max_potassium": 10000,    # mg
                 "min_zinc": 8,             # mg
