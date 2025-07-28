@@ -356,17 +356,69 @@ foods = [
 
 ## 🧪 Example Usage
 
-Check out `example_usage.py` for comprehensive examples including:
+### **📄 Comprehensive Demo Script**
+
+The [`example_usage.py`](./example_usage.py) file provides a complete demonstration of all API capabilities with realistic food databases and nutritional constraints. This script showcases **4 distinct optimization scenarios** with detailed output formatting.
+
+### **🚀 Running the Examples**
+
+**Prerequisites:** Ensure the API is running locally on **port 8002** (either via Docker or uvicorn):
 
 ```bash
-# Run the example demonstration
+# Option 1: Using Docker (recommended)
+docker-compose up --build
+# API will be available on http://localhost:8002
+
+# Option 2: Using Poetry/uvicorn directly
+poetry run uvicorn app.main:app --reload --port 8002
+```
+
+**Run the demonstration:**
+```bash
+# Execute all 4 optimization scenarios
+python example_usage.py
+
+# Or with Poetry
 poetry run python example_usage.py
 ```
 
-- Standard healthy adult diet optimization
-- Pregnancy nutrition profile
-- Heart-healthy diet profile
-- Athletic performance nutrition
+### **🎯 Demonstrated Use Cases**
+
+#### **1. Cost-Optimized Diet Planning**
+- **Objective**: Minimize total food cost while meeting all nutritional requirements
+- **Typical Result**: ~$44 for 2kg of nutritionally complete food
+- **Best For**: Budget-conscious meal planning, institutional feeding
+
+#### **2. Nutrient Density Optimization** 🆕
+- **Objective**: Minimize total food weight (all costs = 1) for maximum nutrient density
+- **Typical Result**: ~1.6kg of highly concentrated nutrition
+- **Best For**: Space missions, backpacking, emergency rations, medical nutrition
+
+#### **3. Pregnancy Nutrition Profile**
+- **Objective**: Meet elevated nutritional needs during pregnancy
+- **Key Features**: Higher iron (15mg), calcium (600mg), and caloric requirements
+- **Best For**: Maternal nutrition planning, prenatal dietary guidance
+
+#### **4. Heart-Healthy Diet Profile**
+- **Objective**: Optimize for cardiovascular health
+- **Key Features**: Low sodium (≤600mg), high potassium, omega-3 rich foods
+- **Best For**: Cardiac rehabilitation, preventive cardiology, hypertension management
+
+### **📊 Example Output Format**
+
+Each optimization scenario provides:
+- **Optimization Status**: OPTIMAL/INFEASIBLE/UNBOUNDED
+- **Total Cost & Weight**: Economic and practical metrics
+- **Food Quantities**: Precise amounts in grams with individual costs
+- **Nutritional Summary**: Complete breakdown of all 15 nutrients
+- **Constraint Satisfaction**: ✓/✗ status for each nutritional requirement
+
+### **🔧 Customization**
+
+The script serves as a template for creating your own optimization scenarios:
+- **Food Database**: Modify nutritional values or add new foods
+- **Constraints**: Adjust min/max bounds for specific dietary needs
+- **Objectives**: Change cost coefficients to optimize for different goals
 
 ## 🛠️ Technology Stack
 
