@@ -20,6 +20,7 @@ class NutritionalSummary(BaseModel):
     - Macronutrients: grams (g)
     - Vitamin A: micrograms RAE (mcg)
     - Other nutrients: milligrams (mg)
+    - Fiber: grams (g)
     """
     
     total_calories: float = Field(..., ge=0, description="Total calories achieved")
@@ -37,6 +38,7 @@ class NutritionalSummary(BaseModel):
     total_potassium: float = Field(..., ge=0, description="Total potassium achieved (mg)")
     total_sodium: float = Field(..., ge=0, description="Total sodium achieved (mg)")
     total_cholesterol: float = Field(..., ge=0, description="Total cholesterol achieved (mg)")
+    total_fiber: float = Field(..., ge=0, description="Total dietary fiber achieved (g)")
 
 
 class ConstraintSatisfaction(BaseModel):
@@ -53,6 +55,7 @@ class ConstraintSatisfaction(BaseModel):
     potassium_within_bounds: bool = Field(..., description="Whether potassium is within bounds")
     sodium_within_bounds: bool = Field(..., description="Whether sodium is within bounds")
     cholesterol_within_bounds: bool = Field(..., description="Whether cholesterol is within bounds")
+    fiber_within_bounds: bool = Field(..., description="Whether fiber is within bounds")
 
 
 class OptimizationResult(BaseModel):

@@ -12,6 +12,7 @@ class Food(BaseModel):
     - Macronutrients (protein, carbs, fat): grams (g)
     - Vitamin A: micrograms RAE (mcg)
     - Other vitamins and minerals: milligrams (mg)
+    - Fiber: grams (g)
     """
     
     name: str = Field(..., description="Name of the food item")
@@ -60,6 +61,13 @@ class Food(BaseModel):
         ge=0, 
         description="Cholesterol per 100 grams (mg - milligrams)"
     )
+    
+    # Fiber - in grams
+    fiber_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Dietary fiber per 100 grams (g - grams)"
+    )
 
     @field_validator('name')
     @classmethod
@@ -84,7 +92,8 @@ class Food(BaseModel):
                 "iron_per_100g": 0.9,         # mg
                 "potassium_per_100g": 256,    # mg
                 "sodium_per_100g": 74,        # mg
-                "cholesterol_per_100g": 85    # mg
+                "cholesterol_per_100g": 85,   # mg
+                "fiber_per_100g": 0           # g
             }
         }
     )
@@ -98,6 +107,7 @@ class NutritionalConstraints(BaseModel):
     - Macronutrients: grams (g)
     - Vitamin A: micrograms RAE (mcg)
     - Other nutrients: milligrams (mg)
+    - Fiber: grams (g)
     """
     
     # Macronutrients
@@ -197,6 +207,20 @@ class NutritionalConstraints(BaseModel):
         description="Maximum daily cholesterol allowed (mg). "
                    "Heart-healthy limit: <300 mg"
     )
+    
+    # Fiber
+    min_fiber: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily fiber required (g). "
+                   "RDA: 25-38 g for adults"
+    )
+    max_fiber: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily fiber allowed (g). "
+                   "Generally well-tolerated up to 70 g"
+    )
 
     @field_validator('max_calories')
     @classmethod
@@ -286,6 +310,14 @@ class NutritionalConstraints(BaseModel):
             raise ValueError('max_cholesterol must be greater than min_cholesterol')
         return v
 
+    @field_validator('max_fiber')
+    @classmethod
+    def validate_fiber_bounds(cls, v: float, info) -> float:
+        """Validate that max_fiber > min_fiber."""
+        if info.data.get('min_fiber') is not None and v <= info.data['min_fiber']:
+            raise ValueError('max_fiber must be greater than min_fiber')
+        return v
+
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
@@ -310,7 +342,9 @@ class NutritionalConstraints(BaseModel):
                 "min_sodium": 1500,        # mg
                 "max_sodium": 2300,        # mg
                 "min_cholesterol": 0,      # mg
-                "max_cholesterol": 300     # mg
+                "max_cholesterol": 300,    # mg
+                "min_fiber": 25,          # g
+                "max_fiber": 70           # g
             }
         }
     )

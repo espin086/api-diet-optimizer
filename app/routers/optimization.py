@@ -34,10 +34,10 @@ def get_optimizer() -> DietOptimizer:
     Solves the classic **Diet Problem** using linear programming to find the minimum-cost 
     combination of foods that meets all specified nutritional requirements.
     
-    ### 📊 Supported Nutrients (11 total)
+    ### 📊 Supported Nutrients (12 total)
     
     **Macronutrients (grams):**
-    - Calories, Protein, Carbohydrates, Fat
+    - Calories, Protein, Carbohydrates, Fat, Fiber
     
     **Vitamins & Minerals:**
     - **Vitamin A** (⚠️ **mcg RAE** - micrograms!)
@@ -71,7 +71,8 @@ def get_optimizer() -> DietOptimizer:
           "iron_per_100g": 2.7,           // mg
           "potassium_per_100g": 558,      // mg
           "sodium_per_100g": 79,          // mg
-          "cholesterol_per_100g": 0       // mg
+          "cholesterol_per_100g": 0,      // mg
+          "fiber_per_100g": 2.2           // g
         }
       ],
       "constraints": {
@@ -92,7 +93,9 @@ def get_optimizer() -> DietOptimizer:
         "min_sodium": 1500,        // mg
         "max_sodium": 2300,        // mg
         "min_cholesterol": 0,      // mg
-        "max_cholesterol": 300     // mg
+        "max_cholesterol": 300,    // mg
+        "min_fiber": 25,          // g
+        "max_fiber": 70           // g
       }
     }
     ```
@@ -149,7 +152,8 @@ def get_optimizer() -> DietOptimizer:
                             "total_iron": 15.0,
                             "total_potassium": 4000.0,
                             "total_sodium": 2000.0,
-                            "total_cholesterol": 250.0
+                            "total_cholesterol": 250.0,
+                            "total_fiber": 30.0
                         },
                         "constraint_satisfaction": {
                             "calories_within_bounds": True,
@@ -162,7 +166,8 @@ def get_optimizer() -> DietOptimizer:
                             "iron_within_bounds": True,
                             "potassium_within_bounds": True,
                             "sodium_within_bounds": True,
-                            "cholesterol_within_bounds": True
+                            "cholesterol_within_bounds": True,
+                            "fiber_within_bounds": True
                         }
                     }
                 }
@@ -231,7 +236,8 @@ async def optimize_diet(
                 "total_iron": 0.0,
                 "total_potassium": 0.0,
                 "total_sodium": 0.0,
-                "total_cholesterol": 0.0
+                "total_cholesterol": 0.0,
+                "total_fiber": 0.0
             },
             constraint_satisfaction={
                 "calories_within_bounds": False,
@@ -244,7 +250,8 @@ async def optimize_diet(
                 "iron_within_bounds": False,
                 "potassium_within_bounds": False,
                 "sodium_within_bounds": False,
-                "cholesterol_within_bounds": False
+                "cholesterol_within_bounds": False,
+                "fiber_within_bounds": False
             }
         )
     
@@ -265,7 +272,8 @@ async def optimize_diet(
                 "total_iron": 0.0,
                 "total_potassium": 0.0,
                 "total_sodium": 0.0,
-                "total_cholesterol": 0.0
+                "total_cholesterol": 0.0,
+                "total_fiber": 0.0
             },
             constraint_satisfaction={
                 "calories_within_bounds": False,
@@ -278,7 +286,8 @@ async def optimize_diet(
                 "iron_within_bounds": False,
                 "potassium_within_bounds": False,
                 "sodium_within_bounds": False,
-                "cholesterol_within_bounds": False
+                "cholesterol_within_bounds": False,
+                "fiber_within_bounds": False
             }
         )
     

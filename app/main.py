@@ -55,13 +55,14 @@ app = FastAPI(
     
     ## 🍎 Enhanced Nutritional Coverage
     
-    This API now supports **11 essential nutrients** for comprehensive diet optimization:
+    This API now supports **12 essential nutrients** for comprehensive diet optimization:
     
     ### Macronutrients (grams)
     - **Calories** - Total energy content
     - **Protein** - Muscle building and repair
     - **Carbohydrates** - Primary energy source  
     - **Fat** - Essential fatty acids and energy storage
+    - **Fiber** - Digestive health and satiety
     
     ### Vitamins & Minerals
     - **Vitamin A** - Eye health, immune function (⚠️ **mcg RAE**)
@@ -87,7 +88,7 @@ app = FastAPI(
     
     - **🎯 Linear Programming Optimization**: Uses SciPy's HiGHS algorithm for guaranteed optimal solutions
     - **📊 Comprehensive Validation**: Pydantic models ensure data integrity and proper units
-    - **🔧 Flexible Constraints**: Support for min/max bounds on all 11 nutrients
+    - **🔧 Flexible Constraints**: Support for min/max bounds on all 12 nutrients
     - **📈 Detailed Results**: Complete nutritional breakdown, cost analysis, and constraint satisfaction
     - **🛡️ Robust Error Handling**: Proper handling of infeasible and unbounded problems
     - **🏥 Health-focused**: Supports various dietary profiles (pregnancy, heart-healthy, athletic)
@@ -117,7 +118,8 @@ app = FastAPI(
       "iron_per_100g": 0.8,         // mg
       "potassium_per_100g": 490,    // mg
       "sodium_per_100g": 59,        // mg
-      "cholesterol_per_100g": 70    // mg
+      "cholesterol_per_100g": 70,   // mg
+      "fiber_per_100g": 0           // g
     }
     ```
     
@@ -133,6 +135,7 @@ app = FastAPI(
     | Iron | **8-18** | **45** | **mg** |
     | Potassium | **3500-4700** | **10000** | **mg** |
     | Sodium | **1500** | **2300** | **mg** |
+    | Fiber | **25-38** | **70** | **g** |
     
     ## 🧮 Optimization Algorithm
     
@@ -146,7 +149,7 @@ app = FastAPI(
     **Subject to Constraints:**
     ```
     min_nutrient ≤ Σ(nutrient_per_100g[i] × quantity[i]) ≤ max_nutrient
-    for all 11 nutrients and all foods i
+    for all 12 nutrients and all foods i
     quantity[i] ≥ 0 for all foods i
     ```
     
