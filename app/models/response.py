@@ -38,6 +38,26 @@ class NutritionalSummary(BaseModel):
         ge=0, 
         description="Total vitamin D achieved (mcg - micrograms)"
     )
+    total_vitamin_b12: float = Field(
+        ..., 
+        ge=0, 
+        description="Total vitamin B12 achieved (mcg - micrograms)"
+    )
+    total_folate: float = Field(
+        ..., 
+        ge=0, 
+        description="Total folate achieved (mcg DFE - Dietary Folate Equivalents)"
+    )
+    total_vitamin_e: float = Field(
+        ..., 
+        ge=0, 
+        description="Total vitamin E achieved (mg - milligrams)"
+    )
+    total_vitamin_k: float = Field(
+        ..., 
+        ge=0, 
+        description="Total vitamin K achieved (mcg - micrograms)"
+    )
     total_calcium: float = Field(..., ge=0, description="Total calcium achieved (mg)")
     total_iron: float = Field(..., ge=0, description="Total iron achieved (mg)")
     total_magnesium: float = Field(..., ge=0, description="Total magnesium achieved (mg)")
@@ -58,6 +78,10 @@ class ConstraintSatisfaction(BaseModel):
     vitamin_a_within_bounds: bool = Field(..., description="Whether vitamin A is within bounds")
     vitamin_c_within_bounds: bool = Field(..., description="Whether vitamin C is within bounds")
     vitamin_d_within_bounds: bool = Field(..., description="Whether vitamin D is within bounds")
+    vitamin_b12_within_bounds: bool = Field(..., description="Whether vitamin B12 is within bounds")
+    folate_within_bounds: bool = Field(..., description="Whether folate is within bounds")
+    vitamin_e_within_bounds: bool = Field(..., description="Whether vitamin E is within bounds")
+    vitamin_k_within_bounds: bool = Field(..., description="Whether vitamin K is within bounds")
     calcium_within_bounds: bool = Field(..., description="Whether calcium is within bounds")
     iron_within_bounds: bool = Field(..., description="Whether iron is within bounds")
     magnesium_within_bounds: bool = Field(..., description="Whether magnesium is within bounds")

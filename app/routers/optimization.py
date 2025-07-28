@@ -34,23 +34,28 @@ def get_optimizer() -> DietOptimizer:
     Solves the classic **Diet Problem** using linear programming to find the minimum-cost 
     combination of foods that meets all specified nutritional requirements.
     
-    ### 📊 Supported Nutrients (12 total)
+    ### 📊 Supported Nutrients (19 total)
     
     **Macronutrients (grams):**
     - Calories, Protein, Carbohydrates, Fat, Fiber
     
     **Vitamins & Minerals:**
     - **Vitamin A** (⚠️ **mcg RAE** - micrograms!)
-    - **Vitamin C, Calcium, Iron, Magnesium, Potassium, Sodium, Cholesterol** (all in **mg**)
+    - **Vitamin D, B12, Folate, K** (all in **mcg**)
+    - **Vitamin C, E, Calcium, Iron, Magnesium, Potassium, Sodium, Cholesterol** (all in **mg**)
 
     
     > ⚠️ **IMPORTANT UNITS**: 
-    **ATTENTION**: Vitamin A is measured in **micrograms (mcg RAE)**, Vitamin D in **micrograms (mcg)**, all other nutrients in **milligrams (mg)**.
+    **ATTENTION**: Vitamin A is measured in **micrograms (mcg RAE)**, Vitamins D/B12/Folate/K in **micrograms (mcg)**, Vitamin E and all minerals in **milligrams (mg)**.
     
     | Nutrient | Proper Unit | Example Value | Common Mistake |
     | -------- | ----------- | ------------- | -------------- |
     | Vitamin A | **mcg RAE** | `469` (spinach) | Using mg: `0.469` ❌ |
     | Vitamin D | **mcg** | `14.2` (salmon) | Using mg: `0.0142` ❌ |
+    | Vitamin B12 | **mcg** | `0.3` (chicken) | Using mg: `0.0003` ❌ |
+    | Folate | **mcg DFE** | `194` (spinach) | Using mg: `0.194` ❌ |
+    | Vitamin E | **mg** | `2.0` (spinach) | Using mcg: `2000` ❌ |
+    | Vitamin K | **mcg** | `483` (spinach) | Using mg: `0.483` ❌ |
     | Vitamin C | **mg** | `28.1` (spinach) | Using mcg: `28100` ❌ |
     | Calcium | **mg** | `99` (spinach) | Using g: `0.099` ❌ |
     
@@ -68,6 +73,11 @@ def get_optimizer() -> DietOptimizer:
           "fat_per_100g": 0.4,
           "vitamin_a_per_100g": 469,      // mcg RAE ⚠️
           "vitamin_c_per_100g": 28.1,     // mg
+          "vitamin_d_per_100g": 0,        // mcg
+          "vitamin_b12_per_100g": 0,      // mcg
+          "folate_per_100g": 194,         // mcg DFE
+          "vitamin_e_per_100g": 2.0,      // mg
+          "vitamin_k_per_100g": 483,      // mcg
           "calcium_per_100g": 99,         // mg
           "iron_per_100g": 2.7,           // mg
           "magnesium_per_100g": 83,       // mg
@@ -87,6 +97,16 @@ def get_optimizer() -> DietOptimizer:
         "max_vitamin_a": 3000,     // mcg RAE ⚠️
         "min_vitamin_c": 75,       // mg
         "max_vitamin_c": 2000,     // mg
+        "min_vitamin_d": 15,       // mcg
+        "max_vitamin_d": 100,      // mcg
+        "min_vitamin_b12": 2.4,    // mcg
+        "max_vitamin_b12": 1000,   // mcg (no established upper limit)
+        "min_folate": 400,         // mcg DFE
+        "max_folate": 1000,        // mcg DFE
+        "min_vitamin_e": 15,       // mg
+        "max_vitamin_e": 1000,     // mg
+        "min_vitamin_k": 90,       // mcg
+        "max_vitamin_k": 10000,    // mcg (no established upper limit)
         "min_calcium": 1000,       // mg
         "max_calcium": 2500,       // mg
         "min_iron": 8,             // mg
@@ -156,6 +176,10 @@ def get_optimizer() -> DietOptimizer:
                             "total_vitamin_a": 800.0,
                             "total_vitamin_c": 90.0,
                             "total_vitamin_d": 20.0,
+                            "total_vitamin_b12": 3.5,
+                            "total_folate": 450.0,
+                            "total_vitamin_e": 18.0,
+                            "total_vitamin_k": 120.0,
                             "total_calcium": 1200.0,
                             "total_iron": 15.0,
                             "total_magnesium": 350.0,
@@ -173,6 +197,10 @@ def get_optimizer() -> DietOptimizer:
                             "vitamin_a_within_bounds": True,
                             "vitamin_c_within_bounds": True,
                             "vitamin_d_within_bounds": True,
+                            "vitamin_b12_within_bounds": True,
+                            "folate_within_bounds": True,
+                            "vitamin_e_within_bounds": True,
+                            "vitamin_k_within_bounds": True,
                             "calcium_within_bounds": True,
                             "iron_within_bounds": True,
                             "magnesium_within_bounds": True,
@@ -246,6 +274,10 @@ async def optimize_diet(
                 "total_vitamin_a": 0.0,
                 "total_vitamin_c": 0.0,
                 "total_vitamin_d": 0.0,
+                "total_vitamin_b12": 0.0,
+                "total_folate": 0.0,
+                "total_vitamin_e": 0.0,
+                "total_vitamin_k": 0.0,
                 "total_calcium": 0.0,
                 "total_iron": 0.0,
                 "total_magnesium": 0.0,
@@ -263,6 +295,10 @@ async def optimize_diet(
                 "vitamin_a_within_bounds": False,
                 "vitamin_c_within_bounds": False,
                 "vitamin_d_within_bounds": False,
+                "vitamin_b12_within_bounds": False,
+                "folate_within_bounds": False,
+                "vitamin_e_within_bounds": False,
+                "vitamin_k_within_bounds": False,
                 "calcium_within_bounds": False,
                 "iron_within_bounds": False,
                 "magnesium_within_bounds": False,
@@ -288,6 +324,10 @@ async def optimize_diet(
                 "total_vitamin_a": 0.0,
                 "total_vitamin_c": 0.0,
                 "total_vitamin_d": 0.0,
+                "total_vitamin_b12": 0.0,
+                "total_folate": 0.0,
+                "total_vitamin_e": 0.0,
+                "total_vitamin_k": 0.0,
                 "total_calcium": 0.0,
                 "total_iron": 0.0,
                 "total_magnesium": 0.0,
@@ -305,6 +345,10 @@ async def optimize_diet(
                 "vitamin_a_within_bounds": False,
                 "vitamin_c_within_bounds": False,
                 "vitamin_d_within_bounds": False,
+                "vitamin_b12_within_bounds": False,
+                "folate_within_bounds": False,
+                "vitamin_e_within_bounds": False,
+                "vitamin_k_within_bounds": False,
                 "calcium_within_bounds": False,
                 "iron_within_bounds": False,
                 "magnesium_within_bounds": False,

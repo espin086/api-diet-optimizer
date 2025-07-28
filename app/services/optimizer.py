@@ -132,8 +132,13 @@ class DietOptimizer:
         - min_vitamin_a <= sum(vitamin_a_per_100g[i] * x[i]) <= max_vitamin_a
         - min_vitamin_c <= sum(vitamin_c_per_100g[i] * x[i]) <= max_vitamin_c
         - min_vitamin_d <= sum(vitamin_d_per_100g[i] * x[i]) <= max_vitamin_d
+        - min_vitamin_b12 <= sum(vitamin_b12_per_100g[i] * x[i]) <= max_vitamin_b12
+        - min_folate <= sum(folate_per_100g[i] * x[i]) <= max_folate
+        - min_vitamin_e <= sum(vitamin_e_per_100g[i] * x[i]) <= max_vitamin_e
+        - min_vitamin_k <= sum(vitamin_k_per_100g[i] * x[i]) <= max_vitamin_k
         - min_calcium <= sum(calcium_per_100g[i] * x[i]) <= max_calcium
         - min_iron <= sum(iron_per_100g[i] * x[i]) <= max_iron
+        - min_magnesium <= sum(magnesium_per_100g[i] * x[i]) <= max_magnesium
         - min_potassium <= sum(potassium_per_100g[i] * x[i]) <= max_potassium
         - min_zinc <= sum(zinc_per_100g[i] * x[i]) <= max_zinc
         - min_sodium <= sum(sodium_per_100g[i] * x[i]) <= max_sodium
@@ -146,7 +151,7 @@ class DietOptimizer:
         # Objective function: minimize cost
         c = np.array([food.cost_per_100g for food in foods])
         
-        # Nutritional content matrix (12 nutrients)
+        # Nutritional content matrix (19 nutrients)
         nutrition_matrix = np.array([
             [food.calories_per_100g for food in foods],
             [food.protein_per_100g for food in foods],
@@ -155,6 +160,10 @@ class DietOptimizer:
             [food.vitamin_a_per_100g for food in foods],
             [food.vitamin_c_per_100g for food in foods],
             [food.vitamin_d_per_100g for food in foods],
+            [food.vitamin_b12_per_100g for food in foods],
+            [food.folate_per_100g for food in foods],
+            [food.vitamin_e_per_100g for food in foods],
+            [food.vitamin_k_per_100g for food in foods],
             [food.calcium_per_100g for food in foods],
             [food.iron_per_100g for food in foods],
             [food.magnesium_per_100g for food in foods],
@@ -182,6 +191,10 @@ class DietOptimizer:
             -constraints.min_vitamin_a,
             -constraints.min_vitamin_c,
             -constraints.min_vitamin_d,
+            -constraints.min_vitamin_b12,
+            -constraints.min_folate,
+            -constraints.min_vitamin_e,
+            -constraints.min_vitamin_k,
             -constraints.min_calcium,
             -constraints.min_iron,
             -constraints.min_magnesium,
@@ -197,6 +210,10 @@ class DietOptimizer:
             constraints.max_vitamin_a,
             constraints.max_vitamin_c,
             constraints.max_vitamin_d,
+            constraints.max_vitamin_b12,
+            constraints.max_folate,
+            constraints.max_vitamin_e,
+            constraints.max_vitamin_k,
             constraints.max_calcium,
             constraints.max_iron,
             constraints.max_magnesium,
@@ -248,6 +265,10 @@ class DietOptimizer:
         total_vitamin_a = sum(q * food.vitamin_a_per_100g for q, food in zip(quantities, foods))
         total_vitamin_c = sum(q * food.vitamin_c_per_100g for q, food in zip(quantities, foods))
         total_vitamin_d = sum(q * food.vitamin_d_per_100g for q, food in zip(quantities, foods))
+        total_vitamin_b12 = sum(q * food.vitamin_b12_per_100g for q, food in zip(quantities, foods))
+        total_folate = sum(q * food.folate_per_100g for q, food in zip(quantities, foods))
+        total_vitamin_e = sum(q * food.vitamin_e_per_100g for q, food in zip(quantities, foods))
+        total_vitamin_k = sum(q * food.vitamin_k_per_100g for q, food in zip(quantities, foods))
         total_calcium = sum(q * food.calcium_per_100g for q, food in zip(quantities, foods))
         total_iron = sum(q * food.iron_per_100g for q, food in zip(quantities, foods))
         total_magnesium = sum(q * food.magnesium_per_100g for q, food in zip(quantities, foods))
@@ -277,6 +298,10 @@ class DietOptimizer:
             total_vitamin_a=round(total_vitamin_a, 2),
             total_vitamin_c=round(total_vitamin_c, 2),
             total_vitamin_d=round(total_vitamin_d, 2),
+            total_vitamin_b12=round(total_vitamin_b12, 2),
+            total_folate=round(total_folate, 2),
+            total_vitamin_e=round(total_vitamin_e, 2),
+            total_vitamin_k=round(total_vitamin_k, 2),
             total_calcium=round(total_calcium, 2),
             total_iron=round(total_iron, 2),
             total_magnesium=round(total_magnesium, 2),
@@ -296,6 +321,10 @@ class DietOptimizer:
             vitamin_a_within_bounds=constraints.min_vitamin_a <= total_vitamin_a <= constraints.max_vitamin_a,
             vitamin_c_within_bounds=constraints.min_vitamin_c <= total_vitamin_c <= constraints.max_vitamin_c,
             vitamin_d_within_bounds=constraints.min_vitamin_d <= total_vitamin_d <= constraints.max_vitamin_d,
+            vitamin_b12_within_bounds=constraints.min_vitamin_b12 <= total_vitamin_b12 <= constraints.max_vitamin_b12,
+            folate_within_bounds=constraints.min_folate <= total_folate <= constraints.max_folate,
+            vitamin_e_within_bounds=constraints.min_vitamin_e <= total_vitamin_e <= constraints.max_vitamin_e,
+            vitamin_k_within_bounds=constraints.min_vitamin_k <= total_vitamin_k <= constraints.max_vitamin_k,
             calcium_within_bounds=constraints.min_calcium <= total_calcium <= constraints.max_calcium,
             iron_within_bounds=constraints.min_iron <= total_iron <= constraints.max_iron,
             magnesium_within_bounds=constraints.min_magnesium <= total_magnesium <= constraints.max_magnesium,

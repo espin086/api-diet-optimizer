@@ -27,6 +27,10 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_a_per_100g": 9,      # mcg RAE
             "vitamin_c_per_100g": 0,      # mg
             "vitamin_d_per_100g": 0.1,    # mcg
+            "vitamin_b12_per_100g": 0.3,  # mcg
+            "folate_per_100g": 6,         # mcg DFE
+            "vitamin_e_per_100g": 0.3,    # mg
+            "vitamin_k_per_100g": 1.5,    # mcg
             "calcium_per_100g": 15,       # mg
             "iron_per_100g": 0.9,         # mg
             "magnesium_per_100g": 22,     # mg
@@ -46,6 +50,10 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_a_per_100g": 58,
             "vitamin_c_per_100g": 0,
             "vitamin_d_per_100g": 14.2,   # mcg (salmon is rich in vitamin D)
+            "vitamin_b12_per_100g": 3.8,  # mcg (salmon is rich in B12)
+            "folate_per_100g": 25,        # mcg DFE
+            "vitamin_e_per_100g": 1.5,    # mg
+            "vitamin_k_per_100g": 0.1,    # mcg
             "calcium_per_100g": 12,
             "iron_per_100g": 0.8,
             "magnesium_per_100g": 26,
@@ -65,6 +73,10 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_a_per_100g": 0,
             "vitamin_c_per_100g": 0,
             "vitamin_d_per_100g": 0,      # mcg
+            "vitamin_b12_per_100g": 0,    # mcg
+            "folate_per_100g": 8,         # mcg DFE
+            "vitamin_e_per_100g": 0.1,    # mg
+            "vitamin_k_per_100g": 0.4,    # mcg
             "calcium_per_100g": 10,
             "iron_per_100g": 0.4,
             "magnesium_per_100g": 44,
@@ -84,6 +96,10 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_a_per_100g": 1,
             "vitamin_c_per_100g": 0,
             "vitamin_d_per_100g": 0,      # mcg
+            "vitamin_b12_per_100g": 0,    # mcg
+            "folate_per_100g": 42,        # mcg DFE
+            "vitamin_e_per_100g": 0.6,    # mg
+            "vitamin_k_per_100g": 1.0,    # mcg
             "calcium_per_100g": 47,
             "iron_per_100g": 4.6,
             "magnesium_per_100g": 197,
@@ -103,6 +119,10 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_a_per_100g": 469,
             "vitamin_c_per_100g": 28.1,
             "vitamin_d_per_100g": 0,      # mcg
+            "vitamin_b12_per_100g": 0,    # mcg
+            "folate_per_100g": 194,       # mcg DFE
+            "vitamin_e_per_100g": 2.0,    # mg
+            "vitamin_k_per_100g": 483,    # mcg
             "calcium_per_100g": 99,
             "iron_per_100g": 2.7,
             "magnesium_per_100g": 79,
@@ -122,6 +142,10 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_a_per_100g": 623,
             "vitamin_c_per_100g": 89.2,
             "vitamin_d_per_100g": 0,      # mcg
+            "vitamin_b12_per_100g": 0,    # mcg
+            "folate_per_100g": 108,       # mcg DFE
+            "vitamin_e_per_100g": 1.7,    # mg
+            "vitamin_k_per_100g": 102,    # mcg
             "calcium_per_100g": 47,
             "iron_per_100g": 0.7,
             "magnesium_per_100g": 21,
@@ -141,6 +165,10 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_a_per_100g": 961,
             "vitamin_c_per_100g": 2.4,
             "vitamin_d_per_100g": 0,      # mcg
+            "vitamin_b12_per_100g": 0,    # mcg
+            "folate_per_100g": 11,        # mcg DFE
+            "vitamin_e_per_100g": 0.3,    # mg
+            "vitamin_k_per_100g": 1.8,    # mcg
             "calcium_per_100g": 30,
             "iron_per_100g": 0.6,
             "magnesium_per_100g": 25,
@@ -160,6 +188,10 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_a_per_100g": 36,
             "vitamin_c_per_100g": 0,
             "vitamin_d_per_100g": 0.9,    # mcg (small amount in yogurt)
+            "vitamin_b12_per_100g": 0.5,  # mcg
+            "folate_per_100g": 12,        # mcg DFE
+            "vitamin_e_per_100g": 0.1,    # mg
+            "vitamin_k_per_100g": 0.2,    # mcg
             "calcium_per_100g": 110,
             "iron_per_100g": 0.1,
             "magnesium_per_100g": 11,
@@ -179,6 +211,10 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_a_per_100g": 0,
             "vitamin_c_per_100g": 0,
             "vitamin_d_per_100g": 0,      # mcg
+            "vitamin_b12_per_100g": 0,    # mcg
+            "folate_per_100g": 44,        # mcg DFE
+            "vitamin_e_per_100g": 25.6,   # mg (almonds are very high in vitamin E)
+            "vitamin_k_per_100g": 0,      # mcg
             "calcium_per_100g": 269,
             "iron_per_100g": 3.7,
             "magnesium_per_100g": 270,
@@ -198,6 +234,10 @@ def create_sample_request() -> Dict[str, Any]:
             "vitamin_a_per_100g": 11,
             "vitamin_c_per_100g": 53.2,
             "vitamin_d_per_100g": 0,      # mcg
+            "vitamin_b12_per_100g": 0,    # mcg
+            "folate_per_100g": 30,        # mcg DFE
+            "vitamin_e_per_100g": 0.2,    # mg
+            "vitamin_k_per_100g": 0,      # mcg
             "calcium_per_100g": 40,
             "iron_per_100g": 0.1,
             "magnesium_per_100g": 10,
@@ -225,6 +265,14 @@ def create_sample_request() -> Dict[str, Any]:
         "max_vitamin_c": 2000,     # Upper limit
         "min_vitamin_d": 5,        # Relaxed from 15 (few foods have high vitamin D)
         "max_vitamin_d": 100,      # Upper limit
+        "min_vitamin_b12": 2.4,    # mcg - critical for vegans/vegetarians
+        "max_vitamin_b12": 1000,   # mcg - no established upper limit
+        "min_folate": 400,         # mcg DFE - essential for pregnancy
+        "max_folate": 1000,        # mcg DFE - upper limit from supplements
+        "min_vitamin_e": 15,       # mg - major antioxidant
+        "max_vitamin_e": 1000,     # mg - upper limit
+        "min_vitamin_k": 90,       # mcg - bone health
+        "max_vitamin_k": 10000,    # mcg - no established upper limit
         "min_calcium": 500,        # Relaxed from 1000
         "max_calcium": 2500,       # Upper limit
         "min_iron": 6,             # Relaxed from 8
@@ -275,6 +323,14 @@ def create_nutrient_density_request() -> Dict[str, Any]:
         "max_vitamin_c": 2000,
         "min_vitamin_d": 3,
         "max_vitamin_d": 100,
+        "min_vitamin_b12": 2.0,
+        "max_vitamin_b12": 1000,
+        "min_folate": 300,
+        "max_folate": 1000,
+        "min_vitamin_e": 12,
+        "max_vitamin_e": 1000,
+        "min_vitamin_k": 70,
+        "max_vitamin_k": 10000,
         "min_calcium": 400,
         "max_calcium": 2500,
         "min_iron": 5,
@@ -321,6 +377,14 @@ def create_pregnancy_request() -> Dict[str, Any]:
         "max_vitamin_c": 2000,
         "min_vitamin_d": 6,        # Relaxed (few foods have high vitamin D)
         "max_vitamin_d": 100,
+        "min_vitamin_b12": 2.6,    # Slightly higher for pregnancy
+        "max_vitamin_b12": 1000,
+        "min_folate": 600,         # Much higher for pregnancy (critical!)
+        "max_folate": 1000,
+        "min_vitamin_e": 15,       # Same as adults
+        "max_vitamin_e": 1000,
+        "min_vitamin_k": 90,       # Same as adults
+        "max_vitamin_k": 10000,
         "min_calcium": 600,        # Higher calcium needs (relaxed)
         "max_calcium": 2500,
         "min_iron": 12,            # Much higher iron needs (relaxed from 27)
@@ -367,6 +431,14 @@ def create_heart_healthy_request() -> Dict[str, Any]:
         "max_vitamin_c": 2000,
         "min_vitamin_d": 8,        # Higher for cardiovascular health (relaxed)
         "max_vitamin_d": 100,
+        "min_vitamin_b12": 2.4,    # Important for heart health
+        "max_vitamin_b12": 1000,
+        "min_folate": 400,         # Helps reduce homocysteine
+        "max_folate": 1000,
+        "min_vitamin_e": 15,       # Antioxidant for heart health
+        "max_vitamin_e": 1000,
+        "min_vitamin_k": 90,       # Important for cardiovascular health
+        "max_vitamin_k": 10000,
         "min_calcium": 600,        # Relaxed from 1200
         "max_calcium": 2500,
         "min_iron": 6,
