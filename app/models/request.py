@@ -57,6 +57,11 @@ class Food(BaseModel):
         ge=0, 
         description="Potassium per 100 grams (mg - milligrams)"
     )
+    zinc_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Zinc per 100 grams (mg - milligrams)"
+    )
     sodium_per_100g: float = Field(
         ..., 
         ge=0, 
@@ -98,6 +103,7 @@ class Food(BaseModel):
                 "calcium_per_100g": 15,       # mg
                 "iron_per_100g": 0.9,         # mg
                 "potassium_per_100g": 256,    # mg
+                "zinc_per_100g": 1.0,         # mg
                 "sodium_per_100g": 74,        # mg
                 "cholesterol_per_100g": 85,   # mg
                 "fiber_per_100g": 0           # g
@@ -201,6 +207,18 @@ class NutritionalConstraints(BaseModel):
         gt=0, 
         description="Maximum daily potassium allowed (mg). "
                    "Generally well-tolerated up to 10000 mg"
+    )
+    min_zinc: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily zinc required (mg). "
+                   "RDA: 8 mg (women), 11 mg (men) for adults"
+    )
+    max_zinc: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily zinc allowed (mg). "
+                   "Upper limit: 40 mg for adults"
     )
     min_sodium: float = Field(
         ..., 
@@ -321,6 +339,14 @@ class NutritionalConstraints(BaseModel):
             raise ValueError('max_potassium must be greater than min_potassium')
         return v
 
+    @field_validator('max_zinc')
+    @classmethod
+    def validate_zinc_bounds(cls, v: float, info) -> float:
+        """Validate that max_zinc > min_zinc."""
+        if info.data.get('min_zinc') is not None and v <= info.data['min_zinc']:
+            raise ValueError('max_zinc must be greater than min_zinc')
+        return v
+
     @field_validator('max_sodium')
     @classmethod
     def validate_sodium_bounds(cls, v: float, info) -> float:
@@ -368,6 +394,8 @@ class NutritionalConstraints(BaseModel):
                 "max_iron": 45,            # mg
                 "min_potassium": 3500,     # mg
                 "max_potassium": 10000,    # mg
+                "min_zinc": 8,             # mg
+                "max_zinc": 40,            # mg
                 "min_sodium": 1500,        # mg
                 "max_sodium": 2300,        # mg
                 "min_cholesterol": 0,      # mg

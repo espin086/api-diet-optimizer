@@ -88,6 +88,7 @@ This API extends the classical 4-nutrient formulation to **12 comprehensive nutr
 - **Calcium** (mg) - Bone health, muscle function
 - **Iron** (mg) - Oxygen transport, energy metabolism
 - **Potassium** (mg) - Heart health, muscle function
+- **Zinc** (mg) - Immune function, wound healing, protein synthesis
 - **Sodium** (mg) - Fluid balance, nerve function
 - **Cholesterol** (mg) - Cardiovascular health monitoring
 

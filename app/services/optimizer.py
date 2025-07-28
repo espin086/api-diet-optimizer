@@ -90,6 +90,7 @@ class DietOptimizer:
         max_calcium = max(food.calcium_per_100g for food in foods)
         max_iron = max(food.iron_per_100g for food in foods)
         max_potassium = max(food.potassium_per_100g for food in foods)
+        max_zinc = max(food.zinc_per_100g for food in foods)
         max_sodium = max(food.sodium_per_100g for food in foods)
         max_cholesterol = max(food.cholesterol_per_100g for food in foods)
         max_fiber = max(food.fiber_per_100g for food in foods)
@@ -104,6 +105,7 @@ class DietOptimizer:
            (max_calcium == 0 and constraints.min_calcium > 0) or \
            (max_iron == 0 and constraints.min_iron > 0) or \
            (max_potassium == 0 and constraints.min_potassium > 0) or \
+           (max_zinc == 0 and constraints.min_zinc > 0) or \
            (max_sodium == 0 and constraints.min_sodium > 0) or \
            (max_cholesterol == 0 and constraints.min_cholesterol > 0) or \
            (max_fiber == 0 and constraints.min_fiber > 0):
@@ -133,6 +135,7 @@ class DietOptimizer:
         - min_calcium <= sum(calcium_per_100g[i] * x[i]) <= max_calcium
         - min_iron <= sum(iron_per_100g[i] * x[i]) <= max_iron
         - min_potassium <= sum(potassium_per_100g[i] * x[i]) <= max_potassium
+        - min_zinc <= sum(zinc_per_100g[i] * x[i]) <= max_zinc
         - min_sodium <= sum(sodium_per_100g[i] * x[i]) <= max_sodium
         - min_cholesterol <= sum(cholesterol_per_100g[i] * x[i]) <= max_cholesterol
         - min_fiber <= sum(fiber_per_100g[i] * x[i]) <= max_fiber
@@ -155,6 +158,7 @@ class DietOptimizer:
             [food.calcium_per_100g for food in foods],
             [food.iron_per_100g for food in foods],
             [food.potassium_per_100g for food in foods],
+            [food.zinc_per_100g for food in foods],
             [food.sodium_per_100g for food in foods],
             [food.cholesterol_per_100g for food in foods],
             [food.fiber_per_100g for food in foods]
@@ -180,6 +184,7 @@ class DietOptimizer:
             -constraints.min_calcium,
             -constraints.min_iron,
             -constraints.min_potassium,
+            -constraints.min_zinc,
             -constraints.min_sodium,
             -constraints.min_cholesterol,
             -constraints.min_fiber,
@@ -193,6 +198,7 @@ class DietOptimizer:
             constraints.max_calcium,
             constraints.max_iron,
             constraints.max_potassium,
+            constraints.max_zinc,
             constraints.max_sodium,
             constraints.max_cholesterol,
             constraints.max_fiber
@@ -242,6 +248,7 @@ class DietOptimizer:
         total_calcium = sum(q * food.calcium_per_100g for q, food in zip(quantities, foods))
         total_iron = sum(q * food.iron_per_100g for q, food in zip(quantities, foods))
         total_potassium = sum(q * food.potassium_per_100g for q, food in zip(quantities, foods))
+        total_zinc = sum(q * food.zinc_per_100g for q, food in zip(quantities, foods))
         total_sodium = sum(q * food.sodium_per_100g for q, food in zip(quantities, foods))
         total_cholesterol = sum(q * food.cholesterol_per_100g for q, food in zip(quantities, foods))
         total_fiber = sum(q * food.fiber_per_100g for q, food in zip(quantities, foods))
@@ -269,6 +276,7 @@ class DietOptimizer:
             total_calcium=round(total_calcium, 2),
             total_iron=round(total_iron, 2),
             total_potassium=round(total_potassium, 2),
+            total_zinc=round(total_zinc, 2),
             total_sodium=round(total_sodium, 2),
             total_cholesterol=round(total_cholesterol, 2),
             total_fiber=round(total_fiber, 2)
@@ -286,6 +294,7 @@ class DietOptimizer:
             calcium_within_bounds=constraints.min_calcium <= total_calcium <= constraints.max_calcium,
             iron_within_bounds=constraints.min_iron <= total_iron <= constraints.max_iron,
             potassium_within_bounds=constraints.min_potassium <= total_potassium <= constraints.max_potassium,
+            zinc_within_bounds=constraints.min_zinc <= total_zinc <= constraints.max_zinc,
             sodium_within_bounds=constraints.min_sodium <= total_sodium <= constraints.max_sodium,
             cholesterol_within_bounds=constraints.min_cholesterol <= total_cholesterol <= constraints.max_cholesterol,
             fiber_within_bounds=constraints.min_fiber <= total_fiber <= constraints.max_fiber
