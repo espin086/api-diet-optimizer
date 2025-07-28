@@ -33,6 +33,11 @@ class NutritionalSummary(BaseModel):
         description="Total vitamin A achieved (mcg RAE - Retinol Activity Equivalents)"
     )
     total_vitamin_c: float = Field(..., ge=0, description="Total vitamin C achieved (mg)")
+    total_vitamin_d: float = Field(
+        ..., 
+        ge=0, 
+        description="Total vitamin D achieved (mcg - micrograms)"
+    )
     total_calcium: float = Field(..., ge=0, description="Total calcium achieved (mg)")
     total_iron: float = Field(..., ge=0, description="Total iron achieved (mg)")
     total_potassium: float = Field(..., ge=0, description="Total potassium achieved (mg)")
@@ -50,6 +55,7 @@ class ConstraintSatisfaction(BaseModel):
     fat_within_bounds: bool = Field(..., description="Whether fat is within bounds")
     vitamin_a_within_bounds: bool = Field(..., description="Whether vitamin A is within bounds")
     vitamin_c_within_bounds: bool = Field(..., description="Whether vitamin C is within bounds")
+    vitamin_d_within_bounds: bool = Field(..., description="Whether vitamin D is within bounds")
     calcium_within_bounds: bool = Field(..., description="Whether calcium is within bounds")
     iron_within_bounds: bool = Field(..., description="Whether iron is within bounds")
     potassium_within_bounds: bool = Field(..., description="Whether potassium is within bounds")
