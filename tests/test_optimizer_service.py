@@ -37,10 +37,15 @@ class TestDietOptimizer:
                 vitamin_a_per_100g=10,
                 vitamin_c_per_100g=0,
                 vitamin_d_per_100g=0,
+                vitamin_b12_per_100g=1.0,
+                folate_per_100g=20,
+                vitamin_e_per_100g=0.5,
+                vitamin_k_per_100g=2,
                 calcium_per_100g=20,
                 iron_per_100g=1.0,
                 magnesium_per_100g=20,
                 potassium_per_100g=200,
+                zinc_per_100g=2.0,
                 sodium_per_100g=50,
                 cholesterol_per_100g=0,
                 fiber_per_100g=0
@@ -55,10 +60,15 @@ class TestDietOptimizer:
                 vitamin_a_per_100g=0,
                 vitamin_c_per_100g=0,
                 vitamin_d_per_100g=0,
+                vitamin_b12_per_100g=0,
+                folate_per_100g=8,
+                vitamin_e_per_100g=0.1,
+                vitamin_k_per_100g=0.5,
                 calcium_per_100g=5,
                 iron_per_100g=0.5,
                 magnesium_per_100g=44,
                 potassium_per_100g=50,
+                zinc_per_100g=0.5,
                 sodium_per_100g=10,
                 cholesterol_per_100g=0,
                 fiber_per_100g=1.5
@@ -73,10 +83,15 @@ class TestDietOptimizer:
                 vitamin_a_per_100g=5,
                 vitamin_c_per_100g=0,
                 vitamin_d_per_100g=0,
+                vitamin_b12_per_100g=0,
+                folate_per_100g=0,
+                vitamin_e_per_100g=2.0,
+                vitamin_k_per_100g=0,
                 calcium_per_100g=10,
                 iron_per_100g=0.2,
                 magnesium_per_100g=5,
                 potassium_per_100g=30,
+                zinc_per_100g=0.1,
                 sodium_per_100g=20,
                 cholesterol_per_100g=50,
                 fiber_per_100g=0
@@ -99,6 +114,16 @@ class TestDietOptimizer:
             max_vitamin_a=100,
             min_vitamin_c=0,
             max_vitamin_c=50,
+            min_vitamin_d=0,
+            max_vitamin_d=20,
+            min_vitamin_b12=0,
+            max_vitamin_b12=10,
+            min_folate=10,
+            max_folate=100,
+            min_vitamin_e=0.5,
+            max_vitamin_e=20,
+            min_vitamin_k=1,
+            max_vitamin_k=50,
             min_calcium=20,
             max_calcium=100,
             min_iron=1,
@@ -107,6 +132,8 @@ class TestDietOptimizer:
             max_magnesium=200,
             min_potassium=200,
             max_potassium=1000,
+            min_zinc=1,
+            max_zinc=20,
             min_sodium=50,
             max_sodium=500,
             min_cholesterol=0,
@@ -454,9 +481,9 @@ class TestDietOptimizer:
         assert all(bound[1] is None for bound in bounds)
         
         # Check constraint matrix structure
-        # Should have 24 constraints (12 nutrients × 2 bounds each)
-        assert A_ub.shape[0] == 24
-        assert len(b_ub) == 24
+        # Should have 38 constraints (19 nutrients × 2 bounds each)
+        assert A_ub.shape[0] == 38
+        assert len(b_ub) == 38
     
     def test_result_processing_accuracy(self, optimizer, simple_foods, simple_constraints):
         """Test that result processing maintains numerical accuracy."""

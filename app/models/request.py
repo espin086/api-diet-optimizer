@@ -40,6 +40,30 @@ class Food(BaseModel):
         description="Vitamin D per 100 grams (mcg - micrograms). "
                    "Note: 1 mcg = 40 IU"
     )
+    vitamin_b12_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Vitamin B12 per 100 grams (mcg - micrograms). "
+                   "Critical for vegans/vegetarians, nerve function"
+    )
+    folate_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Folate/Folic Acid per 100 grams (mcg - micrograms). "
+                   "Essential for pregnancy, DNA synthesis"
+    )
+    vitamin_e_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Vitamin E per 100 grams (mg - milligrams). "
+                   "Major antioxidant, often deficient"
+    )
+    vitamin_k_per_100g: float = Field(
+        ..., 
+        ge=0, 
+        description="Vitamin K per 100 grams (mcg - micrograms). "
+                   "Bone health, blood clotting"
+    )
     
     # Minerals - All in milligrams
     calcium_per_100g: float = Field(
@@ -105,6 +129,10 @@ class Food(BaseModel):
                 "vitamin_a_per_100g": 9,      # mcg RAE
                 "vitamin_c_per_100g": 0,      # mg
                 "vitamin_d_per_100g": 0,      # mcg
+                "vitamin_b12_per_100g": 0.3,  # mcg
+                "folate_per_100g": 6,         # mcg
+                "vitamin_e_per_100g": 0.3,    # mg
+                "vitamin_k_per_100g": 1.5,    # mcg
                 "calcium_per_100g": 15,       # mg
                 "iron_per_100g": 0.9,         # mg
                 "magnesium_per_100g": 20,     # mg
@@ -175,6 +203,54 @@ class NutritionalConstraints(BaseModel):
         gt=0, 
         description="Maximum daily vitamin D allowed (mcg). "
                    "Upper limit: 100 mcg (4000 IU) for adults"
+    )
+    min_vitamin_b12: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily vitamin B12 required (mcg). "
+                   "RDA: 2.4 mcg for adults, critical for vegans/vegetarians"
+    )
+    max_vitamin_b12: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily vitamin B12 allowed (mcg). "
+                   "No established upper limit - safe at high doses"
+    )
+    min_folate: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily folate required (mcg DFE). "
+                   "RDA: 400 mcg for adults, 600 mcg for pregnancy"
+    )
+    max_folate: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily folate allowed (mcg DFE). "
+                   "Upper limit: 1000 mcg for adults (from supplements)"
+    )
+    min_vitamin_e: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily vitamin E required (mg alpha-tocopherol). "
+                   "RDA: 15 mg for adults"
+    )
+    max_vitamin_e: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily vitamin E allowed (mg alpha-tocopherol). "
+                   "Upper limit: 1000 mg for adults"
+    )
+    min_vitamin_k: float = Field(
+        ..., 
+        ge=0, 
+        description="Minimum daily vitamin K required (mcg). "
+                   "Adequate Intake: 90 mcg (women), 120 mcg (men)"
+    )
+    max_vitamin_k: float = Field(
+        ..., 
+        gt=0, 
+        description="Maximum daily vitamin K allowed (mcg). "
+                   "No established upper limit - safe from food sources"
     )
     
     # Minerals
@@ -333,6 +409,38 @@ class NutritionalConstraints(BaseModel):
             raise ValueError('max_vitamin_d must be greater than min_vitamin_d')
         return v
 
+    @field_validator('max_vitamin_b12')
+    @classmethod
+    def validate_vitamin_b12_bounds(cls, v: float, info) -> float:
+        """Validate that max_vitamin_b12 > min_vitamin_b12."""
+        if info.data.get('min_vitamin_b12') is not None and v <= info.data['min_vitamin_b12']:
+            raise ValueError('max_vitamin_b12 must be greater than min_vitamin_b12')
+        return v
+
+    @field_validator('max_folate')
+    @classmethod
+    def validate_folate_bounds(cls, v: float, info) -> float:
+        """Validate that max_folate > min_folate."""
+        if info.data.get('min_folate') is not None and v <= info.data['min_folate']:
+            raise ValueError('max_folate must be greater than min_folate')
+        return v
+
+    @field_validator('max_vitamin_e')
+    @classmethod
+    def validate_vitamin_e_bounds(cls, v: float, info) -> float:
+        """Validate that max_vitamin_e > min_vitamin_e."""
+        if info.data.get('min_vitamin_e') is not None and v <= info.data['min_vitamin_e']:
+            raise ValueError('max_vitamin_e must be greater than min_vitamin_e')
+        return v
+
+    @field_validator('max_vitamin_k')
+    @classmethod
+    def validate_vitamin_k_bounds(cls, v: float, info) -> float:
+        """Validate that max_vitamin_k > min_vitamin_k."""
+        if info.data.get('min_vitamin_k') is not None and v <= info.data['min_vitamin_k']:
+            raise ValueError('max_vitamin_k must be greater than min_vitamin_k')
+        return v
+
     @field_validator('max_calcium')
     @classmethod
     def validate_calcium_bounds(cls, v: float, info) -> float:
@@ -414,6 +522,14 @@ class NutritionalConstraints(BaseModel):
                 "max_vitamin_c": 2000,     # mg
                 "min_vitamin_d": 15,       # mcg
                 "max_vitamin_d": 100,      # mcg
+                "min_vitamin_b12": 2.4,    # mcg
+                "max_vitamin_b12": 1000,   # mcg
+                "min_folate": 400,        # mcg DFE
+                "max_folate": 1000,       # mcg DFE
+                "min_vitamin_e": 15,       # mg
+                "max_vitamin_e": 1000,     # mg
+                "min_vitamin_k": 90,       # mcg
+                "max_vitamin_k": 10000,    # mcg (no established upper limit)
                 "min_calcium": 1000,       # mg
                 "max_calcium": 2500,       # mg
                 "min_iron": 8,             # mg

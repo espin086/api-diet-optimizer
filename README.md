@@ -87,6 +87,10 @@ This API extends the classical 4-nutrient formulation to **15 comprehensive nutr
 - **Vitamin A** (mcg RAE) - Eye health, immune function
 - **Vitamin C** (mg) - Antioxidant, immune support
 - **Vitamin D** (mcg) - Bone health, immune function
+- **Vitamin B12** (mcg) - Critical for vegans/vegetarians, nerve function
+- **Folate/Folic Acid** (mcg DFE) - Essential for pregnancy, DNA synthesis
+- **Vitamin E** (mg) - Major antioxidant, often deficient
+- **Vitamin K** (mcg) - Bone health, blood clotting
 - **Calcium** (mg) - Bone health, muscle function
 - **Iron** (mg) - Oxygen transport, energy metabolism
 - **Magnesium** (mg) - Muscle and nerve function, energy production
@@ -95,7 +99,27 @@ This API extends the classical 4-nutrient formulation to **15 comprehensive nutr
 - **Sodium** (mg) - Fluid balance, nerve function
 - **Cholesterol** (mg) - Cardiovascular health monitoring
 
-> ⚠️ **Important**: Vitamin A is measured in **micrograms (mcg RAE)**, Vitamin D in **micrograms (mcg)**, all other nutrients in **milligrams (mg)**. Fiber is measured in **grams (g)**.
+> ⚠️ **Important**: Vitamins A/D/B12/K and Folate are measured in **micrograms (mcg)**, Vitamin E and all minerals in **milligrams (mg)**. Fiber is measured in **grams (g)**.
+
+### 🆕 Recently Added High-Priority Nutrients
+
+The following nutrients have been added to support critical dietary needs:
+
+- **Vitamin B12** - Essential for nerve function and critical for vegans/vegetarians
+  - RDA: 2.4 mcg for adults, 2.6 mcg during pregnancy
+  - No established upper limit (safe at high doses)
+  
+- **Folate/Folic Acid** - Essential for DNA synthesis and pregnancy
+  - RDA: 400 mcg DFE for adults, 600 mcg DFE during pregnancy
+  - Upper limit: 1000 mcg DFE from supplements
+  
+- **Vitamin E** - Major antioxidant, often deficient
+  - RDA: 15 mg alpha-tocopherol for adults
+  - Upper limit: 1000 mg
+  
+- **Vitamin K** - Bone health and blood clotting
+  - Adequate Intake: 90 mcg (women), 120 mcg (men)
+  - No established upper limit from food sources
 
 ## 🚀 Quick Start
 
