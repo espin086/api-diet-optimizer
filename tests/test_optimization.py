@@ -26,12 +26,14 @@ def sample_foods():
             "fat_per_100g": 3.6,
             "vitamin_a_per_100g": 9,
             "vitamin_c_per_100g": 0,
+            "vitamin_d_per_100g": 0,
             "calcium_per_100g": 15,
             "iron_per_100g": 0.9,
             "magnesium_per_100g": 20,
             "potassium_per_100g": 256,
             "sodium_per_100g": 74,
-            "cholesterol_per_100g": 85
+            "cholesterol_per_100g": 85,
+            "fiber_per_100g": 0
         },
         {
             "name": "Brown Rice",
@@ -42,12 +44,14 @@ def sample_foods():
             "fat_per_100g": 0.9,
             "vitamin_a_per_100g": 0,
             "vitamin_c_per_100g": 0,
+            "vitamin_d_per_100g": 0,
             "calcium_per_100g": 10,
             "iron_per_100g": 0.4,
             "magnesium_per_100g": 20,
             "potassium_per_100g": 43,
             "sodium_per_100g": 5,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 1.8
         },
         {
             "name": "Broccoli",
@@ -58,12 +62,14 @@ def sample_foods():
             "fat_per_100g": 0.4,
             "vitamin_a_per_100g": 623,
             "vitamin_c_per_100g": 89.2,
+            "vitamin_d_per_100g": 0,
             "calcium_per_100g": 47,
             "iron_per_100g": 0.7,
             "magnesium_per_100g": 20,
             "potassium_per_100g": 316,
             "sodium_per_100g": 33,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 2.6
         },
         {
             "name": "Sweet Potato",
@@ -74,12 +80,14 @@ def sample_foods():
             "fat_per_100g": 0.1,
             "vitamin_a_per_100g": 961,
             "vitamin_c_per_100g": 2.4,
+            "vitamin_d_per_100g": 0,
             "calcium_per_100g": 30,
             "iron_per_100g": 0.6,
             "magnesium_per_100g": 20,
             "potassium_per_100g": 337,
             "sodium_per_100g": 54,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 3
         }
     ]
 
@@ -111,7 +119,9 @@ def sample_constraints():
         "min_sodium": 1500,
         "max_sodium": 2300,
         "min_cholesterol": 0,
-        "max_cholesterol": 300
+        "max_cholesterol": 300,
+        "min_fiber": 25,
+        "max_fiber": 70
     }
 
 
@@ -195,12 +205,14 @@ class TestOptimizationEndpoint:
                     "fat_per_100g": 3.6,
                     "vitamin_a_per_100g": 9,
                     "vitamin_c_per_100g": 0,
+                    "vitamin_d_per_100g": 0,
                     "calcium_per_100g": 15,
                     "iron_per_100g": 0.9,
             "magnesium_per_100g": 20,
                     "potassium_per_100g": 256,
                     "sodium_per_100g": 74,
-                    "cholesterol_per_100g": 85
+                    "cholesterol_per_100g": 85,
+                    "fiber_per_100g": 0
                 }
             ],
             "constraints": sample_constraints
@@ -237,7 +249,9 @@ class TestOptimizationEndpoint:
                 "min_sodium": 1500,
                 "max_sodium": 2300,
                 "min_cholesterol": 0,
-                "max_cholesterol": 300
+                "max_cholesterol": 300,
+                "min_fiber": 25,
+                "max_fiber": 70
             }
         }
         
@@ -277,12 +291,14 @@ class TestOptimizationEndpoint:
                     "fat_per_100g": 3.6,
                     "vitamin_a_per_100g": 9,
                     "vitamin_c_per_100g": 0,
+                    "vitamin_d_per_100g": 0,
                     "calcium_per_100g": 15,
                     "iron_per_100g": 0.9,
             "magnesium_per_100g": 20,
                     "potassium_per_100g": 256,
                     "sodium_per_100g": 74,
-                    "cholesterol_per_100g": 85
+                    "cholesterol_per_100g": 85,
+                    "fiber_per_100g": 0
                 },
                 {
                     "name": "Chicken Breast",  # Duplicate name
@@ -293,12 +309,14 @@ class TestOptimizationEndpoint:
                     "fat_per_100g": 4.0,
                     "vitamin_a_per_100g": 10,
                     "vitamin_c_per_100g": 0,
+                    "vitamin_d_per_100g": 0,
                     "calcium_per_100g": 20,
                     "iron_per_100g": 1.0,
             "magnesium_per_100g": 20,
                     "potassium_per_100g": 300,
                     "sodium_per_100g": 80,
-                    "cholesterol_per_100g": 90
+                    "cholesterol_per_100g": 90,
+                    "fiber_per_100g": 0
                 }
             ],
             "constraints": sample_constraints
@@ -321,12 +339,14 @@ class TestOptimizationEndpoint:
                     "fat_per_100g": 0.1,
                     "vitamin_a_per_100g": 1,
                     "vitamin_c_per_100g": 0.1,
+                    "vitamin_d_per_100g": 0,
                     "calcium_per_100g": 1,
                     "iron_per_100g": 0.1,
             "magnesium_per_100g": 20,
                     "potassium_per_100g": 10,
                     "sodium_per_100g": 1,
-                    "cholesterol_per_100g": 0
+                    "cholesterol_per_100g": 0,
+                    "fiber_per_100g": 0.1
                 }
             ],
             "constraints": {
@@ -353,7 +373,9 @@ class TestOptimizationEndpoint:
                 "min_sodium": 1500,
                 "max_sodium": 2300,
                 "min_cholesterol": 0,
-                "max_cholesterol": 300
+                "max_cholesterol": 300,
+                "min_fiber": 25,
+                "max_fiber": 70
             }
         }
         
@@ -386,6 +408,7 @@ class TestOptimizationEndpoint:
                     "fat_per_100g": 2,
                     "vitamin_a_per_100g": 50,
                     "vitamin_c_per_100g": 5,
+                    "vitamin_d_per_100g": 0,
                     "calcium_per_100g": 20,
                     "iron_per_100g": 1,
             "magnesium_per_100g": 20,

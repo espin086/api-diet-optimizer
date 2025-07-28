@@ -26,12 +26,15 @@ def create_sample_request() -> Dict[str, Any]:
             "fat_per_100g": 3.6,
             "vitamin_a_per_100g": 9,      # mcg RAE
             "vitamin_c_per_100g": 0,      # mg
+            "vitamin_d_per_100g": 0.1,    # mcg
+            "vitamin_d_per_100g": 0.1,    # mcg
             "calcium_per_100g": 15,       # mg
             "iron_per_100g": 0.9,         # mg
             "magnesium_per_100g": 22,     # mg
             "potassium_per_100g": 256,    # mg
             "sodium_per_100g": 74,        # mg
-            "cholesterol_per_100g": 85    # mg
+            "cholesterol_per_100g": 85,   # mg
+            "fiber_per_100g": 0           # g
         },
         {
             "name": "Salmon Fillet",
@@ -42,12 +45,14 @@ def create_sample_request() -> Dict[str, Any]:
             "fat_per_100g": 12.4,
             "vitamin_a_per_100g": 58,
             "vitamin_c_per_100g": 0,
+            "vitamin_d_per_100g": 14.2,   # mcg (salmon is rich in vitamin D)
             "calcium_per_100g": 12,
             "iron_per_100g": 0.8,
             "magnesium_per_100g": 26,
             "potassium_per_100g": 490,
             "sodium_per_100g": 59,
-            "cholesterol_per_100g": 70
+            "cholesterol_per_100g": 70,
+            "fiber_per_100g": 0           # g
         },
         {
             "name": "Brown Rice",
@@ -58,12 +63,14 @@ def create_sample_request() -> Dict[str, Any]:
             "fat_per_100g": 0.9,
             "vitamin_a_per_100g": 0,
             "vitamin_c_per_100g": 0,
+            "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 10,
             "iron_per_100g": 0.4,
             "magnesium_per_100g": 44,
             "potassium_per_100g": 43,
             "sodium_per_100g": 5,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 1.8         # g (brown rice has moderate fiber)
         },
         {
             "name": "Quinoa",
@@ -74,12 +81,14 @@ def create_sample_request() -> Dict[str, Any]:
             "fat_per_100g": 6.1,
             "vitamin_a_per_100g": 1,
             "vitamin_c_per_100g": 0,
+            "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 47,
             "iron_per_100g": 4.6,
             "magnesium_per_100g": 197,
             "potassium_per_100g": 563,
             "sodium_per_100g": 5,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 7           # g (quinoa is high in fiber)
         },
         {
             "name": "Spinach",
@@ -90,12 +99,14 @@ def create_sample_request() -> Dict[str, Any]:
             "fat_per_100g": 0.4,
             "vitamin_a_per_100g": 469,
             "vitamin_c_per_100g": 28.1,
+            "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 99,
             "iron_per_100g": 2.7,
             "magnesium_per_100g": 79,
             "potassium_per_100g": 558,
             "sodium_per_100g": 79,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 2.2         # g
         },
         {
             "name": "Broccoli",
@@ -106,12 +117,14 @@ def create_sample_request() -> Dict[str, Any]:
             "fat_per_100g": 0.4,
             "vitamin_a_per_100g": 623,
             "vitamin_c_per_100g": 89.2,
+            "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 47,
             "iron_per_100g": 0.7,
             "magnesium_per_100g": 21,
             "potassium_per_100g": 316,
             "sodium_per_100g": 33,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 2.6         # g
         },
         {
             "name": "Sweet Potato",
@@ -122,12 +135,14 @@ def create_sample_request() -> Dict[str, Any]:
             "fat_per_100g": 0.1,
             "vitamin_a_per_100g": 961,
             "vitamin_c_per_100g": 2.4,
+            "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 30,
             "iron_per_100g": 0.6,
             "magnesium_per_100g": 25,
             "potassium_per_100g": 337,
             "sodium_per_100g": 54,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 3           # g
         },
         {
             "name": "Greek Yogurt (Plain)",
@@ -138,12 +153,14 @@ def create_sample_request() -> Dict[str, Any]:
             "fat_per_100g": 5,
             "vitamin_a_per_100g": 36,
             "vitamin_c_per_100g": 0,
+            "vitamin_d_per_100g": 0.9,    # mcg (small amount in yogurt)
             "calcium_per_100g": 110,
             "iron_per_100g": 0.1,
             "magnesium_per_100g": 11,
             "potassium_per_100g": 141,
             "sodium_per_100g": 36,
-            "cholesterol_per_100g": 10
+            "cholesterol_per_100g": 10,
+            "fiber_per_100g": 0           # g (yogurt has no fiber)
         },
         {
             "name": "Almonds",
@@ -154,12 +171,14 @@ def create_sample_request() -> Dict[str, Any]:
             "fat_per_100g": 49.9,
             "vitamin_a_per_100g": 0,
             "vitamin_c_per_100g": 0,
+            "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 269,
             "iron_per_100g": 3.7,
             "magnesium_per_100g": 270,
             "potassium_per_100g": 733,
             "sodium_per_100g": 1,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 12.5        # g (almonds are very high in fiber)
         },
         {
             "name": "Orange",
@@ -170,12 +189,14 @@ def create_sample_request() -> Dict[str, Any]:
             "fat_per_100g": 0.1,
             "vitamin_a_per_100g": 11,
             "vitamin_c_per_100g": 53.2,
+            "vitamin_d_per_100g": 0,    # mcg
             "calcium_per_100g": 40,
             "iron_per_100g": 0.1,
             "magnesium_per_100g": 10,
             "potassium_per_100g": 181,
             "sodium_per_100g": 0,
-            "cholesterol_per_100g": 0
+            "cholesterol_per_100g": 0,
+            "fiber_per_100g": 2.4         # g
         }
     ]
     
@@ -193,6 +214,8 @@ def create_sample_request() -> Dict[str, Any]:
         "max_vitamin_a": 3000,     # Upper limit
         "min_vitamin_c": 75,       # Daily recommendation
         "max_vitamin_c": 2000,     # Upper limit
+        "min_vitamin_d": 15,       # Daily recommendation
+        "max_vitamin_d": 100,      # Upper limit
         "min_calcium": 1000,       # Daily recommendation
         "max_calcium": 2500,       # Upper limit
         "min_iron": 8,             # Daily recommendation (men)
@@ -204,7 +227,9 @@ def create_sample_request() -> Dict[str, Any]:
         "min_sodium": 1500,        # Minimum needs
         "max_sodium": 2300,        # Daily recommendation limit
         "min_cholesterol": 0,      # No minimum requirement
-        "max_cholesterol": 300     # Heart-healthy limit
+        "max_cholesterol": 300,    # Heart-healthy limit
+        "min_fiber": 25,          # Daily recommendation
+        "max_fiber": 70           # Safe upper limit
     }
     
     return {
@@ -233,6 +258,8 @@ def create_pregnancy_request() -> Dict[str, Any]:
         "max_vitamin_a": 3000,
         "min_vitamin_c": 85,       # Higher vitamin C needs
         "max_vitamin_c": 2000,
+        "min_vitamin_d": 15,       # Same as normal adults
+        "max_vitamin_d": 100,
         "min_calcium": 1200,       # Higher calcium needs
         "max_calcium": 2500,
         "min_iron": 27,            # Much higher iron needs
@@ -244,7 +271,9 @@ def create_pregnancy_request() -> Dict[str, Any]:
         "min_sodium": 1500,
         "max_sodium": 2300,
         "min_cholesterol": 0,
-        "max_cholesterol": 300
+        "max_cholesterol": 300,
+        "min_fiber": 28,          # Higher fiber needs during pregnancy
+        "max_fiber": 70
     }
     
     return {
@@ -273,6 +302,8 @@ def create_heart_healthy_request() -> Dict[str, Any]:
         "max_vitamin_a": 3000,
         "min_vitamin_c": 90,       # Higher for antioxidant benefits
         "max_vitamin_c": 2000,
+        "min_vitamin_d": 20,       # Higher for cardiovascular health
+        "max_vitamin_d": 100,
         "min_calcium": 1200,
         "max_calcium": 2500,
         "min_iron": 8,
@@ -284,7 +315,9 @@ def create_heart_healthy_request() -> Dict[str, Any]:
         "min_sodium": 800,         # Low sodium for heart health
         "max_sodium": 1500,
         "min_cholesterol": 0,      # Minimize cholesterol
-        "max_cholesterol": 150     # Very low cholesterol limit
+        "max_cholesterol": 150,    # Very low cholesterol limit
+        "min_fiber": 35,          # High fiber for heart health
+        "max_fiber": 70
     }
     
     return {
@@ -339,6 +372,7 @@ def display_results(result: Dict[str, Any]) -> None:
         print(f"  Fat:          {summary['total_fat']:>7.1f}g")
         print(f"  Vitamin A:    {summary['total_vitamin_a']:>7.1f} mcg RAE")
         print(f"  Vitamin C:    {summary['total_vitamin_c']:>7.1f} mg")
+        print(f"  Vitamin D:    {summary['total_vitamin_d']:>7.1f} mcg")
         print(f"  Calcium:      {summary['total_calcium']:>7.1f} mg")
         print(f"  Iron:         {summary['total_iron']:>7.1f} mg")
         print(f"  Magnesium:    {summary['total_magnesium']:>7.1f} mg")
@@ -356,6 +390,7 @@ def display_results(result: Dict[str, Any]) -> None:
             ("Fat", satisfaction['fat_within_bounds']),
             ("Vitamin A", satisfaction['vitamin_a_within_bounds']),
             ("Vitamin C", satisfaction['vitamin_c_within_bounds']),
+            ("Vitamin D", satisfaction['vitamin_d_within_bounds']),
             ("Calcium", satisfaction['calcium_within_bounds']),
             ("Iron", satisfaction['iron_within_bounds']),
             ("Magnesium", satisfaction['magnesium_within_bounds']),

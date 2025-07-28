@@ -20,6 +20,7 @@ class NutritionalSummary(BaseModel):
     - Macronutrients: grams (g)
     - Vitamin A: micrograms RAE (mcg)
     - Other nutrients: milligrams (mg)
+    - Fiber: grams (g)
     """
     
     total_calories: float = Field(..., ge=0, description="Total calories achieved")
@@ -32,12 +33,19 @@ class NutritionalSummary(BaseModel):
         description="Total vitamin A achieved (mcg RAE - Retinol Activity Equivalents)"
     )
     total_vitamin_c: float = Field(..., ge=0, description="Total vitamin C achieved (mg)")
+    total_vitamin_d: float = Field(
+        ..., 
+        ge=0, 
+        description="Total vitamin D achieved (mcg - micrograms)"
+    )
     total_calcium: float = Field(..., ge=0, description="Total calcium achieved (mg)")
     total_iron: float = Field(..., ge=0, description="Total iron achieved (mg)")
     total_magnesium: float = Field(..., ge=0, description="Total magnesium achieved (mg)")
     total_potassium: float = Field(..., ge=0, description="Total potassium achieved (mg)")
+    total_zinc: float = Field(..., ge=0, description="Total zinc achieved (mg)")
     total_sodium: float = Field(..., ge=0, description="Total sodium achieved (mg)")
     total_cholesterol: float = Field(..., ge=0, description="Total cholesterol achieved (mg)")
+    total_fiber: float = Field(..., ge=0, description="Total dietary fiber achieved (g)")
 
 
 class ConstraintSatisfaction(BaseModel):
@@ -49,12 +57,15 @@ class ConstraintSatisfaction(BaseModel):
     fat_within_bounds: bool = Field(..., description="Whether fat is within bounds")
     vitamin_a_within_bounds: bool = Field(..., description="Whether vitamin A is within bounds")
     vitamin_c_within_bounds: bool = Field(..., description="Whether vitamin C is within bounds")
+    vitamin_d_within_bounds: bool = Field(..., description="Whether vitamin D is within bounds")
     calcium_within_bounds: bool = Field(..., description="Whether calcium is within bounds")
     iron_within_bounds: bool = Field(..., description="Whether iron is within bounds")
     magnesium_within_bounds: bool = Field(..., description="Whether magnesium is within bounds")
     potassium_within_bounds: bool = Field(..., description="Whether potassium is within bounds")
+    zinc_within_bounds: bool = Field(..., description="Whether zinc is within bounds")
     sodium_within_bounds: bool = Field(..., description="Whether sodium is within bounds")
     cholesterol_within_bounds: bool = Field(..., description="Whether cholesterol is within bounds")
+    fiber_within_bounds: bool = Field(..., description="Whether fiber is within bounds")
 
 
 class OptimizationResult(BaseModel):
