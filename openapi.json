@@ -1,0 +1,1113 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Diet Optimizer API",
+    "version": "1.0.0",
+    "description": "\n    # Diet Optimizer API\n    \n    A comprehensive FastAPI implementation that solves the classic **Diet Problem** from linear programming \n    and optimization theory. This enhanced API uses linear programming to find the optimal combination \n    of foods that meets specified nutritional requirements while minimizing total cost.\n    \n    ## 🍎 Enhanced Nutritional Coverage\n    \n    This API now supports **12 essential nutrients** for comprehensive diet optimization:\n    \n    ### Macronutrients (grams)\n    - **Calories** - Total energy content\n    - **Protein** - Muscle building and repair\n    - **Carbohydrates** - Primary energy source  \n    - **Fat** - Essential fatty acids and energy storage\n    - **Fiber** - Digestive health and satiety\n    \n    ### Vitamins & Minerals\n    - **Vitamin A** - Eye health, immune function (⚠️ **mcg RAE**)\n    - **Vitamin C** - Antioxidant, immune support (**mg**)\n    - **Vitamin D** - Bone health, immune function (**mcg**)\n    - **Calcium** - Bone health, muscle function (**mg**)\n    - **Iron** - Oxygen transport, energy metabolism (**mg**)\n    - **Magnesium** - Muscle and nerve function, energy production (**mg**)\n    - **Potassium** - Heart health, muscle function (**mg**)\n    - **Sodium** - Fluid balance, nerve function (**mg**)\n    - **Cholesterol** - Cardiovascular health monitoring (**mg**)\n    \n    ## ⚠️ Critical Unit Information\n    \n    **IMPORTANT**: Pay attention to nutrient units to avoid errors:\n    \n    | Nutrient | Unit | Example Value |\n    |----------|------|---------------|\n    | **Vitamin A** | **mcg RAE** | `469` (spinach) |\n    | **Vitamin D** | **mcg** | `14.2` (salmon) |\n    | **All Others** | **mg** | `28.1` (vitamin C in spinach) |\n    \n    > **Vitamin A is measured in micrograms RAE, Vitamin D in micrograms**. All other nutrients use milligrams (mg).\n    \n    ## 🚀 Key Features\n    \n    - **🎯 Linear Programming Optimization**: Uses SciPy's HiGHS algorithm for guaranteed optimal solutions\n    - **📊 Comprehensive Validation**: Pydantic models ensure data integrity and proper units\n    - **🔧 Flexible Constraints**: Support for min/max bounds on all 12 nutrients\n    - **📈 Detailed Results**: Complete nutritional breakdown, cost analysis, and constraint satisfaction\n    - **🛡️ Robust Error Handling**: Proper handling of infeasible and unbounded problems\n    - **🏥 Health-focused**: Supports various dietary profiles (pregnancy, heart-healthy, athletic)\n    - **📋 USDA Compatible**: Units follow USDA FoodData Central standards\n    \n    ## 📝 Quick Start Guide\n    \n    1. **Prepare Food Data**: Ensure all nutrients use correct units (see examples below)\n    2. **Set Constraints**: Use realistic daily values based on RDA guidelines  \n    3. **POST to `/optimize`**: Get optimal diet solution with costs and quantities\n    4. **Validate Results**: Check constraint satisfaction and nutritional summary\n    5. **Monitor Health**: Use `/health` endpoint for API status\n    \n    ## 🍽️ Example Food Item (Correct Units)\n    \n    ```json\n    {\n      \"name\": \"Salmon Fillet\",\n      \"cost_per_100g\": 6.50,\n      \"calories_per_100g\": 208,\n      \"carbs_per_100g\": 0,\n      \"protein_per_100g\": 25.4,\n      \"fat_per_100g\": 12.4,\n      \"vitamin_a_per_100g\": 58,     // mcg RAE ⚠️\n      \"vitamin_c_per_100g\": 0,      // mg\n      \"vitamin_d_per_100g\": 14.2,   // mcg ⚠️\n      \"calcium_per_100g\": 12,       // mg\n      \"iron_per_100g\": 0.8,         // mg\n      \"potassium_per_100g\": 490,    // mg\n      \"sodium_per_100g\": 59,        // mg\n      \"cholesterol_per_100g\": 70,   // mg\n      \"fiber_per_100g\": 0           // g\n    }\n    ```\n    \n    ## 📊 RDA Reference Values\n    \n    | Nutrient | Adult RDA/AI | Upper Limit | Units |\n    |----------|--------------|-------------|-------|\n    | Calories | 1800-2400 | 3000+ | kcal |\n    | Protein | 46-56 | 200+ | g |\n    | Vitamin A | **700-900** | **3000** | **mcg RAE** |\n    | Vitamin C | **65-90** | **2000** | **mg** |\n    | Vitamin D | **15-20** | **100** | **mcg** |\n    | Calcium | **1000-1200** | **2500** | **mg** |\n    | Iron | **8-18** | **45** | **mg** |\n    | Potassium | **3500-4700** | **10000** | **mg** |\n    | Sodium | **1500** | **2300** | **mg** |\n    | Fiber | **25-38** | **70** | **g** |\n    \n    ## 🧮 Optimization Algorithm\n    \n    The API formulates the diet problem as a linear programming problem:\n    \n    **Objective Function:**\n    ```\n    Minimize: Σ(cost_per_100g[i] × quantity[i]) for all foods i\n    ```\n    \n    **Subject to Constraints:**\n    ```\n    min_nutrient ≤ Σ(nutrient_per_100g[i] × quantity[i]) ≤ max_nutrient\n    for all 12 nutrients and all foods i\n    quantity[i] ≥ 0 for all foods i\n    ```\n    \n    **Solver**: HiGHS algorithm via SciPy (state-of-the-art linear programming)\n    \n    ## 🎯 Specialized Diet Profiles\n    \n    The API supports optimization for various dietary needs:\n    - **👨‍⚕️ Standard Adult**: General healthy eating guidelines\n    - **🤰 Pregnancy**: Higher iron, calcium, and vitamin requirements  \n    - **❤️ Heart-Healthy**: Low sodium, low cholesterol, high potassium\n    - **🏃‍♂️ Athletic**: High protein, balanced macronutrients\n    - **⚖️ Weight Management**: Calorie-controlled with nutrient density\n    \n    ## 🔗 Additional Resources\n    \n    - **Nutrient Units Guide**: See `NUTRIENT_UNITS_REFERENCE.md` for comprehensive unit documentation\n    - **Example Usage**: Check `example_usage.py` for complete implementation examples\n    - **Health Endpoints**: Use `/health` for API monitoring and status checks\n    \n    ---\n    \n    **🏗️ Built with**: FastAPI, Pydantic, SciPy, NumPy | **📊 Data Standards**: USDA FoodData Central\n    "
+  },
+  "paths": {
+    "/optimize": {
+      "post": {
+        "tags": [
+          "optimization"
+        ],
+        "summary": "Optimize Diet with Linear Programming",
+        "description": "\n    ## 🎯 Diet Optimization Endpoint\n    \n    Solves the classic **Diet Problem** using linear programming to find the minimum-cost \n    combination of foods that meets all specified nutritional requirements.\n    \n    ### 📊 Supported Nutrients (19 total)\n    \n    **Macronutrients (grams):**\n    - Calories, Protein, Carbohydrates, Fat, Fiber\n    \n    **Vitamins & Minerals:**\n    - **Vitamin A** (⚠️ **mcg RAE** - micrograms!)\n    - **Vitamin D, B12, Folate, K** (all in **mcg**)\n    - **Vitamin C, E, Calcium, Iron, Magnesium, Potassium, Sodium, Cholesterol** (all in **mg**)\n\n    \n    > ⚠️ **IMPORTANT UNITS**: \n    **ATTENTION**: Vitamin A is measured in **micrograms (mcg RAE)**, Vitamins D/B12/Folate/K in **micrograms (mcg)**, Vitamin E and all minerals in **milligrams (mg)**.\n    \n    | Nutrient | Proper Unit | Example Value | Common Mistake |\n    | -------- | ----------- | ------------- | -------------- |\n    | Vitamin A | **mcg RAE** | `469` (spinach) | Using mg: `0.469` ❌ |\n    | Vitamin D | **mcg** | `14.2` (salmon) | Using mg: `0.0142` ❌ |\n    | Vitamin B12 | **mcg** | `0.3` (chicken) | Using mg: `0.0003` ❌ |\n    | Folate | **mcg DFE** | `194` (spinach) | Using mg: `0.194` ❌ |\n    | Vitamin E | **mg** | `2.0` (spinach) | Using mcg: `2000` ❌ |\n    | Vitamin K | **mcg** | `483` (spinach) | Using mg: `0.483` ❌ |\n    | Vitamin C | **mg** | `28.1` (spinach) | Using mcg: `28100` ❌ |\n    | Calcium | **mg** | `99` (spinach) | Using g: `0.099` ❌ |\n    \n    ### 🍎 Example Request Body\n    \n    ```json\n    {\n      \"foods\": [\n        {\n          \"name\": \"Spinach\",\n          \"cost_per_100g\": 2.40,\n          \"calories_per_100g\": 23,\n          \"carbs_per_100g\": 3.6,\n          \"protein_per_100g\": 2.9,\n          \"fat_per_100g\": 0.4,\n          \"vitamin_a_per_100g\": 469,      // mcg RAE ⚠️\n          \"vitamin_c_per_100g\": 28.1,     // mg\n          \"vitamin_d_per_100g\": 0,        // mcg\n          \"vitamin_b12_per_100g\": 0,      // mcg\n          \"folate_per_100g\": 194,         // mcg DFE\n          \"vitamin_e_per_100g\": 2.0,      // mg\n          \"vitamin_k_per_100g\": 483,      // mcg\n          \"calcium_per_100g\": 99,         // mg\n          \"iron_per_100g\": 2.7,           // mg\n          \"magnesium_per_100g\": 83,       // mg\n          \"potassium_per_100g\": 558,      // mg\n          \"zinc_per_100g\": 0.5,           // mg\n          \"sodium_per_100g\": 79,          // mg\n          \"cholesterol_per_100g\": 0,      // mg\n          \"fiber_per_100g\": 2.2           // g\n        }\n      ],\n      \"constraints\": {\n        \"min_calories\": 1800, \"max_calories\": 2200,\n        \"min_protein\": 120, \"max_protein\": 180,\n        \"min_carbs\": 150, \"max_carbs\": 250,\n        \"min_fat\": 50, \"max_fat\": 80,\n        \"min_vitamin_a\": 700,      // mcg RAE ⚠️\n        \"max_vitamin_a\": 3000,     // mcg RAE ⚠️\n        \"min_vitamin_c\": 75,       // mg\n        \"max_vitamin_c\": 2000,     // mg\n        \"min_vitamin_d\": 15,       // mcg\n        \"max_vitamin_d\": 100,      // mcg\n        \"min_vitamin_b12\": 2.4,    // mcg\n        \"max_vitamin_b12\": 1000,   // mcg (no established upper limit)\n        \"min_folate\": 400,         // mcg DFE\n        \"max_folate\": 1000,        // mcg DFE\n        \"min_vitamin_e\": 15,       // mg\n        \"max_vitamin_e\": 1000,     // mg\n        \"min_vitamin_k\": 90,       // mcg\n        \"max_vitamin_k\": 10000,    // mcg (no established upper limit)\n        \"min_calcium\": 1000,       // mg\n        \"max_calcium\": 2500,       // mg\n        \"min_iron\": 8,             // mg\n        \"max_iron\": 45,            // mg\n        \"min_magnesium\": 310,      // mg\n        \"max_magnesium\": 800,      // mg\n        \"min_potassium\": 3500,     // mg\n        \"max_potassium\": 10000,    // mg\n        \"min_zinc\": 8,             // mg\n        \"max_zinc\": 40,            // mg\n        \"min_sodium\": 1500,        // mg\n        \"max_sodium\": 2300,        // mg\n        \"min_cholesterol\": 0,      // mg\n        \"max_cholesterol\": 300,    // mg\n        \"min_fiber\": 25,          // g\n        \"max_fiber\": 70           // g\n      }\n    }\n    ```\n    \n    ### 📈 Response Format\n    \n    Returns optimal food quantities, total cost, nutritional summary, and constraint satisfaction status.\n    \n    ### 🔍 Optimization Status\n    \n    - **optimal**: Solution found with minimum cost\n    - **infeasible**: No combination of foods can meet all constraints\n    - **unbounded**: Cost can be reduced indefinitely (indicates problem formulation error)\n    \n    ### 💡 Tips for Success\n    \n    1. **Units**: Double-check Vitamin A is in mcg, others in mg\n    2. **Constraints**: Use realistic RDA values (see API docs for reference table)\n    3. **Food Variety**: Include diverse foods to increase feasibility\n    4. **Bounds**: Ensure max > min for all constraints\n    \n    ### 🏥 Common Use Cases\n    \n    - Personal diet planning with cost optimization\n    - Institutional meal planning (hospitals, schools)\n    - Nutritional research and analysis\n    - Athletic nutrition optimization\n    - Pregnancy and special dietary needs\n    ",
+        "operationId": "optimize_diet_optimize_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OptimizationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful optimization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OptimizationResult"
+                },
+                "example": {
+                  "status": "optimal",
+                  "total_cost": 12.45,
+                  "optimal_quantities": [
+                    {
+                      "food_name": "Chicken Breast",
+                      "quantity_100g": 1.5,
+                      "quantity_grams": 150.0,
+                      "cost": 4.80
+                    }
+                  ],
+                  "nutritional_summary": {
+                    "total_calories": 2000.0,
+                    "total_protein": 150.0,
+                    "total_carbs": 200.0,
+                    "total_fat": 65.0,
+                    "total_vitamin_a": 800.0,
+                    "total_vitamin_c": 90.0,
+                    "total_vitamin_d": 20.0,
+                    "total_vitamin_b12": 3.5,
+                    "total_folate": 450.0,
+                    "total_vitamin_e": 18.0,
+                    "total_vitamin_k": 120.0,
+                    "total_calcium": 1200.0,
+                    "total_iron": 15.0,
+                    "total_magnesium": 350.0,
+                    "total_potassium": 4000.0,
+                    "total_zinc": 11.5,
+                    "total_sodium": 2000.0,
+                    "total_cholesterol": 250.0,
+                    "total_fiber": 30.0
+                  },
+                  "constraint_satisfaction": {
+                    "calories_within_bounds": true,
+                    "protein_within_bounds": true,
+                    "carbs_within_bounds": true,
+                    "fat_within_bounds": true,
+                    "vitamin_a_within_bounds": true,
+                    "vitamin_c_within_bounds": true,
+                    "vitamin_d_within_bounds": true,
+                    "vitamin_b12_within_bounds": true,
+                    "folate_within_bounds": true,
+                    "vitamin_e_within_bounds": true,
+                    "vitamin_k_within_bounds": true,
+                    "calcium_within_bounds": true,
+                    "iron_within_bounds": true,
+                    "magnesium_within_bounds": true,
+                    "potassium_within_bounds": true,
+                    "zinc_within_bounds": true,
+                    "sodium_within_bounds": true,
+                    "cholesterol_within_bounds": true,
+                    "fiber_within_bounds": true
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or optimization error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "optimization_error",
+                  "message": "Constraints are inconsistent",
+                  "details": "max_calories must be greater than min_calories"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Solver timeout",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "solver_timeout",
+                  "message": "Optimization timed out after 30 seconds",
+                  "timeout": 30
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "optimization"
+        ],
+        "summary": "API Health Check",
+        "description": "\n    ## 🏥 Health Check Endpoint\n    \n    Verify that the Diet Optimizer API is running and responsive.\n    \n    ### ✅ What This Checks\n    - API server status\n    - Basic functionality  \n    - Version information\n    \n    ### 📊 Response Format\n    - **status**: \"healthy\" if API is operational\n    - **version**: Current API version\n    - **message**: Status description\n    \n    ### 🔍 Use Cases\n    - Application monitoring\n    - Load balancer health checks\n    - Service discovery\n    - Debugging connectivity issues\n    ",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCheckResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "optimization"
+        ],
+        "summary": "API Information",
+        "description": "\n    ## ℹ️ Root Endpoint\n    \n    Provides basic information about the Diet Optimizer API including available endpoints.\n    \n    ### 🔗 Available Endpoints\n    - **POST /optimize**: Main optimization endpoint\n    - **GET /health**: Health check\n    - **GET /docs**: Interactive API documentation (Swagger UI)\n    - **GET /redoc**: Alternative API documentation (ReDoc)\n    ",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ConstraintSatisfaction": {
+        "properties": {
+          "calories_within_bounds": {
+            "type": "boolean",
+            "title": "Calories Within Bounds",
+            "description": "Whether calories are within bounds"
+          },
+          "protein_within_bounds": {
+            "type": "boolean",
+            "title": "Protein Within Bounds",
+            "description": "Whether protein is within bounds"
+          },
+          "carbs_within_bounds": {
+            "type": "boolean",
+            "title": "Carbs Within Bounds",
+            "description": "Whether carbs are within bounds"
+          },
+          "fat_within_bounds": {
+            "type": "boolean",
+            "title": "Fat Within Bounds",
+            "description": "Whether fat is within bounds"
+          },
+          "vitamin_a_within_bounds": {
+            "type": "boolean",
+            "title": "Vitamin A Within Bounds",
+            "description": "Whether vitamin A is within bounds"
+          },
+          "vitamin_c_within_bounds": {
+            "type": "boolean",
+            "title": "Vitamin C Within Bounds",
+            "description": "Whether vitamin C is within bounds"
+          },
+          "vitamin_d_within_bounds": {
+            "type": "boolean",
+            "title": "Vitamin D Within Bounds",
+            "description": "Whether vitamin D is within bounds"
+          },
+          "vitamin_b12_within_bounds": {
+            "type": "boolean",
+            "title": "Vitamin B12 Within Bounds",
+            "description": "Whether vitamin B12 is within bounds"
+          },
+          "folate_within_bounds": {
+            "type": "boolean",
+            "title": "Folate Within Bounds",
+            "description": "Whether folate is within bounds"
+          },
+          "vitamin_e_within_bounds": {
+            "type": "boolean",
+            "title": "Vitamin E Within Bounds",
+            "description": "Whether vitamin E is within bounds"
+          },
+          "vitamin_k_within_bounds": {
+            "type": "boolean",
+            "title": "Vitamin K Within Bounds",
+            "description": "Whether vitamin K is within bounds"
+          },
+          "calcium_within_bounds": {
+            "type": "boolean",
+            "title": "Calcium Within Bounds",
+            "description": "Whether calcium is within bounds"
+          },
+          "iron_within_bounds": {
+            "type": "boolean",
+            "title": "Iron Within Bounds",
+            "description": "Whether iron is within bounds"
+          },
+          "magnesium_within_bounds": {
+            "type": "boolean",
+            "title": "Magnesium Within Bounds",
+            "description": "Whether magnesium is within bounds"
+          },
+          "potassium_within_bounds": {
+            "type": "boolean",
+            "title": "Potassium Within Bounds",
+            "description": "Whether potassium is within bounds"
+          },
+          "zinc_within_bounds": {
+            "type": "boolean",
+            "title": "Zinc Within Bounds",
+            "description": "Whether zinc is within bounds"
+          },
+          "sodium_within_bounds": {
+            "type": "boolean",
+            "title": "Sodium Within Bounds",
+            "description": "Whether sodium is within bounds"
+          },
+          "cholesterol_within_bounds": {
+            "type": "boolean",
+            "title": "Cholesterol Within Bounds",
+            "description": "Whether cholesterol is within bounds"
+          },
+          "fiber_within_bounds": {
+            "type": "boolean",
+            "title": "Fiber Within Bounds",
+            "description": "Whether fiber is within bounds"
+          }
+        },
+        "type": "object",
+        "required": [
+          "calories_within_bounds",
+          "protein_within_bounds",
+          "carbs_within_bounds",
+          "fat_within_bounds",
+          "vitamin_a_within_bounds",
+          "vitamin_c_within_bounds",
+          "vitamin_d_within_bounds",
+          "vitamin_b12_within_bounds",
+          "folate_within_bounds",
+          "vitamin_e_within_bounds",
+          "vitamin_k_within_bounds",
+          "calcium_within_bounds",
+          "iron_within_bounds",
+          "magnesium_within_bounds",
+          "potassium_within_bounds",
+          "zinc_within_bounds",
+          "sodium_within_bounds",
+          "cholesterol_within_bounds",
+          "fiber_within_bounds"
+        ],
+        "title": "ConstraintSatisfaction",
+        "description": "Model for constraint satisfaction status."
+      },
+      "Food": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Name of the food item"
+          },
+          "cost_per_100g": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Cost Per 100G",
+            "description": "Cost per 100 grams (in currency units)"
+          },
+          "calories_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Calories Per 100G",
+            "description": "Calories per 100 grams"
+          },
+          "carbs_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Carbs Per 100G",
+            "description": "Carbohydrates per 100 grams (g)"
+          },
+          "protein_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Protein Per 100G",
+            "description": "Protein per 100 grams (g)"
+          },
+          "fat_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Fat Per 100G",
+            "description": "Fat per 100 grams (g)"
+          },
+          "vitamin_a_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Vitamin A Per 100G",
+            "description": "Vitamin A per 100 grams (mcg RAE - Retinol Activity Equivalents). Note: This is in MICROGRAMS, not milligrams."
+          },
+          "vitamin_c_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Vitamin C Per 100G",
+            "description": "Vitamin C per 100 grams (mg - milligrams)"
+          },
+          "vitamin_d_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Vitamin D Per 100G",
+            "description": "Vitamin D per 100 grams (mcg - micrograms). Note: 1 mcg = 40 IU"
+          },
+          "vitamin_b12_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Vitamin B12 Per 100G",
+            "description": "Vitamin B12 per 100 grams (mcg - micrograms). Critical for vegans/vegetarians, nerve function"
+          },
+          "folate_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Folate Per 100G",
+            "description": "Folate/Folic Acid per 100 grams (mcg - micrograms). Essential for pregnancy, DNA synthesis"
+          },
+          "vitamin_e_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Vitamin E Per 100G",
+            "description": "Vitamin E per 100 grams (mg - milligrams). Major antioxidant, often deficient"
+          },
+          "vitamin_k_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Vitamin K Per 100G",
+            "description": "Vitamin K per 100 grams (mcg - micrograms). Bone health, blood clotting"
+          },
+          "calcium_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Calcium Per 100G",
+            "description": "Calcium per 100 grams (mg - milligrams)"
+          },
+          "iron_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Iron Per 100G",
+            "description": "Iron per 100 grams (mg - milligrams)"
+          },
+          "magnesium_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Magnesium Per 100G",
+            "description": "Magnesium per 100 grams (mg - milligrams)"
+          },
+          "potassium_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Potassium Per 100G",
+            "description": "Potassium per 100 grams (mg - milligrams)"
+          },
+          "zinc_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Zinc Per 100G",
+            "description": "Zinc per 100 grams (mg - milligrams)"
+          },
+          "sodium_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Sodium Per 100G",
+            "description": "Sodium per 100 grams (mg - milligrams)"
+          },
+          "cholesterol_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Cholesterol Per 100G",
+            "description": "Cholesterol per 100 grams (mg - milligrams)"
+          },
+          "fiber_per_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Fiber Per 100G",
+            "description": "Dietary fiber per 100 grams (g - grams)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "cost_per_100g",
+          "calories_per_100g",
+          "carbs_per_100g",
+          "protein_per_100g",
+          "fat_per_100g",
+          "vitamin_a_per_100g",
+          "vitamin_c_per_100g",
+          "vitamin_d_per_100g",
+          "vitamin_b12_per_100g",
+          "folate_per_100g",
+          "vitamin_e_per_100g",
+          "vitamin_k_per_100g",
+          "calcium_per_100g",
+          "iron_per_100g",
+          "magnesium_per_100g",
+          "potassium_per_100g",
+          "zinc_per_100g",
+          "sodium_per_100g",
+          "cholesterol_per_100g",
+          "fiber_per_100g"
+        ],
+        "title": "Food",
+        "description": "Model for a food item with nutritional information and cost.\\n\\nAll nutritional values are per 100g serving size.\\nUnits follow standard nutritional labeling conventions:\\n- Macronutrients (protein, carbs, fat): grams (g)\\n- Vitamin A: micrograms RAE (mcg)\\n- Other vitamins and minerals: milligrams (mg)\\n- Fiber: grams (g)",
+        "example": {
+          "calcium_per_100g": 15,
+          "calories_per_100g": 165,
+          "carbs_per_100g": 0,
+          "cholesterol_per_100g": 85,
+          "cost_per_100g": 3.2,
+          "fat_per_100g": 3.6,
+          "fiber_per_100g": 0,
+          "folate_per_100g": 6,
+          "iron_per_100g": 0.9,
+          "magnesium_per_100g": 20,
+          "name": "Chicken Breast (Skinless)",
+          "potassium_per_100g": 256,
+          "protein_per_100g": 31,
+          "sodium_per_100g": 74,
+          "vitamin_a_per_100g": 9,
+          "vitamin_b12_per_100g": 0.3,
+          "vitamin_c_per_100g": 0,
+          "vitamin_d_per_100g": 0,
+          "vitamin_e_per_100g": 0.3,
+          "vitamin_k_per_100g": 1.5,
+          "zinc_per_100g": 1.0
+        }
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthCheckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "API status"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version",
+            "description": "API version"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Status message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "version",
+          "message"
+        ],
+        "title": "HealthCheckResponse",
+        "description": "Health check response model."
+      },
+      "NutritionalConstraints": {
+        "properties": {
+          "min_calories": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Calories",
+            "description": "Minimum daily calories required"
+          },
+          "max_calories": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Calories",
+            "description": "Maximum daily calories allowed"
+          },
+          "min_protein": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Protein",
+            "description": "Minimum daily protein required (g)"
+          },
+          "max_protein": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Protein",
+            "description": "Maximum daily protein allowed (g)"
+          },
+          "min_carbs": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Carbs",
+            "description": "Minimum daily carbohydrates required (g)"
+          },
+          "max_carbs": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Carbs",
+            "description": "Maximum daily carbohydrates allowed (g)"
+          },
+          "min_fat": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Fat",
+            "description": "Minimum daily fat required (g)"
+          },
+          "max_fat": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Fat",
+            "description": "Maximum daily fat allowed (g)"
+          },
+          "min_vitamin_a": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Vitamin A",
+            "description": "Minimum daily vitamin A required (mcg RAE). RDA: 700-900 mcg for adults"
+          },
+          "max_vitamin_a": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Vitamin A",
+            "description": "Maximum daily vitamin A allowed (mcg RAE). Upper limit: 3000 mcg for adults"
+          },
+          "min_vitamin_c": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Vitamin C",
+            "description": "Minimum daily vitamin C required (mg). RDA: 65-90 mg for adults"
+          },
+          "max_vitamin_c": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Vitamin C",
+            "description": "Maximum daily vitamin C allowed (mg). Upper limit: 2000 mg for adults"
+          },
+          "min_vitamin_d": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Vitamin D",
+            "description": "Minimum daily vitamin D required (mcg). RDA: 15-20 mcg (600-800 IU) for adults"
+          },
+          "max_vitamin_d": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Vitamin D",
+            "description": "Maximum daily vitamin D allowed (mcg). Upper limit: 100 mcg (4000 IU) for adults"
+          },
+          "min_vitamin_b12": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Vitamin B12",
+            "description": "Minimum daily vitamin B12 required (mcg). RDA: 2.4 mcg for adults, critical for vegans/vegetarians"
+          },
+          "max_vitamin_b12": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Vitamin B12",
+            "description": "Maximum daily vitamin B12 allowed (mcg). No established upper limit - safe at high doses"
+          },
+          "min_folate": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Folate",
+            "description": "Minimum daily folate required (mcg DFE). RDA: 400 mcg for adults, 600 mcg for pregnancy"
+          },
+          "max_folate": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Folate",
+            "description": "Maximum daily folate allowed (mcg DFE). Upper limit: 1000 mcg for adults (from supplements)"
+          },
+          "min_vitamin_e": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Vitamin E",
+            "description": "Minimum daily vitamin E required (mg alpha-tocopherol). RDA: 15 mg for adults"
+          },
+          "max_vitamin_e": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Vitamin E",
+            "description": "Maximum daily vitamin E allowed (mg alpha-tocopherol). Upper limit: 1000 mg for adults"
+          },
+          "min_vitamin_k": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Vitamin K",
+            "description": "Minimum daily vitamin K required (mcg). Adequate Intake: 90 mcg (women), 120 mcg (men)"
+          },
+          "max_vitamin_k": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Vitamin K",
+            "description": "Maximum daily vitamin K allowed (mcg). No established upper limit - safe from food sources"
+          },
+          "min_calcium": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Calcium",
+            "description": "Minimum daily calcium required (mg). RDA: 1000-1200 mg for adults"
+          },
+          "max_calcium": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Calcium",
+            "description": "Maximum daily calcium allowed (mg). Upper limit: 2500 mg for adults"
+          },
+          "min_iron": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Iron",
+            "description": "Minimum daily iron required (mg). RDA: 8 mg (men), 18 mg (women) for adults"
+          },
+          "max_iron": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Iron",
+            "description": "Maximum daily iron allowed (mg). Upper limit: 45 mg for adults"
+          },
+          "min_magnesium": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Magnesium",
+            "description": "Minimum daily magnesium required (mg). RDA: 310-420 mg for adults"
+          },
+          "max_magnesium": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Magnesium",
+            "description": "Maximum daily magnesium allowed (mg). Upper limit: 350 mg from supplements (no limit for food sources)"
+          },
+          "min_potassium": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Potassium",
+            "description": "Minimum daily potassium required (mg). Adequate Intake: 3500-4700 mg for adults"
+          },
+          "max_potassium": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Potassium",
+            "description": "Maximum daily potassium allowed (mg). Generally well-tolerated up to 10000 mg"
+          },
+          "min_zinc": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Zinc",
+            "description": "Minimum daily zinc required (mg). RDA: 8 mg (women), 11 mg (men) for adults"
+          },
+          "max_zinc": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Zinc",
+            "description": "Maximum daily zinc allowed (mg). Upper limit: 40 mg for adults"
+          },
+          "min_sodium": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Sodium",
+            "description": "Minimum daily sodium required (mg). Adequate Intake: 1500 mg minimum needs"
+          },
+          "max_sodium": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Sodium",
+            "description": "Maximum daily sodium allowed (mg). Recommended limit: 2300 mg for adults"
+          },
+          "min_cholesterol": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Cholesterol",
+            "description": "Minimum daily cholesterol required (mg). No dietary requirement - can be 0"
+          },
+          "max_cholesterol": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Cholesterol",
+            "description": "Maximum daily cholesterol allowed (mg). Heart-healthy limit: <300 mg"
+          },
+          "min_fiber": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Min Fiber",
+            "description": "Minimum daily fiber required (g). RDA: 25-38 g for adults"
+          },
+          "max_fiber": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Fiber",
+            "description": "Maximum daily fiber allowed (g). Generally well-tolerated up to 70 g"
+          }
+        },
+        "type": "object",
+        "required": [
+          "min_calories",
+          "max_calories",
+          "min_protein",
+          "max_protein",
+          "min_carbs",
+          "max_carbs",
+          "min_fat",
+          "max_fat",
+          "min_vitamin_a",
+          "max_vitamin_a",
+          "min_vitamin_c",
+          "max_vitamin_c",
+          "min_vitamin_d",
+          "max_vitamin_d",
+          "min_vitamin_b12",
+          "max_vitamin_b12",
+          "min_folate",
+          "max_folate",
+          "min_vitamin_e",
+          "max_vitamin_e",
+          "min_vitamin_k",
+          "max_vitamin_k",
+          "min_calcium",
+          "max_calcium",
+          "min_iron",
+          "max_iron",
+          "min_magnesium",
+          "max_magnesium",
+          "min_potassium",
+          "max_potassium",
+          "min_zinc",
+          "max_zinc",
+          "min_sodium",
+          "max_sodium",
+          "min_cholesterol",
+          "max_cholesterol",
+          "min_fiber",
+          "max_fiber"
+        ],
+        "title": "NutritionalConstraints",
+        "description": "Model for nutritional constraints (min/max bounds for each nutrient).\\n\\nDaily recommended values and upper limits.\\nUnits match the Food model:\\n- Macronutrients: grams (g)\\n- Vitamin A: micrograms RAE (mcg)\\n- Other nutrients: milligrams (mg)\\n- Fiber: grams (g)",
+        "example": {
+          "max_calcium": 2500,
+          "max_calories": 2200,
+          "max_carbs": 250,
+          "max_cholesterol": 300,
+          "max_fat": 80,
+          "max_fiber": 70,
+          "max_folate": 1000,
+          "max_iron": 45,
+          "max_magnesium": 350,
+          "max_potassium": 10000,
+          "max_protein": 180,
+          "max_sodium": 2300,
+          "max_vitamin_a": 3000,
+          "max_vitamin_b12": 1000,
+          "max_vitamin_c": 2000,
+          "max_vitamin_d": 100,
+          "max_vitamin_e": 1000,
+          "max_vitamin_k": 10000,
+          "max_zinc": 40,
+          "min_calcium": 1000,
+          "min_calories": 1800,
+          "min_carbs": 150,
+          "min_cholesterol": 0,
+          "min_fat": 50,
+          "min_fiber": 25,
+          "min_folate": 400,
+          "min_iron": 8,
+          "min_magnesium": 310,
+          "min_potassium": 3500,
+          "min_protein": 120,
+          "min_sodium": 1500,
+          "min_vitamin_a": 700,
+          "min_vitamin_b12": 2.4,
+          "min_vitamin_c": 75,
+          "min_vitamin_d": 15,
+          "min_vitamin_e": 15,
+          "min_vitamin_k": 90,
+          "min_zinc": 8
+        }
+      },
+      "NutritionalSummary": {
+        "properties": {
+          "total_calories": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Calories",
+            "description": "Total calories achieved"
+          },
+          "total_protein": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Protein",
+            "description": "Total protein achieved (g)"
+          },
+          "total_carbs": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Carbs",
+            "description": "Total carbohydrates achieved (g)"
+          },
+          "total_fat": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Fat",
+            "description": "Total fat achieved (g)"
+          },
+          "total_vitamin_a": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Vitamin A",
+            "description": "Total vitamin A achieved (mcg RAE - Retinol Activity Equivalents)"
+          },
+          "total_vitamin_c": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Vitamin C",
+            "description": "Total vitamin C achieved (mg)"
+          },
+          "total_vitamin_d": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Vitamin D",
+            "description": "Total vitamin D achieved (mcg - micrograms)"
+          },
+          "total_vitamin_b12": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Vitamin B12",
+            "description": "Total vitamin B12 achieved (mcg - micrograms)"
+          },
+          "total_folate": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Folate",
+            "description": "Total folate achieved (mcg DFE - Dietary Folate Equivalents)"
+          },
+          "total_vitamin_e": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Vitamin E",
+            "description": "Total vitamin E achieved (mg - milligrams)"
+          },
+          "total_vitamin_k": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Vitamin K",
+            "description": "Total vitamin K achieved (mcg - micrograms)"
+          },
+          "total_calcium": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Calcium",
+            "description": "Total calcium achieved (mg)"
+          },
+          "total_iron": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Iron",
+            "description": "Total iron achieved (mg)"
+          },
+          "total_magnesium": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Magnesium",
+            "description": "Total magnesium achieved (mg)"
+          },
+          "total_potassium": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Potassium",
+            "description": "Total potassium achieved (mg)"
+          },
+          "total_zinc": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Zinc",
+            "description": "Total zinc achieved (mg)"
+          },
+          "total_sodium": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Sodium",
+            "description": "Total sodium achieved (mg)"
+          },
+          "total_cholesterol": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Cholesterol",
+            "description": "Total cholesterol achieved (mg)"
+          },
+          "total_fiber": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Fiber",
+            "description": "Total dietary fiber achieved (g)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_calories",
+          "total_protein",
+          "total_carbs",
+          "total_fat",
+          "total_vitamin_a",
+          "total_vitamin_c",
+          "total_vitamin_d",
+          "total_vitamin_b12",
+          "total_folate",
+          "total_vitamin_e",
+          "total_vitamin_k",
+          "total_calcium",
+          "total_iron",
+          "total_magnesium",
+          "total_potassium",
+          "total_zinc",
+          "total_sodium",
+          "total_cholesterol",
+          "total_fiber"
+        ],
+        "title": "NutritionalSummary",
+        "description": "Model for total nutritional content achieved.\\n\\nUnits follow standard nutritional conventions:\\n- Macronutrients: grams (g)\\n- Vitamin A: micrograms RAE (mcg)\\n- Other nutrients: milligrams (mg)\\n- Fiber: grams (g)"
+      },
+      "OptimalFood": {
+        "properties": {
+          "food_name": {
+            "type": "string",
+            "title": "Food Name",
+            "description": "Name of the food item"
+          },
+          "quantity_100g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Quantity 100G",
+            "description": "Amount in 100-gram units"
+          },
+          "quantity_grams": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Quantity Grams",
+            "description": "Total grams of this food"
+          },
+          "cost": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Cost",
+            "description": "Cost contribution of this food"
+          }
+        },
+        "type": "object",
+        "required": [
+          "food_name",
+          "quantity_100g",
+          "quantity_grams",
+          "cost"
+        ],
+        "title": "OptimalFood",
+        "description": "Model for an optimized food item with quantities and cost."
+      },
+      "OptimizationRequest": {
+        "properties": {
+          "foods": {
+            "items": {
+              "$ref": "#/components/schemas/Food"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Foods",
+            "description": "List of available foods"
+          },
+          "constraints": {
+            "$ref": "#/components/schemas/NutritionalConstraints",
+            "description": "Nutritional constraints"
+          }
+        },
+        "type": "object",
+        "required": [
+          "foods",
+          "constraints"
+        ],
+        "title": "OptimizationRequest",
+        "description": "Complete optimization request model."
+      },
+      "OptimizationResult": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "optimal",
+              "infeasible",
+              "unbounded"
+            ],
+            "title": "Status",
+            "description": "Optimization status"
+          },
+          "total_cost": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Cost",
+            "description": "Minimum total cost achieved"
+          },
+          "optimal_quantities": {
+            "items": {
+              "$ref": "#/components/schemas/OptimalFood"
+            },
+            "type": "array",
+            "title": "Optimal Quantities",
+            "description": "Quantities of each food (in 100g units)"
+          },
+          "nutritional_summary": {
+            "$ref": "#/components/schemas/NutritionalSummary",
+            "description": "Total nutritional content achieved"
+          },
+          "constraint_satisfaction": {
+            "$ref": "#/components/schemas/ConstraintSatisfaction",
+            "description": "Whether each constraint is met"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "total_cost",
+          "optimal_quantities",
+          "nutritional_summary",
+          "constraint_satisfaction"
+        ],
+        "title": "OptimizationResult",
+        "description": "Complete optimization result model."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+} 
