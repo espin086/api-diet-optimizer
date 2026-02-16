@@ -8,7 +8,6 @@ metadata:
 spec:
   hosts:
     - {{ include "diet-optimizer.fullname" . }}-internal.{{ .Release.Namespace }}.svc.cluster.local
-  targetPendingRequests: {{ .Values.scaling.targetRequestRate }}
   scaleTargetRef:
     name: {{ include "diet-optimizer.fullname" . }}
     kind: Deployment
@@ -18,9 +17,9 @@ spec:
   replicas:
     min: {{ .Values.scaling.minReplicas }}
     max: {{ .Values.scaling.maxReplicas }}
+  scaledownPeriod: {{ .Values.scaling.scaledownPeriod }}
   scalingMetric:
     requestRate:
       targetValue: {{ .Values.scaling.targetRequestRate }}
       window: {{ .Values.scaling.window }}
-  scaledownPeriod: {{ .Values.scaling.scaledownPeriod }}
 {{- end }}

@@ -34,6 +34,6 @@ scaling:
   targetRequestRate: 10
   window: 1m
 
-loadBalancer:
-  enabled: true
-  staticIP: ""
+# External LoadBalancer is configured on the KEDA HTTP add-on interceptor
+# proxy service via Terraform helm-releases.tf, not in this chart.
+# Static IP annotation is applied after Crossplane provisions it.

@@ -151,7 +151,15 @@ gcloud container clusters get-credentials $(terraform output -raw cluster_name) 
   --project YOUR_PROJECT_ID
 ```
 
-### 4. Apply Crossplane Resources
+### 4. Install Crossplane GCP Providers
+
+```bash
+kubectl apply -f ../crossplane/provider-gcp.yaml
+# Wait for providers to become healthy
+kubectl get providers -w
+```
+
+### 5. Apply Crossplane Resources
 
 ```bash
 export GCP_PROJECT_ID=your-project-id
@@ -162,20 +170,25 @@ envsubst < ../crossplane/static-ip.yaml | kubectl apply -f -
 envsubst < ../crossplane/artifact-registry.yaml | kubectl apply -f -
 ```
 
-### 5. Wait for Crossplane Provisioning
+### 6. Wait for Crossplane Provisioning
 
 ```bash
 kubectl get address.compute.gcp.upbound.io/diet-optimizer-ip -w
 kubectl get repository.artifactregistry.gcp.upbound.io/diet-optimizer-repo -w
 ```
 
-### 6. Update Production Values
+### 7. Update Production Values
 
 Update `helm/diet-optimizer/values-prod.yaml` with:
 - `image.repository`: The Artifact Registry URL from Crossplane
-- `loadBalancer.staticIP`: The static IP from Crossplane
 
-### 7. Push Initial Docker Image
+Update the KEDA HTTP add-on interceptor static IP (via Terraform or kubectl):
+```bash
+kubectl -n keda patch svc keda-http-addon-interceptor-proxy \
+  -p '{"spec":{"loadBalancerIP":"<STATIC_IP>"},"metadata":{"annotations":{"cloud.google.com/network-tier":"Standard"}}}'
+```
+
+### 8. Push Initial Docker Image
 
 ```bash
 REGISTRY_URL=<region>-docker.pkg.dev/<project>/<repo>
@@ -183,13 +196,13 @@ docker build -t $REGISTRY_URL/diet-optimizer:latest .
 docker push $REGISTRY_URL/diet-optimizer:latest
 ```
 
-### 8. Deploy Argo CD Application
+### 9. Deploy Argo CD Application
 
 ```bash
 kubectl apply -f argocd/application.yaml
 ```
 
-### 9. Configure GitHub Secrets
+### 10. Configure GitHub Secrets
 
 Add these to your GitHub repository settings (Settings > Secrets > Actions):
 

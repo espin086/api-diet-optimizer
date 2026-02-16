@@ -36,6 +36,14 @@ resource "helm_release" "keda_http_addon" {
   chart            = "keda-add-ons-http"
   version          = "0.8.0"
 
+  # Expose interceptor proxy as LoadBalancer with static IP
+  # The static IP is set after Crossplane provisions it:
+  #   terraform apply -var="static_ip=<IP>" or update this block
+  set {
+    name  = "interceptor.proxy.service.type"
+    value = "LoadBalancer"
+  }
+
   depends_on = [helm_release.keda]
 }
 
