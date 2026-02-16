@@ -1,0 +1,11 @@
+apiVersion: artifactregistry.gcp.upbound.io/v1beta1
+kind: Repository
+metadata:
+  name: diet-optimizer-repo
+spec:
+  forProvider:
+    location: ${GCP_REGION}
+    format: DOCKER
+    description: Docker repository for diet-optimizer API images
+  providerConfigRef:
+    name: default

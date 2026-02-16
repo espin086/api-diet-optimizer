@@ -1,0 +1,39 @@
+replicaCount: 1
+
+image:
+  repository: diet-optimizer
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+healthCheck:
+  path: /health
+  port: 8000
+
+config:
+  logLevel: INFO
+  workers: "1"
+  port: "8000"
+
+scaling:
+  enabled: true
+  minReplicas: 0
+  maxReplicas: 3
+  scaledownPeriod: 300
+  targetRequestRate: 10
+  window: 1m
+
+loadBalancer:
+  enabled: true
+  staticIP: ""

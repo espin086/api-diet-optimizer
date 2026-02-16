@@ -1,0 +1,26 @@
+{{- if .Values.scaling.enabled }}
+apiVersion: http.keda.sh/v1alpha1
+kind: HTTPScaledObject
+metadata:
+  name: {{ include "diet-optimizer.fullname" . }}
+  labels:
+    {{- include "diet-optimizer.labels" . | nindent 4 }}
+spec:
+  hosts:
+    - {{ include "diet-optimizer.fullname" . }}-internal.{{ .Release.Namespace }}.svc.cluster.local
+  targetPendingRequests: {{ .Values.scaling.targetRequestRate }}
+  scaleTargetRef:
+    name: {{ include "diet-optimizer.fullname" . }}
+    kind: Deployment
+    apiVersion: apps/v1
+    service: {{ include "diet-optimizer.fullname" . }}-internal
+    port: {{ .Values.service.port }}
+  replicas:
+    min: {{ .Values.scaling.minReplicas }}
+    max: {{ .Values.scaling.maxReplicas }}
+  scalingMetric:
+    requestRate:
+      targetValue: {{ .Values.scaling.targetRequestRate }}
+      window: {{ .Values.scaling.window }}
+  scaledownPeriod: {{ .Values.scaling.scaledownPeriod }}
+{{- end }}

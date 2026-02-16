@@ -1,0 +1,9 @@
+# Production overrides - image tag updated by CI pipeline
+image:
+  repository: ""  # Set after Crossplane provisions Artifact Registry
+  tag: latest     # Updated by GitHub Actions CI on each build
+  pullPolicy: Always
+
+loadBalancer:
+  enabled: true
+  staticIP: ""  # Set after Crossplane provisions static IP

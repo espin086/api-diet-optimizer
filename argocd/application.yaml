@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: diet-optimizer
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/espin086/api-diet-optimizer.git
+    targetRevision: main
+    path: helm/diet-optimizer
+    helm:
+      valueFiles:
+        - values.yaml
+        - values-prod.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: diet-optimizer
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

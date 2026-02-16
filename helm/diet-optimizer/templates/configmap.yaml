@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "diet-optimizer.fullname" . }}-config
+  labels:
+    {{- include "diet-optimizer.labels" . | nindent 4 }}
+data:
+  LOG_LEVEL: {{ .Values.config.logLevel | quote }}
+  WORKERS: {{ .Values.config.workers | quote }}
+  PORT: {{ .Values.config.port | quote }}

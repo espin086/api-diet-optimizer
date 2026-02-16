@@ -1,0 +1,11 @@
+apiVersion: compute.gcp.upbound.io/v1beta1
+kind: Address
+metadata:
+  name: diet-optimizer-ip
+spec:
+  forProvider:
+    region: ${GCP_REGION}
+    addressType: EXTERNAL
+    networkTier: STANDARD
+  providerConfigRef:
+    name: default
