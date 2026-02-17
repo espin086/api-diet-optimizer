@@ -40,3 +40,14 @@ resource "google_container_cluster" "autopilot" {
 
   depends_on = [google_project_service.apis]
 }
+
+# Artifact Registry for Docker images
+resource "google_artifact_registry_repository" "docker" {
+  project       = var.project_id
+  location      = var.region
+  repository_id = "diet-optimizer"
+  format        = "DOCKER"
+  description   = "Docker images for diet-optimizer API"
+
+  depends_on = [google_project_service.apis]
+}

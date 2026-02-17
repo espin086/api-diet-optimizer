@@ -19,10 +19,13 @@ resource "google_project_iam_member" "crossplane_artifact_registry" {
 }
 
 # Bind Crossplane K8s SA to GCP SA via Workload Identity
+# Must wait for cluster to create the workload identity pool
 resource "google_service_account_iam_member" "crossplane_workload_identity" {
   service_account_id = google_service_account.crossplane.name
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.project_id}.svc.id.goog[crossplane-system/crossplane]"
+
+  depends_on = [google_container_cluster.autopilot]
 }
 
 # --- GitHub Actions Service Account (Workload Identity Federation) ---
