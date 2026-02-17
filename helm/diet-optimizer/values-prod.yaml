@@ -1,5 +1,5 @@
 # Production overrides - image tag updated by CI pipeline
 image:
-  repository: ""  # Set after Crossplane provisions Artifact Registry
-  tag: latest     # Updated by GitHub Actions CI on each build
+  repository: us-central1-docker.pkg.dev/jobhunter-481523/diet-optimizer/diet-optimizer
+  tag: latest
   pullPolicy: Always
