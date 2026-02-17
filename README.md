@@ -170,6 +170,115 @@ docker build -t diet-optimizer .
 docker run -p 8000:8000 diet-optimizer
 ```
 
+### GKE Deployment (Production)
+
+The API is deployed on Google Kubernetes Engine (GKE) Autopilot with KEDA HTTP-based scale-to-zero.
+
+To find the external IP of the KEDA interceptor proxy:
+```bash
+kubectl get svc -n keda keda-add-ons-http-interceptor-proxy
+```
+
+**Health check:**
+```bash
+curl -s -H "Host: diet-optimizer-internal.diet-optimizer.svc.cluster.local" \
+  http://<EXTERNAL-IP>:8080/health
+```
+
+**Example optimization request:**
+```bash
+curl -s \
+  -H "Host: diet-optimizer-internal.diet-optimizer.svc.cluster.local" \
+  -H "Content-Type: application/json" \
+  http://<EXTERNAL-IP>:8080/optimize \
+  -d '{
+  "foods": [
+    {
+      "name": "Chicken Breast", "cost_per_100g": 3.2,
+      "calories_per_100g": 165, "carbs_per_100g": 0, "protein_per_100g": 31, "fat_per_100g": 3.6,
+      "vitamin_a_per_100g": 6, "vitamin_c_per_100g": 0, "vitamin_d_per_100g": 0.1,
+      "vitamin_b12_per_100g": 0.3, "folate_per_100g": 4, "vitamin_e_per_100g": 0.3, "vitamin_k_per_100g": 0,
+      "calcium_per_100g": 15, "iron_per_100g": 1, "magnesium_per_100g": 29,
+      "potassium_per_100g": 256, "zinc_per_100g": 1, "sodium_per_100g": 74,
+      "cholesterol_per_100g": 85, "fiber_per_100g": 0
+    },
+    {
+      "name": "Brown Rice", "cost_per_100g": 0.5,
+      "calories_per_100g": 112, "carbs_per_100g": 24, "protein_per_100g": 2.3, "fat_per_100g": 0.8,
+      "vitamin_a_per_100g": 0, "vitamin_c_per_100g": 0, "vitamin_d_per_100g": 0,
+      "vitamin_b12_per_100g": 0, "folate_per_100g": 4, "vitamin_e_per_100g": 0.1, "vitamin_k_per_100g": 0.6,
+      "calcium_per_100g": 3, "iron_per_100g": 0.5, "magnesium_per_100g": 39,
+      "potassium_per_100g": 79, "zinc_per_100g": 0.6, "sodium_per_100g": 1,
+      "cholesterol_per_100g": 0, "fiber_per_100g": 1.8
+    },
+    {
+      "name": "Spinach", "cost_per_100g": 2.4,
+      "calories_per_100g": 23, "carbs_per_100g": 3.6, "protein_per_100g": 2.9, "fat_per_100g": 0.4,
+      "vitamin_a_per_100g": 469, "vitamin_c_per_100g": 28.1, "vitamin_d_per_100g": 0,
+      "vitamin_b12_per_100g": 0, "folate_per_100g": 194, "vitamin_e_per_100g": 2, "vitamin_k_per_100g": 483,
+      "calcium_per_100g": 99, "iron_per_100g": 2.7, "magnesium_per_100g": 79,
+      "potassium_per_100g": 558, "zinc_per_100g": 0.5, "sodium_per_100g": 79,
+      "cholesterol_per_100g": 0, "fiber_per_100g": 2.2
+    },
+    {
+      "name": "Salmon", "cost_per_100g": 6.5,
+      "calories_per_100g": 208, "carbs_per_100g": 0, "protein_per_100g": 25.4, "fat_per_100g": 12.4,
+      "vitamin_a_per_100g": 58, "vitamin_c_per_100g": 0, "vitamin_d_per_100g": 14.2,
+      "vitamin_b12_per_100g": 3.2, "folate_per_100g": 7, "vitamin_e_per_100g": 3.6, "vitamin_k_per_100g": 0.5,
+      "calcium_per_100g": 12, "iron_per_100g": 0.8, "magnesium_per_100g": 27,
+      "potassium_per_100g": 490, "zinc_per_100g": 0.6, "sodium_per_100g": 59,
+      "cholesterol_per_100g": 70, "fiber_per_100g": 0
+    }
+  ],
+  "constraints": {
+    "min_calories": 1800, "max_calories": 3000,
+    "min_protein": 50, "max_protein": 300,
+    "min_carbs": 50, "max_carbs": 500,
+    "min_fat": 30, "max_fat": 150,
+    "min_vitamin_a": 0, "max_vitamin_a": 50000,
+    "min_vitamin_c": 0, "max_vitamin_c": 50000,
+    "min_vitamin_d": 0, "max_vitamin_d": 500,
+    "min_vitamin_b12": 0, "max_vitamin_b12": 5000,
+    "min_folate": 0, "max_folate": 5000,
+    "min_vitamin_e": 0, "max_vitamin_e": 5000,
+    "min_vitamin_k": 0, "max_vitamin_k": 50000,
+    "min_calcium": 0, "max_calcium": 50000,
+    "min_iron": 0, "max_iron": 500,
+    "min_magnesium": 0, "max_magnesium": 5000,
+    "min_potassium": 0, "max_potassium": 50000,
+    "min_zinc": 0, "max_zinc": 500,
+    "min_sodium": 0, "max_sodium": 50000,
+    "min_cholesterol": 0, "max_cholesterol": 5000,
+    "min_fiber": 0, "max_fiber": 500
+  }
+}'
+```
+
+**Example response:**
+```json
+{
+  "status": "optimal",
+  "total_cost": 16.79,
+  "optimal_quantities": [
+    {"food_name": "Brown Rice", "quantity_100g": 13.15, "quantity_grams": 1315.45, "cost": 6.58},
+    {"food_name": "Salmon", "quantity_100g": 1.57, "quantity_grams": 157.07, "cost": 10.21}
+  ],
+  "nutritional_summary": {
+    "total_calories": 1800.0, "total_protein": 70.15, "total_carbs": 315.71,
+    "total_fat": 30.0, "total_vitamin_d": 22.3, "total_vitamin_b12": 5.03,
+    "total_magnesium": 555.43, "total_potassium": 1808.84, "total_zinc": 8.84
+  },
+  "constraint_satisfaction": {
+    "calories_within_bounds": true, "protein_within_bounds": true,
+    "carbs_within_bounds": true, "fat_within_bounds": true
+  }
+}
+```
+
+> **Note:** If the pod has scaled to zero, the first request may take 30-60 seconds while KEDA provisions a new pod. Subsequent requests are fast.
+
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for full GKE deployment instructions.
+
 ### Run Tests
 
 ```bash
